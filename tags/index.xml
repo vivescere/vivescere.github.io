@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Nicolas Bourras</title>
+    <link>https://nicolasb.fr/tags/</link>
+    <description>Recent content in Tags on Nicolas Bourras</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 09 Jun 2020 20:34:00 +0200</lastBuildDate>
+    
+	<atom:link href="https://nicolasb.fr/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>blog</title>
+      <link>https://nicolasb.fr/tags/blog/</link>
+      <pubDate>Tue, 09 Jun 2020 20:34:00 +0200</pubDate>
+      
+      <guid>https://nicolasb.fr/tags/blog/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>recipes</title>
+      <link>https://nicolasb.fr/tags/recipes/</link>
+      <pubDate>Tue, 09 Jun 2020 20:34:00 +0200</pubDate>
+      
+      <guid>https://nicolasb.fr/tags/recipes/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
