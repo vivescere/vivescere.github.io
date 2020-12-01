@@ -1,0 +1,63 @@
+<!doctype html><html lang=en-us><head><link rel=preconnect href=https://fonts.gstatic.com/ crossorigin><link rel=stylesheet href=/css/main.min.3c9fa6b3264a9f8be4f27730f1d5f0ded496304d03812ed49d97703ffb28122a.css integrity="sha256-PJ+msyZKn4vk8ncw8dXw3tSWME0DgS7UnZdwP/soEio=" crossorigin=anonymous media=screen><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Didact+Gothic"><meta charset=utf-8><meta http-equiv=x-ua-compatible content="chrome=1"><meta name=HandheldFriendly content="True"><meta name=MobileOptimized content="320"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=referrer content="no-referrer"><title>Writeup DG&rsquo;hAck: Server Room - Nicolas Bourras</title><meta name=twitter:card content="summary"><meta name=twitter:title content="Writeup DG'hAck: Server Room"><meta name=twitter:description content="This challenge starts with a file, found_in_server_room.img.gz. Let&rsquo;s first try to find what this file is:
+$ gunzip found_in_server_room.img.gz $ file found_in_server_room.img found_in_server_room.img: DOS/MBR boot sector; partition 1 : ID=0xc, start-CHS (0x40,0,1), end-CHS (0x3ff,3,32), startsector 8192, 524288 sectors; partition 2 : ID=0x83, start-CHS (0x3ff,3,32), end-CHS (0x3ff,3,32), startsector 532480, 3072000 sectors So this is a disk image. Let&rsquo;s try mounting it!
+$ mkdir mnt $ sudo mount found_in_server_room.img mnt NTFS signature is missing."><meta property="og:title" content="Writeup DG'hAck: Server Room"><meta property="og:description" content="This challenge starts with a file, found_in_server_room.img.gz. Let&rsquo;s first try to find what this file is:
+$ gunzip found_in_server_room.img.gz $ file found_in_server_room.img found_in_server_room.img: DOS/MBR boot sector; partition 1 : ID=0xc, start-CHS (0x40,0,1), end-CHS (0x3ff,3,32), startsector 8192, 524288 sectors; partition 2 : ID=0x83, start-CHS (0x3ff,3,32), end-CHS (0x3ff,3,32), startsector 532480, 3072000 sectors So this is a disk image. Let&rsquo;s try mounting it!
+$ mkdir mnt $ sudo mount found_in_server_room.img mnt NTFS signature is missing."><meta property="og:type" content="article"><meta property="og:url" content="https://nicolasb.fr/blog/writeup-dghack-server-room/"><meta property="article:published_time" content="2020-11-19T05:00:05+01:00"><meta property="article:modified_time" content="2020-11-19T05:00:05+01:00"><title>Writeup DG&rsquo;hAck: Server Room</title></head><body><header class="wrap flex-container"><h1>Writeup DG&rsquo;hAck: Server Room</h1></header><main class=wrap><div class=flex-container><aside role=complementary>Nov 19, 2020 &#183; 360 words<div class=tag-container><span class=tag><a href=/tags/blog/>blog</a></span>
+<span class=tag><a href=/tags/security/>security</a></span>
+<span class=tag><a href=/tags/ctf/>ctf</a></span>
+<span class=tag><a href=/tags/dghack/>dghack</a></span></div></aside><hr><article role=article><p>This challenge starts with a file, <code>found_in_server_room.img.gz</code>. Let&rsquo;s first try to find what this file is:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ gunzip found_in_server_room.img.gz
+$ file found_in_server_room.img
+found_in_server_room.img: DOS/MBR boot sector; partition <span style=color:#ae81ff>1</span> : ID<span style=color:#f92672>=</span>0xc, start-CHS <span style=color:#f92672>(</span>0x40,0,1<span style=color:#f92672>)</span>, end-CHS <span style=color:#f92672>(</span>0x3ff,3,32<span style=color:#f92672>)</span>, startsector 8192, <span style=color:#ae81ff>524288</span> sectors; partition <span style=color:#ae81ff>2</span> : ID<span style=color:#f92672>=</span>0x83, start-CHS <span style=color:#f92672>(</span>0x3ff,3,32<span style=color:#f92672>)</span>, end-CHS <span style=color:#f92672>(</span>0x3ff,3,32<span style=color:#f92672>)</span>, startsector 532480, <span style=color:#ae81ff>3072000</span> sectors
+</code></pre></div><p>So this is a disk image. Let&rsquo;s try mounting it!</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ mkdir mnt
+$ sudo mount found_in_server_room.img mnt
+NTFS signature is missing.
+Failed to mount <span style=color:#e6db74>&#39;/dev/loop0&#39;</span>: Invalid argument
+The device <span style=color:#e6db74>&#39;/dev/loop0&#39;</span> doesn<span style=color:#960050;background-color:#1e0010>&#39;</span>t seem to have a valid NTFS.
+Maybe the wrong device is used? Or the whole disk instead of a
+partition <span style=color:#f92672>(</span>e.g. /dev/sda, not /dev/sda1<span style=color:#f92672>)</span>? Or the other way around?
+</code></pre></div><p>Huh.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ fdisk -l found_in_server_room.img
+Disk found_in_server_room.img: 1.72 GiB, <span style=color:#ae81ff>1845493248</span> bytes, <span style=color:#ae81ff>3604479</span> sectors
+Units: sectors of <span style=color:#ae81ff>1</span> * 512 <span style=color:#f92672>=</span> <span style=color:#ae81ff>512</span> bytes
+Sector size <span style=color:#f92672>(</span>logical/physical<span style=color:#f92672>)</span>: <span style=color:#ae81ff>512</span> bytes / <span style=color:#ae81ff>512</span> bytes
+I/O size <span style=color:#f92672>(</span>minimum/optimal<span style=color:#f92672>)</span>: <span style=color:#ae81ff>512</span> bytes / <span style=color:#ae81ff>512</span> bytes
+Disklabel type: dos
+Disk identifier: 0x907af7d0
+
+Device                    Boot  Start     End Sectors  Size Id Type
+found_in_server_room.img1        <span style=color:#ae81ff>8192</span>  <span style=color:#ae81ff>532479</span>  <span style=color:#ae81ff>524288</span>  256M  c W95 FAT32 <span style=color:#f92672>(</span>LBA<span style=color:#f92672>)</span>
+found_in_server_room.img2      <span style=color:#ae81ff>532480</span> <span style=color:#ae81ff>3604479</span> <span style=color:#ae81ff>3072000</span>  1.5G <span style=color:#ae81ff>83</span> Linux
+</code></pre></div><p>fdisk does find the partitions, but for some reason we can&rsquo;t mount them (even by setting the offset). Using testdisk, we&rsquo;re able to navigate through the files by selecting:</p><ul><li><code>found_in_server_room.img</code></li><li>Intel</li><li>Advanced</li><li>The first or the second partition</li><li>Boot > List or just List</li></ul><p>The first partition does not contain anything useful, just necessary boot files. The other partition is a typical linux root:</p><p><a href=/assets/dghack/server-room-root.png><img src=/assets/dghack/server-room-root.png alt="The linux partition"></a></p><p>The first thing that comes to mind is to check the <code>.bash_history</code>. The one of the <code>pi</code> user is rather empty:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sudo systemctl halt
+</code></pre></div><p>But the one of the <code>root</code> user contains quite a few commands (76 of them, to be exact). Here are the ones where nano is used:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nano wpa_supplicant.conf
+nano hostapd
+nano /etc/sysctl.d/90-routing.conf
+nano /etc/dnsmasq.conf 
+nano /etc/dhcpcd.conf 
+nano /etc/dnsmasq.conf 
+nano /etc/wpa_supplicant/wpa_supplicant.conf
+nano /etc/wpa_supplicant/wpa_supplicant.conf
+nano /etc/wpa_supplicant/wpa_supplicant.conf.old 
+nano /etc/dnsmasq.conf 
+nano /etc/hostapd/hostapd.conf
+</code></pre></div><p>The <code>wpa_supplicant.conf</code> file does not yield anything too interesting:</p><pre><code>1598621524 02:6c:0d:3b:04:17 192.168.100.171 OnePlus5T 01:02:6c:0d:3b:04:17
+</code></pre><p>But the <code>hostapd.conf</code> one does:</p><pre><code>country_code=FR
+interface=wlan0
+ssid=BackpackNet
+hw_mode=g
+channel=11
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=BackpackBackdoorNet
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+</code></pre><p>The flag is the wifi password: <code>BackpackBackdoorNet</code>.</p><hr><p><a href=/tags/dghack>View all of the DG&rsquo;hAck articles</a>.</p></article></div><nav role=navigation class="flex-container bottom-menu"><hr><p><a href=/blog>back</a>
+&#183;
+<a href=/blog>blog</a>
+&#183;
+<a href=/recipes>recipes</a>
+&#183;
+<a href=/about>who am I?</a>
+&#183;
+<a href=/>home</a></p></nav></main><footer class="flex-container footer">Nicolas Bourras&rsquo;s site</footer></body></html>

