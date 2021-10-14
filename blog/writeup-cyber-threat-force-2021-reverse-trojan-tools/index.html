@@ -1,18 +1,93 @@
-<!doctype html><html lang=en><head><title>Writeup Cyber Threat Force : Trojan tools :: Nicolas Bourras</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="For this challenge, we were given a TROJAN_TOOLS.exe file. Before manually analyzing it, I tried feeding it to hybrid analysis.
+<!doctype html><html lang=en>
+<head>
+<title>Writeup Cyber Threat Force : Trojan tools :: Nicolas Bourras</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="For this challenge, we were given a TROJAN_TOOLS.exe file. Before manually analyzing it, I tried feeding it to hybrid analysis.
 Here is the link to the full report.
 The &amp;ldquo;Interesting strings&amp;rdquo; section contained the flag: CYBERTF{Y0u_H4s_P3wn_Th3_H4ck_T0ol}.
  We can also try to solve the challenge in a more conventional way. Executing the application gives us:
-C:\Users\IEUser\Desktop&amp;gt;original.exe Please enter the good PIN Using a process monitor We can use procmon from the Sysinternals suite to monitor the process."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-trojan-tools/><link rel=stylesheet href=https://nicolasb.fr/assets/style.css><link rel=stylesheet href=https://nicolasb.fr/assets/pink.css><link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png><meta name=twitter:card content="summary"><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="og:title" content="Writeup Cyber Threat Force : Trojan tools"><meta property="og:description" content="For this challenge, we were given a TROJAN_TOOLS.exe file. Before manually analyzing it, I tried feeding it to hybrid analysis.
+C:\Users\IEUser\Desktop&amp;gt;original.exe Please enter the good PIN Using a process monitor We can use procmon from the Sysinternals suite to monitor the process.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-trojan-tools/>
+<link rel=stylesheet href=https://nicolasb.fr/assets/style.css>
+<link rel=stylesheet href=https://nicolasb.fr/assets/pink.css>
+<link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Writeup Cyber Threat Force : Trojan tools">
+<meta property="og:description" content="For this challenge, we were given a TROJAN_TOOLS.exe file. Before manually analyzing it, I tried feeding it to hybrid analysis.
 Here is the link to the full report.
 The &amp;ldquo;Interesting strings&amp;rdquo; section contained the flag: CYBERTF{Y0u_H4s_P3wn_Th3_H4ck_T0ol}.
  We can also try to solve the challenge in a more conventional way. Executing the application gives us:
-C:\Users\IEUser\Desktop&amp;gt;original.exe Please enter the good PIN Using a process monitor We can use procmon from the Sysinternals suite to monitor the process."><meta property="og:url" content="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-trojan-tools/"><meta property="og:site_name" content="Nicolas Bourras"><meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:published_time" content="2021-07-11 06:57:09 +0100 +0100"></head><body class=pink><div class="container center"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>Nicolas Bourras</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-trojan-tools/>Writeup Cyber Threat Force : Trojan tools</a></h1><div class=post-meta><span class=post-date>2021-07-11</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+C:\Users\IEUser\Desktop&amp;gt;original.exe Please enter the good PIN Using a process monitor We can use procmon from the Sysinternals suite to monitor the process.">
+<meta property="og:url" content="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-trojan-tools/">
+<meta property="og:site_name" content="Nicolas Bourras">
+<meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2021-07-11 06:57:09 +0100 +0100">
+</head>
+<body class=pink>
+<div class="container center">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Nicolas Bourras
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-trojan-tools/>Writeup Cyber Threat Force : Trojan tools</a></h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-11
+</span>
+</div>
+<span class=post-tags>
+#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/reverse/>reverse</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we were given a <code>TROJAN_TOOLS.exe</code> file. Before manually analyzing it, I tried feeding it to <a href=https://www.hybrid-analysis.com/>hybrid analysis</a>.</p><p>Here is the link to <a href=https://www.hybrid-analysis.com/sample/fe5b78b039a6800a2ae00db12559e971cc0a02caa72e29826d3e51ce88eb153b/60e02fcf19a4185d8f58ead3>the full report</a>.</p><p>The &ldquo;Interesting strings&rdquo; section contained the flag: <code>CYBERTF{Y0u_H4s_P3wn_Th3_H4ck_T0ol}</code>.</p><hr><p>We can also try to solve the challenge in a more conventional way. Executing the application gives us:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ps data-lang=ps><span style=color:#a6e22e>C:\Users\IEUser\Desktop</span>&gt;<span style=color:#a6e22e>original.exe</span>
+#<a href=https://nicolasb.fr/tags/reverse/>reverse</a>&nbsp;
+</span>
+<div class=post-content><div>
+<p>For this challenge, we were given a <code>TROJAN_TOOLS.exe</code> file. Before manually analyzing it, I tried feeding it to <a href=https://www.hybrid-analysis.com/>hybrid analysis</a>.</p>
+<p>Here is the link to <a href=https://www.hybrid-analysis.com/sample/fe5b78b039a6800a2ae00db12559e971cc0a02caa72e29826d3e51ce88eb153b/60e02fcf19a4185d8f58ead3>the full report</a>.</p>
+<p>The &ldquo;Interesting strings&rdquo; section contained the flag: <code>CYBERTF{Y0u_H4s_P3wn_Th3_H4ck_T0ol}</code>.</p>
+<hr>
+<p>We can also try to solve the challenge in a more conventional way. Executing the application gives us:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ps data-lang=ps><span style=color:#a6e22e>C:\Users\IEUser\Desktop</span>&gt;<span style=color:#a6e22e>original.exe</span>
 <span style=color:#a6e22e>Please</span> <span style=color:#a6e22e>enter</span> <span style=color:#a6e22e>the</span> <span style=color:#a6e22e>good</span> <span style=color:#a6e22e>PIN</span>
-</code></pre></div><h2 id=using-a-process-monitor>Using a process monitor<a href=#using-a-process-monitor class=hanchor arialabel=Anchor>&#8983;</a></h2><p>We can use <a href=https://docs.microsoft.com/en-us/sysinternals/downloads/procmon>procmon</a> from the Sysinternals suite to monitor the process.</p><img src=/assets/cyber-threat-force/reverse-trojan-tools.png alt="Procmon monitoring for the executable showing a WriteFile call" class=center><p>We can see that a file is created and written to. It is deleted once the executable is done running, but there probably is a call to <code>Sleep</code> because we can open it in notepad if we&rsquo;re fast enough.</p><p>Here is is, containing the flag:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=color:#66d9ef>Param</span>($choix)
+</code></pre></div><h2 id=using-a-process-monitor>Using a process monitor<a href=#using-a-process-monitor class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>We can use <a href=https://docs.microsoft.com/en-us/sysinternals/downloads/procmon>procmon</a> from the Sysinternals suite to monitor the process.</p>
+<img src=/assets/cyber-threat-force/reverse-trojan-tools.png alt="Procmon monitoring for the executable showing a WriteFile call" class=center>
+<p>We can see that a file is created and written to. It is deleted once the executable is done running, but there probably is a call to <code>Sleep</code> because we can open it in notepad if we&rsquo;re fast enough.</p>
+<p>Here is is, containing the flag:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=color:#66d9ef>Param</span>($choix)
 
 <span style=color:#66d9ef>if</span>($choix <span style=color:#f92672>-eq</span> 5383)
 {
@@ -57,9 +132,44 @@ C:\Users\IEUser\Desktop&amp;gt;original.exe Please enter the good PIN Using a pr
 {
     Write-Host <span style=color:#e6db74>&#34;Please enter the good PIN&#34;</span>
 }
-</code></pre></div><h2 id=unpacking-the-executable>Unpacking the executable<a href=#unpacking-the-executable class=hanchor arialabel=Anchor>&#8983;</a></h2><p>I also noticed that the application was packed using <a href=https://upx.github.io/>UPX</a>, and that when unpacked, it
-contained the string <code>inflate 1.2.8 Copyright 1995-2013 Mark Adler</code>. This probably indicates nested zlib data. I couldn&rsquo;t find a way to extract anything else though: binwalk gives files that are almost fully filled with null bytes. And <a href=https://github.com/horsicq/Detect-It-Easy>Detect It Easy</a> doesn&rsquo;t help either.</p><h2 id=more>More<a href=#more class=hanchor arialabel=Anchor>&#8983;</a></h2><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/reverse/trojan-tools>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/><span class=button__icon>←</span>
-<span class=button__text>Writeup Cyber Threat Force : Usb key cemetery</span></a></span>
-<span class="button next"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-viking-crypt/><span class=button__text>Writeup Cyber Threat Force : Viking crypt</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+</code></pre></div><h2 id=unpacking-the-executable>Unpacking the executable<a href=#unpacking-the-executable class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>I also noticed that the application was packed using <a href=https://upx.github.io/>UPX</a>, and that when unpacked, it
+contained the string <code>inflate 1.2.8 Copyright 1995-2013 Mark Adler</code>. This probably indicates nested zlib data. I couldn&rsquo;t find a way to extract anything else though: binwalk gives files that are almost fully filled with null bytes. And <a href=https://github.com/horsicq/Detect-It-Easy>Detect It Easy</a> doesn&rsquo;t help either.</p>
+<h2 id=more>More<a href=#more class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/reverse/trojan-tools>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/>
+<span class=button__icon>←</span>
+<span class=button__text>Writeup Cyber Threat Force : Usb key cemetery</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-viking-crypt/>
+<span class=button__text>Writeup Cyber Threat Force : Viking crypt</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://nicolasb.fr/assets/main.js></script>
+<script src=https://nicolasb.fr/assets/prism.js></script>
+</div>
+</body>
+</html>

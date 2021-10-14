@@ -1,14 +1,123 @@
-<!doctype html><html lang=en><head><title>misc :: Nicolas Bourras</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=https://nicolasb.fr/tags/misc/><link rel=stylesheet href=https://nicolasb.fr/assets/style.css><link rel=stylesheet href=https://nicolasb.fr/assets/pink.css><link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png><meta name=twitter:card content="summary"><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="website"><meta property="og:title" content="misc"><meta property="og:description" content><meta property="og:url" content="https://nicolasb.fr/tags/misc/"><meta property="og:site_name" content="Nicolas Bourras"><meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><link href=/tags/misc/index.xml rel=alternate type=application/rss+xml title="Nicolas Bourras"></head><body class=pink><div class="container center"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>Nicolas Bourras</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul></nav></header><div class=content><div class=posts><div class="post on-list"><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-azkaban-c2/>Writeup Cyber Threat Force : Azkaban C2</a></h1><div class=post-meta><span class=post-date>2021-07-11</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+<!doctype html><html lang=en>
+<head>
+<title>misc :: Nicolas Bourras</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content>
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://nicolasb.fr/tags/misc/>
+<link rel=stylesheet href=https://nicolasb.fr/assets/style.css>
+<link rel=stylesheet href=https://nicolasb.fr/assets/pink.css>
+<link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="website">
+<meta property="og:title" content="misc">
+<meta property="og:description" content>
+<meta property="og:url" content="https://nicolasb.fr/tags/misc/">
+<meta property="og:site_name" content="Nicolas Bourras">
+<meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<link href=/tags/misc/index.xml rel=alternate type=application/rss+xml title="Nicolas Bourras">
+</head>
+<body class=pink>
+<div class="container center">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Nicolas Bourras
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=posts>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-azkaban-c2/>Writeup Cyber Threat Force : Azkaban C2</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-11
+</span>
+</div>
+<span class=post-tags>
+#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/misc/>misc</a>&nbsp;</span><div class=post-content>For this challenge, we were given a python script:
-import socket def menu(): print("______________________") print("| MENU |") print("| 1) see option |") print("| 2) edit option |") print("| 3) connect |") print("______________________") print(""" ______ __ __ ______ / \ / | / | / \ /$$$$$$ | ________ $$ | __ ______ $$ |____ ______ _______ _______ /$$$$$$ | $$ |__$$ |/ |$$ | / | / \ $$ \ / \ / \ / |$$____$$ | $$ $$ |$$$$$$$$/ $$ |_/$$/ $$$$$$ |$$$$$$$ | $$$$$$ |$$$$$$$ | /$$$$$$$/ / $$/ $$$$$$$$ | / $$/ $$ $$&lt; / $$ |$$ | $$ | / $$ |$$ | $$ | $$ | /$$$$$$/ $$ | $$ | /$$$$/__ $$$$$$ \ /$$$$$$$ |$$ |__$$ |/$$$$$$$ |$$ | $$ | $$ \_____ $$ |_____ $$ | $$ |/$$ |$$ | $$ |$$ $$ |$$ $$/ $$ $$ |$$ | $$ | $$ |$$ | $$/ $$/ $$$$$$$$/ $$/ $$/ $$$$$$$/ $$$$$$$/ $$$$$$$/ $$/ $$/ $$$$$$$/ $$$$$$$$/ -----=[Azkaban C2 v.</div><div><a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-misc-azkaban-c2/>Read more →</a></div></div><div class="post on-list"><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-return-to-the-school/>Writeup Cyber Threat Force : Return to the school</a></h1><div class=post-meta><span class=post-date>2021-07-08</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+#<a href=https://nicolasb.fr/tags/misc/>misc</a>&nbsp;
+</span>
+<div class=post-content>
+For this challenge, we were given a python script:
+import socket def menu(): print("______________________") print("| MENU |") print("| 1) see option |") print("| 2) edit option |") print("| 3) connect |") print("______________________") print(""" ______ __ __ ______ / \ / | / | / \ /$$$$$$ | ________ $$ | __ ______ $$ |____ ______ _______ _______ /$$$$$$ | $$ |__$$ |/ |$$ | / | / \ $$ \ / \ / \ / |$$____$$ | $$ $$ |$$$$$$$$/ $$ |_/$$/ $$$$$$ |$$$$$$$ | $$$$$$ |$$$$$$$ | /$$$$$$$/ / $$/ $$$$$$$$ | / $$/ $$ $$&lt; / $$ |$$ | $$ | / $$ |$$ | $$ | $$ | /$$$$$$/ $$ | $$ | /$$$$/__ $$$$$$ \ /$$$$$$$ |$$ |__$$ |/$$$$$$$ |$$ | $$ | $$ \_____ $$ |_____ $$ | $$ |/$$ |$$ | $$ |$$ $$ |$$ $$/ $$ $$ |$$ | $$ | $$ |$$ | $$/ $$/ $$$$$$$$/ $$/ $$/ $$$$$$$/ $$$$$$$/ $$$$$$$/ $$/ $$/ $$$$$$$/ $$$$$$$$/ -----=[Azkaban C2 v.
+</div>
+<div>
+<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-misc-azkaban-c2/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-return-to-the-school/>Writeup Cyber Threat Force : Return to the school</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-08
+</span>
+</div>
+<span class=post-tags>
+#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/misc/>misc</a>&nbsp;</span><div class=post-content>This challenge involved solving an ASCII maze in under 10 seconds. I can&rsquo;t include a demo because I&rsquo;m writing this after the CTF ended.
+#<a href=https://nicolasb.fr/tags/misc/>misc</a>&nbsp;
+</span>
+<div class=post-content>
+This challenge involved solving an ASCII maze in under 10 seconds. I can&rsquo;t include a demo because I&rsquo;m writing this after the CTF ended.
 My script uses the astar package, because I was too lazy to re-implement A* manually. It isn&rsquo;t particularly pretty, but at least it is functionnal.
 Here it is:
-import math from pwn import * from astar import AStar def parse_maze(source): source = source.strip() source = source.split('\n') source = source[:-1] # Remove last line (dots) source = [list(l[1:-1]) for l in source] # Remove left and right dots return source # Mostly copied from the astar package example.</div><div><a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-misc-return-to-the-school/>Read more →</a></div></div><div class=pagination><div class=pagination__buttons></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+import math from pwn import * from astar import AStar def parse_maze(source): source = source.strip() source = source.split('\n') source = source[:-1] # Remove last line (dots) source = [list(l[1:-1]) for l in source] # Remove left and right dots return source # Mostly copied from the astar package example.
+</div>
+<div>
+<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-misc-return-to-the-school/>Read more →</a>
+</div>
+</div>
+<div class=pagination>
+<div class=pagination__buttons>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://nicolasb.fr/assets/main.js></script>
+<script src=https://nicolasb.fr/assets/prism.js></script>
+</div>
+</body>
+</html>

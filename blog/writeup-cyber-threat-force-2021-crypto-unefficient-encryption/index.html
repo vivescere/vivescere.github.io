@@ -1,21 +1,95 @@
-<!doctype html><html lang=en><head><title>Writeup Cyber Threat Force : (Un)Efficient encryption :: Nicolas Bourras</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="For this challenge, we were given two pcapng files, comm1.pcapng and comm2.pcapng, and a text file. The text file contains this:
+<!doctype html><html lang=en>
+<head>
+<title>Writeup Cyber Threat Force : (Un)Efficient encryption :: Nicolas Bourras</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="For this challenge, we were given two pcapng files, comm1.pcapng and comm2.pcapng, and a text file. The text file contains this:
  Bonjour Agent-CTF,
 Nous avons recemment interceptés un message, chiffré grace a un algorithme inconnu. Nous avons mis en relation ce message a un message anterieur, contenant une discussion suspecte entre deux membres de l&amp;rsquo;APT.
 Votre mission sera de dechiffrer les communications.
 Bonne chance
 Q.G.
- We can use tshark to view the raw data of the network captures:"><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-unefficient-encryption/><link rel=stylesheet href=https://nicolasb.fr/assets/style.css><link rel=stylesheet href=https://nicolasb.fr/assets/pink.css><link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png><meta name=twitter:card content="summary"><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="og:title" content="Writeup Cyber Threat Force : (Un)Efficient encryption"><meta property="og:description" content="For this challenge, we were given two pcapng files, comm1.pcapng and comm2.pcapng, and a text file. The text file contains this:
+ We can use tshark to view the raw data of the network captures:">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-unefficient-encryption/>
+<link rel=stylesheet href=https://nicolasb.fr/assets/style.css>
+<link rel=stylesheet href=https://nicolasb.fr/assets/pink.css>
+<link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Writeup Cyber Threat Force : (Un)Efficient encryption">
+<meta property="og:description" content="For this challenge, we were given two pcapng files, comm1.pcapng and comm2.pcapng, and a text file. The text file contains this:
  Bonjour Agent-CTF,
 Nous avons recemment interceptés un message, chiffré grace a un algorithme inconnu. Nous avons mis en relation ce message a un message anterieur, contenant une discussion suspecte entre deux membres de l&amp;rsquo;APT.
 Votre mission sera de dechiffrer les communications.
 Bonne chance
 Q.G.
- We can use tshark to view the raw data of the network captures:"><meta property="og:url" content="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-unefficient-encryption/"><meta property="og:site_name" content="Nicolas Bourras"><meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:published_time" content="2021-07-10 23:12:09 +0100 +0100"></head><body class=pink><div class="container center"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>Nicolas Bourras</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-unefficient-encryption/>Writeup Cyber Threat Force : (Un)Efficient encryption</a></h1><div class=post-meta><span class=post-date>2021-07-10</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+ We can use tshark to view the raw data of the network captures:">
+<meta property="og:url" content="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-unefficient-encryption/">
+<meta property="og:site_name" content="Nicolas Bourras">
+<meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2021-07-10 23:12:09 +0100 +0100">
+</head>
+<body class=pink>
+<div class="container center">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Nicolas Bourras
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-unefficient-encryption/>Writeup Cyber Threat Force : (Un)Efficient encryption</a></h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-10
+</span>
+</div>
+<span class=post-tags>
+#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/crypto/>crypto</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we were given two pcapng files, <code>comm1.pcapng</code> and <code>comm2.pcapng</code>, and a text file. The text file contains this:</p><blockquote><p>Bonjour Agent-CTF,</p><p>Nous avons recemment interceptés un message, chiffré grace a un algorithme inconnu.
-Nous avons mis en relation ce message a un message anterieur, contenant une discussion suspecte entre deux membres de l&rsquo;APT.</p><p>Votre mission sera de dechiffrer les communications.</p><p>Bonne chance</p><p>Q.G.</p></blockquote><p>We can use tshark to view the raw data of the network captures:</p><pre><code class=language-cli data-lang=cli>$ tshark -r comm1.pcapng -T fields -e data | xxd -r -p
+#<a href=https://nicolasb.fr/tags/crypto/>crypto</a>&nbsp;
+</span>
+<div class=post-content><div>
+<p>For this challenge, we were given two pcapng files, <code>comm1.pcapng</code> and <code>comm2.pcapng</code>, and a text file. The text file contains this:</p>
+<blockquote>
+<p>Bonjour Agent-CTF,</p>
+<p>Nous avons recemment interceptés un message, chiffré grace a un algorithme inconnu.
+Nous avons mis en relation ce message a un message anterieur, contenant une discussion suspecte entre deux membres de l&rsquo;APT.</p>
+<p>Votre mission sera de dechiffrer les communications.</p>
+<p>Bonne chance</p>
+<p>Q.G.</p>
+</blockquote>
+<p>We can use tshark to view the raw data of the network captures:</p>
+<pre tabindex=0><code class=language-cli data-lang=cli>$ tshark -r comm1.pcapng -T fields -e data | xxd -r -p
 Hey, could you generate an rsa key for me ? I Dont know how to do it
 Yes sure, i just need a prime integer to generate it
 Just take a random one, like 347 for example
@@ -29,7 +103,9 @@ MBwwDQYJKoZIhvcNAQEBBQADCwAwCAIDBGOvAgER
 71436 176304 185211 110406 35389 179680 56238 185211 207993 237729 176304 207993 185211 192576 237729 95070 171155 207993 35389 185211 110406 140230 92028 110406 140230 246626 82805
 95994 185211 110406 176304 192576 230623 185211 110406 237729 171155 110406 247756 185211 192576 230623 185211 110406 237729 176304 140230 92028 110406 232955 247756 192576 35389 185211 82805
 194813 185211 207993 185211 110406 140230 92028 110406 237729 176304 185211 110406 92028 185211 35389 207993 185211 237729 110406 35389 171155 171098 185211 110406 105244 110406 228171 207520 180458 196399 104282 71436 31634 106170 103296 132591 35389 69499 171098 196399 24720 104282 92028 59381 24720 230238 230238 36350
-</code></pre><p>The first message tells us about a message encrypted using RSA, for which a factor is 347. The second message contains the public key, and the message itself (the value of each char).</p><p>We can be lazy and use <a href=https://github.com/Ganapati/RsaCtfTool>RsaCtfTool</a> to get ourselves the private key parameters, after copying the public key to a file.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ python RsaCtfTool.py --publickey key.pub --private --dumpkey
+</code></pre><p>The first message tells us about a message encrypted using RSA, for which a factor is 347. The second message contains the public key, and the message itself (the value of each char).</p>
+<p>We can be lazy and use <a href=https://github.com/Ganapati/RsaCtfTool>RsaCtfTool</a> to get ourselves the private key parameters, after copying the public key to a file.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ python RsaCtfTool.py --publickey key.pub --private --dumpkey
 <span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Testing key key.pub.
 <span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Performing mersenne_primes attack on key.pub.
 <span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Performing smallq attack on key.pub.
@@ -50,7 +126,8 @@ q: <span style=color:#ae81ff>347</span>
 Public key details <span style=color:#66d9ef>for</span> key.pub                                                                                        
 n: <span style=color:#ae81ff>287663</span>
 e: <span style=color:#ae81ff>17</span>
-</code></pre></div><p>Now all we have to do is map each number to the power of <code>d</code>, mod <code>n</code> (<a href=https://en.wikipedia.org/wiki/RSA_(cryptosystem)#Decryption>ref</a>):</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>d <span style=color:#f92672>=</span> <span style=color:#ae81ff>67409</span>
+</code></pre></div><p>Now all we have to do is map each number to the power of <code>d</code>, mod <code>n</code> (<a href=https://en.wikipedia.org/wiki/RSA_(cryptosystem)#Decryption>ref</a>):</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>d <span style=color:#f92672>=</span> <span style=color:#ae81ff>67409</span>
 n <span style=color:#f92672>=</span> <span style=color:#ae81ff>287663</span>
 
 lines <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;&#39;
@@ -61,13 +138,47 @@ lines <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;&#3
 
 <span style=color:#66d9ef>for</span> line <span style=color:#f92672>in</span> lines<span style=color:#f92672>.</span>split(<span style=color:#e6db74>&#39;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#39;</span>):
 	blocks <span style=color:#f92672>=</span> list(map(int, line<span style=color:#f92672>.</span>split()))
-	<span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&#39;&#39;</span><span style=color:#f92672>.</span>join([chr((block <span style=color:#f92672>**</span> d) <span style=color:#f92672>%</span> n) <span style=color:#66d9ef>for</span> block <span style=color:#f92672>in</span> blocks]))
-</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ python solve.py
+	print(<span style=color:#e6db74>&#39;&#39;</span><span style=color:#f92672>.</span>join([chr((block <span style=color:#f92672>**</span> d) <span style=color:#f92672>%</span> n) <span style=color:#66d9ef>for</span> block <span style=color:#f92672>in</span> blocks]))
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ python solve.py
 The cyberthreatforce is in.
 We have to leave this place.
 Here is the secret code : CYBERTF<span style=color:#f92672>{</span>D3c0dE_Rs4_!!<span style=color:#f92672>}</span>
-</code></pre></div><p>The flag is <code>CYBERTF{D3c0dE_Rs4_!!}</code>.</p><p>Note: even though I was the one to input the flag in CTFd, it was my teammate <a href=https://ctftime.org/user/46515>R0ck3t</a> that found it first.</p><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/crypto/unefficient-encryption>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-viking-crypt/><span class=button__icon>←</span>
-<span class=button__text>Writeup Cyber Threat Force : Viking crypt</span></a></span>
-<span class="button next"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-the-document-is-strange/><span class=button__text>Writeup Cyber Threat Force : The document is strange</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+</code></pre></div><p>The flag is <code>CYBERTF{D3c0dE_Rs4_!!}</code>.</p>
+<p>Note: even though I was the one to input the flag in CTFd, it was my teammate <a href=https://ctftime.org/user/46515>R0ck3t</a> that found it first.</p>
+<p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/crypto/unefficient-encryption>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-viking-crypt/>
+<span class=button__icon>←</span>
+<span class=button__text>Writeup Cyber Threat Force : Viking crypt</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-the-document-is-strange/>
+<span class=button__text>Writeup Cyber Threat Force : The document is strange</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://nicolasb.fr/assets/main.js></script>
+<script src=https://nicolasb.fr/assets/prism.js></script>
+</div>
+</body>
+</html>

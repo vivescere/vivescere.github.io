@@ -1,17 +1,85 @@
-<!doctype html><html lang=en><head><title>Writeup DG'hAck: Bwing :: Nicolas Bourras</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="For this challenge, we&amp;rsquo;re given a dump.raw file, which we&amp;rsquo;re told is a memory dump. We have to find confidential data in it.
+<!doctype html><html lang=en>
+<head>
+<title>Writeup DG'hAck: Bwing :: Nicolas Bourras</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="For this challenge, we&amp;rsquo;re given a dump.raw file, which we&amp;rsquo;re told is a memory dump. We have to find confidential data in it.
 First, let&amp;rsquo;s see what kind of image this is:
-$ volatility -f dump.raw imageinfo Volatility Foundation Volatility Framework 2.6.1 INFO : volatility.debug : Determining profile based on KDBG search... Suggested Profile(s) : No suggestion (Instantiated with no profile) AS Layer1 : FileAddressSpace (/home/vivescere/Projects/dghack/bwing/dump.raw) PAE type : No PAE None of the default profiles seem to work, we&amp;rsquo;ll have to create our own."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=https://nicolasb.fr/blog/writeup-dghack-bwing/><link rel=stylesheet href=https://nicolasb.fr/assets/style.css><link rel=stylesheet href=https://nicolasb.fr/assets/pink.css><link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png><meta name=twitter:card content="summary"><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="og:title" content="Writeup DG'hAck: Bwing"><meta property="og:description" content="For this challenge, we&amp;rsquo;re given a dump.raw file, which we&amp;rsquo;re told is a memory dump. We have to find confidential data in it.
+$ volatility -f dump.raw imageinfo Volatility Foundation Volatility Framework 2.6.1 INFO : volatility.debug : Determining profile based on KDBG search... Suggested Profile(s) : No suggestion (Instantiated with no profile) AS Layer1 : FileAddressSpace (/home/vivescere/Projects/dghack/bwing/dump.raw) PAE type : No PAE None of the default profiles seem to work, we&amp;rsquo;ll have to create our own.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://nicolasb.fr/blog/writeup-dghack-bwing/>
+<link rel=stylesheet href=https://nicolasb.fr/assets/style.css>
+<link rel=stylesheet href=https://nicolasb.fr/assets/pink.css>
+<link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Writeup DG'hAck: Bwing">
+<meta property="og:description" content="For this challenge, we&amp;rsquo;re given a dump.raw file, which we&amp;rsquo;re told is a memory dump. We have to find confidential data in it.
 First, let&amp;rsquo;s see what kind of image this is:
-$ volatility -f dump.raw imageinfo Volatility Foundation Volatility Framework 2.6.1 INFO : volatility.debug : Determining profile based on KDBG search... Suggested Profile(s) : No suggestion (Instantiated with no profile) AS Layer1 : FileAddressSpace (/home/vivescere/Projects/dghack/bwing/dump.raw) PAE type : No PAE None of the default profiles seem to work, we&amp;rsquo;ll have to create our own."><meta property="og:url" content="https://nicolasb.fr/blog/writeup-dghack-bwing/"><meta property="og:site_name" content="Nicolas Bourras"><meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:published_time" content="2020-11-30 07:19:09 +0100 CET"></head><body class=pink><div class="container center"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>Nicolas Bourras</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-dghack-bwing/>Writeup DG&rsquo;hAck: Bwing</a></h1><div class=post-meta><span class=post-date>2020-11-30</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+$ volatility -f dump.raw imageinfo Volatility Foundation Volatility Framework 2.6.1 INFO : volatility.debug : Determining profile based on KDBG search... Suggested Profile(s) : No suggestion (Instantiated with no profile) AS Layer1 : FileAddressSpace (/home/vivescere/Projects/dghack/bwing/dump.raw) PAE type : No PAE None of the default profiles seem to work, we&amp;rsquo;ll have to create our own.">
+<meta property="og:url" content="https://nicolasb.fr/blog/writeup-dghack-bwing/">
+<meta property="og:site_name" content="Nicolas Bourras">
+<meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2020-11-30 07:19:09 +0100 CET">
+</head>
+<body class=pink>
+<div class="container center">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Nicolas Bourras
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://nicolasb.fr/blog/writeup-dghack-bwing/>Writeup DG&rsquo;hAck: Bwing</a></h1>
+<div class=post-meta>
+<span class=post-date>
+2020-11-30
+</span>
+</div>
+<span class=post-tags>
+#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/dghack/>dghack</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we&rsquo;re given a <code>dump.raw</code> file, which we&rsquo;re told is a memory dump. We have to find confidential data in it.</p><p>First, let&rsquo;s see what kind of image this is:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ volatility -f dump.raw imageinfo
+#<a href=https://nicolasb.fr/tags/dghack/>dghack</a>&nbsp;
+</span>
+<div class=post-content><div>
+<p>For this challenge, we&rsquo;re given a <code>dump.raw</code> file, which we&rsquo;re told is a memory dump. We have to find confidential data in it.</p>
+<p>First, let&rsquo;s see what kind of image this is:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ volatility -f dump.raw imageinfo
 Volatility Foundation Volatility Framework 2.6.1
 INFO    : volatility.debug    : Determining profile based on KDBG search...
           Suggested Profile<span style=color:#f92672>(</span>s<span style=color:#f92672>)</span> : No suggestion <span style=color:#f92672>(</span>Instantiated with no profile<span style=color:#f92672>)</span>
                      AS Layer1 : FileAddressSpace <span style=color:#f92672>(</span>/home/vivescere/Projects/dghack/bwing/dump.raw<span style=color:#f92672>)</span>
                       PAE type : No PAE
-</code></pre></div><p>None of the default profiles seem to work, we&rsquo;ll have to create our own. First, let&rsquo;s find out about the linux version:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ strings dump.raw | grep -i <span style=color:#e6db74>&#39;linux version&#39;</span> 
+</code></pre></div><p>None of the default profiles seem to work, we&rsquo;ll have to create our own. First, let&rsquo;s find out about the linux version:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ strings dump.raw | grep -i <span style=color:#e6db74>&#39;linux version&#39;</span> 
 Linux version 4.15.0-66-generic <span style=color:#f92672>(</span>buildd@lgw01-amd64-044<span style=color:#f92672>)</span> <span style=color:#f92672>(</span>gcc version 7.4.0 <span style=color:#f92672>(</span>Ubuntu 7.4.0-1ubuntu1~18.04.1<span style=color:#f92672>))</span> <span style=color:#75715e>#75-Ubuntu SMP Tue Oct 1 05:24:09 UTC 2019 (Ubuntu 4.15.0-66.75-generic 4.15.18)</span>
 Linux version 4.15.0-66-generic <span style=color:#f92672>(</span>buildd@lgw01-amd64-044<span style=color:#f92672>)</span> <span style=color:#f92672>(</span>gcc version 7.4.0 <span style=color:#f92672>(</span>Ubuntu 7.4.0-1ubuntu1~18.04.1<span style=color:#f92672>))</span> <span style=color:#75715e>#75-Ubuntu SMP Tue Oct 1 05:24:09 UTC 2019 (Ubuntu 4.15.0-66.75-generic 4.15.18)</span>
 Linux version 4.15.0-66-generic <span style=color:#f92672>(</span>buildd@lgw01-amd64-044<span style=color:#f92672>)</span> <span style=color:#f92672>(</span>gcc version 7.4.0 <span style=color:#f92672>(</span>Ubuntu 7.4.0-1ubuntu1~18.04.1<span style=color:#f92672>))</span> <span style=color:#75715e>#75-Ubuntu SMP Tue Oct 1 05:24:09 UTC 2019 (Ubuntu 4.15.0-66.75-generic 4.15.18)</span>
@@ -27,19 +95,23 @@ Nov  <span style=color:#ae81ff>6</span> 09:47:15 ubuntu-bionic kernel: <span sty
 00000<span style=color:#f92672>]</span> Linux version 4.15.0-66-generic <span style=color:#f92672>(</span>buildd@lgw01-amd64-044<span style=color:#f92672>)</span> <span style=color:#f92672>(</span>gcc version 7.4.0 <span style=color:#f92672>(</span>Ubuntu 7.4.0-1ubuntu1~18.04.1<span style=color:#f92672>))</span> <span style=color:#75715e>#75-Ubuntu SMP Tue Oct 1 05:24:09 UTC 2019 (Ubuntu 4.15.0-66.75-generic 4.15.18)</span>
 MESSAGE<span style=color:#f92672>=</span>Linux version 4.15.0-66-generic <span style=color:#f92672>(</span>buildd@lgw01-amd64-044<span style=color:#f92672>)</span> <span style=color:#f92672>(</span>gcc version 7.4.0 <span style=color:#f92672>(</span>Ubuntu 7.4.0-1ubuntu1~18.04.1<span style=color:#f92672>))</span> <span style=color:#75715e>#75-Ubuntu SMP Tue Oct 1 05:24:09 UTC 2019 (Ubuntu 4.15.0-66.75-generic 4.15.18)</span>
 SWIMS: Linux Version: %04X
-</code></pre></div><p>So it&rsquo;s an Ubuntu 18.04.1, with the 4.15.0-66-generic kernel. We can find the image on the <a href=http://old-releases.ubuntu.com/releases/18.04.1/ubuntu-18.04-desktop-amd64.iso>old-releases.ubuntu.com</a> website. After booting up a VM and installing the system, we&rsquo;ll install the kernel we want:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ sudo su
+</code></pre></div><p>So it&rsquo;s an Ubuntu 18.04.1, with the 4.15.0-66-generic kernel. We can find the image on the <a href=http://old-releases.ubuntu.com/releases/18.04.1/ubuntu-18.04-desktop-amd64.iso>old-releases.ubuntu.com</a> website. After booting up a VM and installing the system, we&rsquo;ll install the kernel we want:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ sudo su
 $ apt install linux-image-4.15.0-66-genericlinux-headers-4.15.0-66-generic
 $ reboot
-</code></pre></div><p>And create the profile:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ sudo su
+</code></pre></div><p>And create the profile:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ sudo su
 $ apt install volatility-tools build-essential linux-headers-4.15.0-66-generic
 $ cd /usr/src/volatility-tools/linux
 $ make
 $ zip ubuntu_custom.zip module.dwarf /boot/System.map-4.15.0-66-generic
-</code></pre></div><p>After getting the profile from the VM, we have to load it:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ cp ubuntu_custom.zip /usr/lib/python2.7/site-packages/volatility/plugins/overlays/linux/ubuntucustom.zip
+</code></pre></div><p>After getting the profile from the VM, we have to load it:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ cp ubuntu_custom.zip /usr/lib/python2.7/site-packages/volatility/plugins/overlays/linux/ubuntucustom.zip
 $ volatility --info | grep ubuntu
 Volatility Foundation Volatility Framework 2.6.1
 Linuxubuntucustomx64  - A Profile <span style=color:#66d9ef>for</span> Linux ubuntucustom x64
-</code></pre></div><p>We can finally get to work, after trying to list the processes, let&rsquo;s try to list the mounts:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ volatility --profile<span style=color:#f92672>=</span>Linuxubuntucustomx64 -f dump.raw linux_mount          
+</code></pre></div><p>We can finally get to work, after trying to list the processes, let&rsquo;s try to list the mounts:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ volatility --profile<span style=color:#f92672>=</span>Linuxubuntucustomx64 -f dump.raw linux_mount          
 Volatility Foundation Volatility Framework 2.6.1
 cgroup                    /sys/fs/cgroup/rdma                 cgroup       ro,relatime,nosuid,nodev,noexec                                   
 /dev/sda1                 /                                   ext4         ro,relatime                                                       
@@ -76,7 +148,8 @@ tmpfs                     /dev/shm                            tmpfs        rw,no
 tmpfs                     /run/lock                           tmpfs        rw,relatime,nosuid,nodev,noexec                                   
 cgroup                    /sys/fs/cgroup/cpu,cpuacct          cgroup       rw,relatime,nosuid,nodev,noexec                                   
 tmpfs                     /dev                                tmpfs        ro,nosuid,noexec
-</code></pre></div><p>The <code>/mnt/confidential</code> folder is particularly interesting, let&rsquo;s try to find files in it:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ volatility --profile<span style=color:#f92672>=</span>Linuxubuntucustomx64 -f dump.raw linux_enumerate_files | grep <span style=color:#e6db74>&#39;/mnt/confidential&#39;</span>
+</code></pre></div><p>The <code>/mnt/confidential</code> folder is particularly interesting, let&rsquo;s try to find files in it:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ volatility --profile<span style=color:#f92672>=</span>Linuxubuntucustomx64 -f dump.raw linux_enumerate_files | grep <span style=color:#e6db74>&#39;/mnt/confidential&#39;</span>
 Volatility Foundation Volatility Framework 2.6.1
 0xffff95a89ac58528                    <span style=color:#ae81ff>256033</span> /mnt/confidential
 0xffff95a89ac74000                     <span style=color:#ae81ff>22086</span> /mnt/confidential
@@ -87,8 +160,42 @@ Volatility Foundation Volatility Framework 2.6.1
 
 $ cat flag.txt 
 C0D3N4M34P011011
-</code></pre></div><p>The flag is <code>C0D3N4M34P011011</code>.</p><hr><p><a href=/tags/dghack>View all of the DG&rsquo;hAck articles</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-dghack-stickitup/><span class=button__icon>←</span>
-<span class=button__text>Writeup DG'hAck: StickItUp</span></a></span>
-<span class="button next"><a href=https://nicolasb.fr/blog/writeup-dghack-sad-crypto/><span class=button__text>Writeup DG'hAck: Sad Crypto</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+</code></pre></div><p>The flag is <code>C0D3N4M34P011011</code>.</p>
+<hr>
+<p><a href=/tags/dghack>View all of the DG&rsquo;hAck articles</a>.</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://nicolasb.fr/blog/writeup-dghack-stickitup/>
+<span class=button__icon>←</span>
+<span class=button__text>Writeup DG'hAck: StickItUp</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://nicolasb.fr/blog/writeup-dghack-sad-crypto/>
+<span class=button__text>Writeup DG'hAck: Sad Crypto</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://nicolasb.fr/assets/main.js></script>
+<script src=https://nicolasb.fr/assets/prism.js></script>
+</div>
+</body>
+</html>

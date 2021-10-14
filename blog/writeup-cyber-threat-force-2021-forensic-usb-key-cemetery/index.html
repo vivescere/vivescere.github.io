@@ -1,12 +1,79 @@
-<!doctype html><html lang=en><head><title>Writeup Cyber Threat Force : Usb key cemetery :: Nicolas Bourras</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Note: I did not solve this challenge during the CTF, but my teammate Volker did.
+<!doctype html><html lang=en>
+<head>
+<title>Writeup Cyber Threat Force : Usb key cemetery :: Nicolas Bourras</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Note: I did not solve this challenge during the CTF, but my teammate Volker did.
 For this challenge, we were given a zip containing an encoded syslog (sysloc.enc), and an auth.json file:
-{ &amp;#34;manufact&amp;#34;: [ &amp;#34;Apple Inc.&amp;#34;, &amp;#34;Azurewave&amp;#34;, &amp;#34;Generic&amp;#34;, &amp;#34;Linux 5.10.0-kali8-amd64 xhci-hcd&amp;#34;, &amp;#34;usbrip-4381&amp;#34; ], &amp;#34;pid&amp;#34;: [ &amp;#34;0002&amp;#34;, &amp;#34;0003&amp;#34;, &amp;#34;0129&amp;#34;, &amp;#34;0608&amp;#34;, &amp;#34;12a8&amp;#34;, &amp;#34;3491&amp;#34;, &amp;#34;56dd&amp;#34;, &amp;#34;usbrip-4381&amp;#34; ], &amp;#34;prod&amp;#34;: [ &amp;#34;USB2.0 HD UVC WebCam&amp;#34;, &amp;#34;USB2.0 Hub&amp;#34;, &amp;#34;USB2.0-CRW&amp;#34;, &amp;#34;iPhone&amp;#34;, &amp;#34;usbrip-4381&amp;#34;, &amp;#34;xHCI Host Controller&amp;#34; ], &amp;#34;serial&amp;#34;: [ &amp;#34;0000:03:00."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/><link rel=stylesheet href=https://nicolasb.fr/assets/style.css><link rel=stylesheet href=https://nicolasb.fr/assets/pink.css><link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png><meta name=twitter:card content="summary"><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="og:title" content="Writeup Cyber Threat Force : Usb key cemetery"><meta property="og:description" content="Note: I did not solve this challenge during the CTF, but my teammate Volker did.
+{ &amp;#34;manufact&amp;#34;: [ &amp;#34;Apple Inc.&amp;#34;, &amp;#34;Azurewave&amp;#34;, &amp;#34;Generic&amp;#34;, &amp;#34;Linux 5.10.0-kali8-amd64 xhci-hcd&amp;#34;, &amp;#34;usbrip-4381&amp;#34; ], &amp;#34;pid&amp;#34;: [ &amp;#34;0002&amp;#34;, &amp;#34;0003&amp;#34;, &amp;#34;0129&amp;#34;, &amp;#34;0608&amp;#34;, &amp;#34;12a8&amp;#34;, &amp;#34;3491&amp;#34;, &amp;#34;56dd&amp;#34;, &amp;#34;usbrip-4381&amp;#34; ], &amp;#34;prod&amp;#34;: [ &amp;#34;USB2.0 HD UVC WebCam&amp;#34;, &amp;#34;USB2.0 Hub&amp;#34;, &amp;#34;USB2.0-CRW&amp;#34;, &amp;#34;iPhone&amp;#34;, &amp;#34;usbrip-4381&amp;#34;, &amp;#34;xHCI Host Controller&amp;#34; ], &amp;#34;serial&amp;#34;: [ &amp;#34;0000:03:00.">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/>
+<link rel=stylesheet href=https://nicolasb.fr/assets/style.css>
+<link rel=stylesheet href=https://nicolasb.fr/assets/pink.css>
+<link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Writeup Cyber Threat Force : Usb key cemetery">
+<meta property="og:description" content="Note: I did not solve this challenge during the CTF, but my teammate Volker did.
 For this challenge, we were given a zip containing an encoded syslog (sysloc.enc), and an auth.json file:
-{ &amp;#34;manufact&amp;#34;: [ &amp;#34;Apple Inc.&amp;#34;, &amp;#34;Azurewave&amp;#34;, &amp;#34;Generic&amp;#34;, &amp;#34;Linux 5.10.0-kali8-amd64 xhci-hcd&amp;#34;, &amp;#34;usbrip-4381&amp;#34; ], &amp;#34;pid&amp;#34;: [ &amp;#34;0002&amp;#34;, &amp;#34;0003&amp;#34;, &amp;#34;0129&amp;#34;, &amp;#34;0608&amp;#34;, &amp;#34;12a8&amp;#34;, &amp;#34;3491&amp;#34;, &amp;#34;56dd&amp;#34;, &amp;#34;usbrip-4381&amp;#34; ], &amp;#34;prod&amp;#34;: [ &amp;#34;USB2.0 HD UVC WebCam&amp;#34;, &amp;#34;USB2.0 Hub&amp;#34;, &amp;#34;USB2.0-CRW&amp;#34;, &amp;#34;iPhone&amp;#34;, &amp;#34;usbrip-4381&amp;#34;, &amp;#34;xHCI Host Controller&amp;#34; ], &amp;#34;serial&amp;#34;: [ &amp;#34;0000:03:00."><meta property="og:url" content="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/"><meta property="og:site_name" content="Nicolas Bourras"><meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:published_time" content="2021-07-11 09:09:09 +0100 +0100"></head><body class=pink><div class="container center"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>Nicolas Bourras</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/>Writeup Cyber Threat Force : Usb key cemetery</a></h1><div class=post-meta><span class=post-date>2021-07-11</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+{ &amp;#34;manufact&amp;#34;: [ &amp;#34;Apple Inc.&amp;#34;, &amp;#34;Azurewave&amp;#34;, &amp;#34;Generic&amp;#34;, &amp;#34;Linux 5.10.0-kali8-amd64 xhci-hcd&amp;#34;, &amp;#34;usbrip-4381&amp;#34; ], &amp;#34;pid&amp;#34;: [ &amp;#34;0002&amp;#34;, &amp;#34;0003&amp;#34;, &amp;#34;0129&amp;#34;, &amp;#34;0608&amp;#34;, &amp;#34;12a8&amp;#34;, &amp;#34;3491&amp;#34;, &amp;#34;56dd&amp;#34;, &amp;#34;usbrip-4381&amp;#34; ], &amp;#34;prod&amp;#34;: [ &amp;#34;USB2.0 HD UVC WebCam&amp;#34;, &amp;#34;USB2.0 Hub&amp;#34;, &amp;#34;USB2.0-CRW&amp;#34;, &amp;#34;iPhone&amp;#34;, &amp;#34;usbrip-4381&amp;#34;, &amp;#34;xHCI Host Controller&amp;#34; ], &amp;#34;serial&amp;#34;: [ &amp;#34;0000:03:00.">
+<meta property="og:url" content="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/">
+<meta property="og:site_name" content="Nicolas Bourras">
+<meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2021-07-11 09:09:09 +0100 +0100">
+</head>
+<body class=pink>
+<div class="container center">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Nicolas Bourras
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/>Writeup Cyber Threat Force : Usb key cemetery</a></h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-11
+</span>
+</div>
+<span class=post-tags>
+#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;</span><div class=post-content><div><p>Note: I did not solve this challenge during the CTF, but my teammate <a href=https://twitter.com/volker_carstein>Volker</a> did.</p><p>For this challenge, we were given a zip containing an encoded syslog (<code>sysloc.enc</code>), and an <code>auth.json</code> file:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;
+</span>
+<div class=post-content><div>
+<p>Note: I did not solve this challenge during the CTF, but my teammate <a href=https://twitter.com/volker_carstein>Volker</a> did.</p>
+<p>For this challenge, we were given a zip containing an encoded syslog (<code>sysloc.enc</code>), and an <code>auth.json</code> file:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
     <span style=color:#f92672>&#34;manufact&#34;</span>: [
         <span style=color:#e6db74>&#34;Apple Inc.&#34;</span>,
         <span style=color:#e6db74>&#34;Azurewave&#34;</span>,
@@ -49,20 +116,57 @@ For this challenge, we were given a zip containing an encoded syslog (sysloc.enc
         <span style=color:#e6db74>&#34;usbrip-4381&#34;</span>
     ]
 }
-</code></pre></div><p>The goal of the challenge is to find the serial number of the rubber ducky which was connected to the machine for which we have the syslog.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ file syslog.enc
+</code></pre></div><p>The goal of the challenge is to find the serial number of the rubber ducky which was connected to the machine for which we have the syslog.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ file syslog.enc
 syslog.enc: data
-</code></pre></div><p>The file doesn&rsquo;t look like any well known format, so we can assume (quite safely) that the encryption is a simple XOR. We&rsquo;ll use <a href=https://blog.didierstevens.com/2016/01/01/xor-known-plaintext-attack/>the known plaintext XOR tool from Didier Stevens</a>.</p><p>A good candidate for the plaintext is <code>Linux 5.10.0-kali8-amd64 xhci-hcd</code>, which will surely appear.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ python2 xor-kpa.py -d &lt;<span style=color:#f92672>(</span>echo <span style=color:#e6db74>&#39;Linux 5.10.0-kali8-amd64 xhci-hcd&#39;</span><span style=color:#f92672>)</span> syslog.enc &gt; syslog
+</code></pre></div><p>The file doesn&rsquo;t look like any well known format, so we can assume (quite safely) that the encryption is a simple XOR. We&rsquo;ll use <a href=https://blog.didierstevens.com/2016/01/01/xor-known-plaintext-attack/>the known plaintext XOR tool from Didier Stevens</a>.</p>
+<p>A good candidate for the plaintext is <code>Linux 5.10.0-kali8-amd64 xhci-hcd</code>, which will surely appear.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ python2 xor-kpa.py -d &lt;<span style=color:#f92672>(</span>echo <span style=color:#e6db74>&#39;Linux 5.10.0-kali8-amd64 xhci-hcd&#39;</span><span style=color:#f92672>)</span> syslog.enc &gt; syslog
 $ head -n <span style=color:#ae81ff>5</span> syslog
 Jun  <span style=color:#ae81ff>7</span> 22:53:25 kali usbmuxd<span style=color:#f92672>[</span>117991<span style=color:#f92672>]</span>: <span style=color:#f92672>[</span>22:53:25.287<span style=color:#f92672>][</span>3<span style=color:#f92672>]</span> Connecting to new device on location 0x10004 as ID <span style=color:#ae81ff>1</span>
 Jun  <span style=color:#ae81ff>7</span> 22:53:25 kali usbmuxd<span style=color:#f92672>[</span>117991<span style=color:#f92672>]</span>: <span style=color:#f92672>[</span>22:53:25.287<span style=color:#f92672>][</span>3<span style=color:#f92672>]</span> Connected to v2.0 device <span style=color:#ae81ff>1</span> on location 0x10004 with serial number 4b8d611f609abfc5471ae40d08d0c8b785eab9d4
 Jun  <span style=color:#ae81ff>7</span> 22:53:27 kali ModemManager<span style=color:#f92672>[</span>830<span style=color:#f92672>]</span>: &lt;info&gt;  <span style=color:#f92672>[</span>base-manager<span style=color:#f92672>]</span> couldn<span style=color:#e6db74>&#39;t check support for device &#39;</span>/sys/devices/pci0000:00/0000:00:08.1/0000:03:00.3/usb1/1-2<span style=color:#960050;background-color:#1e0010>&#39;</span>: not supported by any plugin
 Jun  <span style=color:#ae81ff>8</span> 00:16:16 kali lynis<span style=color:#f92672>[</span>144261<span style=color:#f92672>]</span>: - usbmuxd.service: <span style=color:#f92672>[</span> UNSAFE <span style=color:#f92672>]</span>
 Jun  <span style=color:#ae81ff>8</span> 00:16:22 kali lynis<span style=color:#f92672>[</span>118776<span style=color:#f92672>]</span>: - Checking usb-storage driver <span style=color:#f92672>(</span>modprobe config<span style=color:#f92672>)</span> <span style=color:#f92672>[</span> NON DESACTIVÉ <span style=color:#f92672>]</span>
-</code></pre></div><p>That seems like a valid syslog! After looking for a short while, we find:</p><pre><code>Apr 12 20:21:25 kali kernel: [    1.830063] usb 1-2: Product: Fake_KeyBoard
+</code></pre></div><p>That seems like a valid syslog! After looking for a short while, we find:</p>
+<pre tabindex=0><code>Apr 12 20:21:25 kali kernel: [    1.830063] usb 1-2: Product: Fake_KeyBoard
 Apr 12 20:21:25 kali kernel: [    1.830064] usb 1-2: Manufacturer: APT43.
 Apr 12 20:21:25 kali kernel: [    1.830065] usb 1-2: SerialNumber: 854be9ee57ef47ce74e73904998d61c8846e9239
-</code></pre><p>The flag is <code>CYBERTF{854be9ee57ef47ce74e73904998d61c8846e9239}</code>.</p><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/forensic/usb-key-cemetery>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-like-a-duck-in-water/><span class=button__icon>←</span>
-<span class=button__text>Writeup Cyber Threat Force : Like a duck in water</span></a></span>
-<span class="button next"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-trojan-tools/><span class=button__text>Writeup Cyber Threat Force : Trojan tools</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+</code></pre><p>The flag is <code>CYBERTF{854be9ee57ef47ce74e73904998d61c8846e9239}</code>.</p>
+<p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/forensic/usb-key-cemetery>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p>
+</div></div>
+<div class=pagination>
+<div class=pagination__title>
+<span class=pagination__title-h>Read other posts</span>
+<hr>
+</div>
+<div class=pagination__buttons>
+<span class="button previous">
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-like-a-duck-in-water/>
+<span class=button__icon>←</span>
+<span class=button__text>Writeup Cyber Threat Force : Like a duck in water</span>
+</a>
+</span>
+<span class="button next">
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-trojan-tools/>
+<span class=button__text>Writeup Cyber Threat Force : Trojan tools</span>
+<span class=button__icon>→</span>
+</a>
+</span>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://nicolasb.fr/assets/main.js></script>
+<script src=https://nicolasb.fr/assets/prism.js></script>
+</div>
+</body>
+</html>

