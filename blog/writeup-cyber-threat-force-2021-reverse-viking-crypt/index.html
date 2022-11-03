@@ -1,156 +1,47 @@
-<!doctype html><html lang=en>
-<head>
-<title>Writeup Cyber Threat Force : Viking crypt :: Nicolas Bourras</title>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="For this challenge, we were given a ransomware (VIKING_CRYPT.exe and VIKING_DECRYPT.exe) along with a LOCKER.HTML file and IMPORTANT_NOTE.txt.vkg.
+<!doctype html><html lang=en><head><title>Writeup Cyber Threat Force : Viking crypt :: Nicolas Bourras</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="For this challenge, we were given a ransomware (VIKING_CRYPT.exe and VIKING_DECRYPT.exe) along with a LOCKER.HTML file and IMPORTANT_NOTE.txt.vkg.
 Let&amp;rsquo;s take a look at that encrypted note:
 $ file Perso/IMPORTANT_NOTE.txt.vkg Perso/IMPORTANT_NOTE.txt.vkg: ASCII text, with no line terminators $ cat Perso/IMPORTANT_NOTE.txt.vkg 8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849 It doesn&amp;rsquo;t really look like any encryption I know.
 We can try to run VIKING_DECRYPT.exe:
-As expected, we&amp;rsquo;re asked for a decryption key. Let&amp;rsquo;s encrypt a few files in a VM, and compare the plaintext and the .">
-<meta name=keywords content>
-<meta name=robots content="noodp">
-<link rel=canonical href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-viking-crypt/>
-<link rel=stylesheet href=https://nicolasb.fr/assets/style.css>
-<link rel=stylesheet href=https://nicolasb.fr/assets/pink.css>
-<link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png>
-<link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png>
-<meta name=twitter:card content="summary">
-<meta name=twitter:creator content>
-<meta property="og:locale" content="en">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Writeup Cyber Threat Force : Viking crypt">
-<meta property="og:description" content="For this challenge, we were given a ransomware (VIKING_CRYPT.exe and VIKING_DECRYPT.exe) along with a LOCKER.HTML file and IMPORTANT_NOTE.txt.vkg.
+As expected, we&amp;rsquo;re asked for a decryption key. Let&amp;rsquo;s encrypt a few files in a VM, and compare the plaintext and the ."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-viking-crypt/><link rel=stylesheet href=https://nicolasb.fr/assets/style.css><link rel=stylesheet href=https://nicolasb.fr/assets/pink.css><link rel=apple-touch-icon href=https://nicolasb.fr/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=https://nicolasb.fr/img/favicon/pink.png><meta name=twitter:card content="summary"><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="og:title" content="Writeup Cyber Threat Force : Viking crypt"><meta property="og:description" content="For this challenge, we were given a ransomware (VIKING_CRYPT.exe and VIKING_DECRYPT.exe) along with a LOCKER.HTML file and IMPORTANT_NOTE.txt.vkg.
 Let&amp;rsquo;s take a look at that encrypted note:
 $ file Perso/IMPORTANT_NOTE.txt.vkg Perso/IMPORTANT_NOTE.txt.vkg: ASCII text, with no line terminators $ cat Perso/IMPORTANT_NOTE.txt.vkg 8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849 It doesn&amp;rsquo;t really look like any encryption I know.
 We can try to run VIKING_DECRYPT.exe:
-As expected, we&amp;rsquo;re asked for a decryption key. Let&amp;rsquo;s encrypt a few files in a VM, and compare the plaintext and the .">
-<meta property="og:url" content="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-viking-crypt/">
-<meta property="og:site_name" content="Nicolas Bourras">
-<meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png">
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
-<meta property="article:published_time" content="2021-07-11 05:07:09 +0100 +0100">
-</head>
-<body class=pink>
-<div class="container center">
-<header class=header>
-<div class=header__inner>
-<div class=header__logo>
-<a href=/>
-<div class=logo>
-Nicolas Bourras
-</div>
-</a>
-</div>
-<div class=menu-trigger>menu</div>
-</div>
-<nav class=menu>
-<ul class="menu__inner menu__inner--desktop">
-<li><a href=/>About</a></li>
-<li><a href=/blog>Blog</a></li>
-<li><a href=/recipes>Recipes</a></li>
-</ul>
-<ul class="menu__inner menu__inner--mobile">
-<li><a href=/>About</a></li>
-<li><a href=/blog>Blog</a></li>
-<li><a href=/recipes>Recipes</a></li>
-</ul>
-</nav>
-</header>
-<div class=content>
-<div class=post>
-<h1 class=post-title>
-<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-viking-crypt/>Writeup Cyber Threat Force : Viking crypt</a></h1>
-<div class=post-meta>
-<span class=post-date>
-2021-07-11
-</span>
-</div>
-<span class=post-tags>
-#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+As expected, we&amp;rsquo;re asked for a decryption key. Let&amp;rsquo;s encrypt a few files in a VM, and compare the plaintext and the ."><meta property="og:url" content="https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-viking-crypt/"><meta property="og:site_name" content="Nicolas Bourras"><meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:published_time" content="2021-07-11 05:07:09 +0100 +0100"></head><body class=pink><div class="container center"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>Nicolas Bourras</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/>About</a></li><li><a href=/blog>Blog</a></li><li><a href=/recipes>Recipes</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/>About</a></li><li><a href=/blog>Blog</a></li><li><a href=/recipes>Recipes</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-viking-crypt/>Writeup Cyber Threat Force : Viking crypt</a></h1><div class=post-meta><span class=post-date>2021-07-11</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/reverse/>reverse</a>&nbsp;
-</span>
-<div class=post-content><div>
-<p>For this challenge, we were given a ransomware (<code>VIKING_CRYPT.exe</code> and <code>VIKING_DECRYPT.exe</code>) along with a <code>LOCKER.HTML</code> file and <code>IMPORTANT_NOTE.txt.vkg</code>.</p>
-<p><img src=/assets/cyber-threat-force/viking-locker.png alt="Viking locker ransom message"></p>
-<p>Let&rsquo;s take a look at that encrypted note:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ file Perso/IMPORTANT_NOTE.txt.vkg
-Perso/IMPORTANT_NOTE.txt.vkg: ASCII text, with no line terminators
-$ cat Perso/IMPORTANT_NOTE.txt.vkg
-8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849
-</code></pre></div><p>It doesn&rsquo;t really look like any encryption I know.</p>
-<p>We can try to run <code>VIKING_DECRYPT.exe</code>:</p>
-<img src=/assets/cyber-threat-force/viking-locker-decrypt.png alt="Viking locker decrypt executable" class=center>
-<p>As expected, we&rsquo;re asked for a decryption key. Let&rsquo;s encrypt a few files in a VM, and compare the plaintext and the <code>.vkg</code> files.</p>
-<p>Note: the challenge description tells us that, for safety, the malware will only encrypt files in <code>C:\Users\nMnHkfcWUjE\Desktop\Perso</code>.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ echo <span style=color:#e6db74>&#39;hello world&#39;</span> &gt; normal.txt
-$ echo <span style=color:#e6db74>&#39;h3110 w0r1d&#39;</span> &gt; leet.txt
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ps data-lang=ps><span style=color:#a6e22e>PS</span> <span style=color:#a6e22e>C:\Users\nMnHkfcWUjE\Desktop</span>&gt; <span style=color:#a6e22e>.\VIKING_CRYPT.exe</span>
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ cat normal.txt.vkg
-a1a74e2267006c2df04f5e
-
-$ cat leet.txt.vkg
-a1f1137f38006c72f0125e
-</code></pre></div><p>Now this is promising. The matching <code>h</code> has the same value. Let&rsquo;s try a simple xor between the plaintext and the encrypted value, to see if we get a matching key:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&gt;&gt;&gt;</span> <span style=color:#f92672>import</span> codecs
-<span style=color:#f92672>&gt;&gt;&gt;</span> print([a <span style=color:#f92672>^</span> b <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;hello world&#39;</span>, codecs<span style=color:#f92672>.</span>decode(<span style=color:#e6db74>&#39;a1a74e2267006c2df04f5e&#39;</span>, <span style=color:#e6db74>&#39;hex&#39;</span>))])
-[<span style=color:#ae81ff>201</span>, <span style=color:#ae81ff>194</span>, <span style=color:#ae81ff>34</span>, <span style=color:#ae81ff>78</span>, <span style=color:#ae81ff>8</span>, <span style=color:#ae81ff>32</span>, <span style=color:#ae81ff>27</span>, <span style=color:#ae81ff>66</span>, <span style=color:#ae81ff>130</span>, <span style=color:#ae81ff>35</span>, <span style=color:#ae81ff>58</span>]
-<span style=color:#f92672>&gt;&gt;&gt;</span> print([a <span style=color:#f92672>^</span> b <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;h3110 w0r1d&#39;</span>, codecs<span style=color:#f92672>.</span>decode(<span style=color:#e6db74>&#39;a1f1137f38006c72f0125e&#39;</span>, <span style=color:#e6db74>&#39;hex&#39;</span>))])
-[<span style=color:#ae81ff>201</span>, <span style=color:#ae81ff>194</span>, <span style=color:#ae81ff>34</span>, <span style=color:#ae81ff>78</span>, <span style=color:#ae81ff>8</span>, <span style=color:#ae81ff>32</span>, <span style=color:#ae81ff>27</span>, <span style=color:#ae81ff>66</span>, <span style=color:#ae81ff>130</span>, <span style=color:#ae81ff>35</span>, <span style=color:#ae81ff>58</span>]
-</code></pre></div><p>The key is exactly the same! Let&rsquo;s try decrypting our important note:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&gt;&gt;&gt;</span> key <span style=color:#f92672>=</span> [a <span style=color:#f92672>^</span> b <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;h3110 w0r1d&#39;</span>, codecs<span style=color:#f92672>.</span>decode(<span style=color:#e6db74>&#39;a1f1137f38006c72f0125e&#39;</span>, <span style=color:#e6db74>&#39;hex&#39;</span>))]
-<span style=color:#f92672>&gt;&gt;&gt;</span> print(bytes([a <span style=color:#f92672>^</span> b <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(key, codecs<span style=color:#f92672>.</span>decode(<span style=color:#e6db74>&#39;8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849&#39;</span>, <span style=color:#e6db74>&#39;hex&#39;</span>))]))
-<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;CYBERTF{I_D&#39;</span>
-</code></pre></div><p>Well that&rsquo;s only the start of the flag. Let&rsquo;s encrypt something longer, to get more bytes of the key:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ echo <span style=color:#e6db74>&#39;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non enim quam. Morbi luctus tortor dolor, sed pellentesque urna vestibulum eget. In egestas diam tempus risus molestie, id consectetur ante euismod. Integer eget erat sapien.&#39;</span> &gt; long.txt
-$ <span style=color:#75715e># Run VIKING_CRYPT.exe</span>
-$ cat long.txt.vkg
-85ad502b65007232f15657689af325bbccc6cb4f9ca7129f24074a1bb65bc8c30162703e3f36149f38c754567af424eb60682eda379edab1b7fe5b44c4df29c471f802c8d8716192291c829b89c3c49695ec48abf2f3721e5b229a20afb2b7c751779c51ff63f378a7a53c27113b306c26fc2b87562768cc82b70cfdbd3fc93730f890234ac890c6e6b9e052f65341eaaf3f7e56d9476c170f17dd5e3830867656c0fd885a68a55ae58bcb182a09ee0a840a03511fb3222d25637b1d344340168dfebdd97a8bc327a36e6d9703f9e6427e9dfd07df86f0140a067a3a843aeef6f4782df2f1e56e380957c2
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&gt;&gt;&gt;</span> cleartext <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non enim quam. Morbi luctus tortor dolor, sed pellentesque urna vestibulum eget. In egestas diam tempus risus molestie, id consectetur ante euismod. Integer eget erat sapien.&#39;</span>
-<span style=color:#f92672>&gt;&gt;&gt;</span> cipher <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;85ad502b65007232f15657689af325bbccc6cb4f9ca7129f24074a1bb65bc8c30162703e3f36149f38c754567af424eb60682eda379edab1b7fe5b44c4df29c471f802c8d8716192291c829b89c3c49695ec48abf2f3721e5b229a20afb2b7c751779c51ff63f378a7a53c27113b306c26fc2b87562768cc82b70cfdbd3fc93730f890234ac890c6e6b9e052f65341eaaf3f7e56d9476c170f17dd5e3830867656c0fd885a68a55ae58bcb182a09ee0a840a03511fb3222d25637b1d344340168dfebdd97a8bc327a36e6d9703f9e6427e9dfd07df86f0140a067a3a843aeef6f4782df2f1e56e380957c2&#39;</span>
-<span style=color:#f92672>&gt;&gt;&gt;</span> key <span style=color:#f92672>=</span> [a <span style=color:#f92672>^</span> b <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(cleartext, codecs<span style=color:#f92672>.</span>decode(cipher, <span style=color:#e6db74>&#39;hex&#39;</span>))]
-<span style=color:#f92672>&gt;&gt;&gt;</span> print(bytes([a <span style=color:#f92672>^</span> b <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(key, codecs<span style=color:#f92672>.</span>decode(<span style=color:#e6db74>&#39;8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849&#39;</span>, <span style=color:#e6db74>&#39;hex&#39;</span>))]))
-<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;CYBERTF</span><span style=color:#e6db74>{I_D0nt_P4y_Th3_R4ns0m}</span><span style=color:#e6db74>&#39;</span>
-</code></pre></div><p>Here we go, the flag is <code>CYBERTF{I_D0nt_P4y_Th3_R4ns0m}</code>.</p>
-<p>By the way, the key doesn&rsquo;t seem to repeat (at least for the first 235 values), so it&rsquo;s probably made from a RNG.</p>
-<p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/reverse/viking-crypt>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p>
-</div></div>
-<div class=pagination>
-<div class=pagination__title>
-<span class=pagination__title-h>Read other posts</span>
-<hr>
-</div>
-<div class=pagination__buttons>
-<span class="button previous">
-<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-trojan-tools/>
-<span class=button__icon>←</span>
-<span class=button__text>Writeup Cyber Threat Force : Trojan tools</span>
-</a>
-</span>
-<span class="button next">
-<a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-unefficient-encryption/>
-<span class=button__text>Writeup Cyber Threat Force : (Un)Efficient encryption</span>
-<span class=button__icon>→</span>
-</a>
-</span>
-</div>
-</div>
-</div>
-</div>
-<footer class=footer>
-<div class=footer__inner>
-<div class=copyright>
-<span>© 2021 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
-</div>
-</div>
-</footer>
-<script src=https://nicolasb.fr/assets/main.js></script>
-<script src=https://nicolasb.fr/assets/prism.js></script>
-</div>
-</body>
-</html>
+#<a href=https://nicolasb.fr/tags/reverse/>reverse</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we were given a ransomware (<code>VIKING_CRYPT.exe</code> and <code>VIKING_DECRYPT.exe</code>) along with a <code>LOCKER.HTML</code> file and <code>IMPORTANT_NOTE.txt.vkg</code>.</p><p><img src=/assets/cyber-threat-force/viking-locker.png alt="Viking locker ransom message"></p><p>Let&rsquo;s take a look at that encrypted note:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ file Perso/IMPORTANT_NOTE.txt.vkg
+</span></span><span style=display:flex><span>Perso/IMPORTANT_NOTE.txt.vkg: ASCII text, with no line terminators
+</span></span><span style=display:flex><span>$ cat Perso/IMPORTANT_NOTE.txt.vkg
+</span></span><span style=display:flex><span>8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849
+</span></span></code></pre></div><p>It doesn&rsquo;t really look like any encryption I know.</p><p>We can try to run <code>VIKING_DECRYPT.exe</code>:</p><img src=/assets/cyber-threat-force/viking-locker-decrypt.png alt="Viking locker decrypt executable" class=center><p>As expected, we&rsquo;re asked for a decryption key. Let&rsquo;s encrypt a few files in a VM, and compare the plaintext and the <code>.vkg</code> files.</p><p>Note: the challenge description tells us that, for safety, the malware will only encrypt files in <code>C:\Users\nMnHkfcWUjE\Desktop\Perso</code>.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ echo <span style=color:#e6db74>&#39;hello world&#39;</span> &gt; normal.txt
+</span></span><span style=display:flex><span>$ echo <span style=color:#e6db74>&#39;h3110 w0r1d&#39;</span> &gt; leet.txt
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ps data-lang=ps><span style=display:flex><span><span style=color:#a6e22e>PS</span> <span style=color:#a6e22e>C:\Users\nMnHkfcWUjE\Desktop</span>&gt; <span style=color:#a6e22e>.\VIKING_CRYPT.exe</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ cat normal.txt.vkg
+</span></span><span style=display:flex><span>a1a74e2267006c2df04f5e
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ cat leet.txt.vkg
+</span></span><span style=display:flex><span>a1f1137f38006c72f0125e
+</span></span></code></pre></div><p>Now this is promising. The matching <code>h</code> has the same value. Let&rsquo;s try a simple xor between the plaintext and the encrypted value, to see if we get a matching key:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>&gt;&gt;&gt;</span> <span style=color:#f92672>import</span> codecs
+</span></span><span style=display:flex><span><span style=color:#f92672>&gt;&gt;&gt;</span> print([a <span style=color:#f92672>^</span> b <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;hello world&#39;</span>, codecs<span style=color:#f92672>.</span>decode(<span style=color:#e6db74>&#39;a1a74e2267006c2df04f5e&#39;</span>, <span style=color:#e6db74>&#39;hex&#39;</span>))])
+</span></span><span style=display:flex><span>[<span style=color:#ae81ff>201</span>, <span style=color:#ae81ff>194</span>, <span style=color:#ae81ff>34</span>, <span style=color:#ae81ff>78</span>, <span style=color:#ae81ff>8</span>, <span style=color:#ae81ff>32</span>, <span style=color:#ae81ff>27</span>, <span style=color:#ae81ff>66</span>, <span style=color:#ae81ff>130</span>, <span style=color:#ae81ff>35</span>, <span style=color:#ae81ff>58</span>]
+</span></span><span style=display:flex><span><span style=color:#f92672>&gt;&gt;&gt;</span> print([a <span style=color:#f92672>^</span> b <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;h3110 w0r1d&#39;</span>, codecs<span style=color:#f92672>.</span>decode(<span style=color:#e6db74>&#39;a1f1137f38006c72f0125e&#39;</span>, <span style=color:#e6db74>&#39;hex&#39;</span>))])
+</span></span><span style=display:flex><span>[<span style=color:#ae81ff>201</span>, <span style=color:#ae81ff>194</span>, <span style=color:#ae81ff>34</span>, <span style=color:#ae81ff>78</span>, <span style=color:#ae81ff>8</span>, <span style=color:#ae81ff>32</span>, <span style=color:#ae81ff>27</span>, <span style=color:#ae81ff>66</span>, <span style=color:#ae81ff>130</span>, <span style=color:#ae81ff>35</span>, <span style=color:#ae81ff>58</span>]
+</span></span></code></pre></div><p>The key is exactly the same! Let&rsquo;s try decrypting our important note:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>&gt;&gt;&gt;</span> key <span style=color:#f92672>=</span> [a <span style=color:#f92672>^</span> b <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;h3110 w0r1d&#39;</span>, codecs<span style=color:#f92672>.</span>decode(<span style=color:#e6db74>&#39;a1f1137f38006c72f0125e&#39;</span>, <span style=color:#e6db74>&#39;hex&#39;</span>))]
+</span></span><span style=display:flex><span><span style=color:#f92672>&gt;&gt;&gt;</span> print(bytes([a <span style=color:#f92672>^</span> b <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(key, codecs<span style=color:#f92672>.</span>decode(<span style=color:#e6db74>&#39;8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849&#39;</span>, <span style=color:#e6db74>&#39;hex&#39;</span>))]))
+</span></span><span style=display:flex><span><span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;CYBERTF{I_D&#39;</span>
+</span></span></code></pre></div><p>Well that&rsquo;s only the start of the flag. Let&rsquo;s encrypt something longer, to get more bytes of the key:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ echo <span style=color:#e6db74>&#39;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non enim quam. Morbi luctus tortor dolor, sed pellentesque urna vestibulum eget. In egestas diam tempus risus molestie, id consectetur ante euismod. Integer eget erat sapien.&#39;</span> &gt; long.txt
+</span></span><span style=display:flex><span>$ <span style=color:#75715e># Run VIKING_CRYPT.exe</span>
+</span></span><span style=display:flex><span>$ cat long.txt.vkg
+</span></span><span style=display:flex><span>85ad502b65007232f15657689af325bbccc6cb4f9ca7129f24074a1bb65bc8c30162703e3f36149f38c754567af424eb60682eda379edab1b7fe5b44c4df29c471f802c8d8716192291c829b89c3c49695ec48abf2f3721e5b229a20afb2b7c751779c51ff63f378a7a53c27113b306c26fc2b87562768cc82b70cfdbd3fc93730f890234ac890c6e6b9e052f65341eaaf3f7e56d9476c170f17dd5e3830867656c0fd885a68a55ae58bcb182a09ee0a840a03511fb3222d25637b1d344340168dfebdd97a8bc327a36e6d9703f9e6427e9dfd07df86f0140a067a3a843aeef6f4782df2f1e56e380957c2
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>&gt;&gt;&gt;</span> cleartext <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non enim quam. Morbi luctus tortor dolor, sed pellentesque urna vestibulum eget. In egestas diam tempus risus molestie, id consectetur ante euismod. Integer eget erat sapien.&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>&gt;&gt;&gt;</span> cipher <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;85ad502b65007232f15657689af325bbccc6cb4f9ca7129f24074a1bb65bc8c30162703e3f36149f38c754567af424eb60682eda379edab1b7fe5b44c4df29c471f802c8d8716192291c829b89c3c49695ec48abf2f3721e5b229a20afb2b7c751779c51ff63f378a7a53c27113b306c26fc2b87562768cc82b70cfdbd3fc93730f890234ac890c6e6b9e052f65341eaaf3f7e56d9476c170f17dd5e3830867656c0fd885a68a55ae58bcb182a09ee0a840a03511fb3222d25637b1d344340168dfebdd97a8bc327a36e6d9703f9e6427e9dfd07df86f0140a067a3a843aeef6f4782df2f1e56e380957c2&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>&gt;&gt;&gt;</span> key <span style=color:#f92672>=</span> [a <span style=color:#f92672>^</span> b <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(cleartext, codecs<span style=color:#f92672>.</span>decode(cipher, <span style=color:#e6db74>&#39;hex&#39;</span>))]
+</span></span><span style=display:flex><span><span style=color:#f92672>&gt;&gt;&gt;</span> print(bytes([a <span style=color:#f92672>^</span> b <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(key, codecs<span style=color:#f92672>.</span>decode(<span style=color:#e6db74>&#39;8a9b600b5a745d39cb7c7e7890e816848a9fe77280b42ca0751d150bb849&#39;</span>, <span style=color:#e6db74>&#39;hex&#39;</span>))]))
+</span></span><span style=display:flex><span><span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;CYBERTF</span><span style=color:#e6db74>{I_D0nt_P4y_Th3_R4ns0m}</span><span style=color:#e6db74>&#39;</span>
+</span></span></code></pre></div><p>Here we go, the flag is <code>CYBERTF{I_D0nt_P4y_Th3_R4ns0m}</code>.</p><p>By the way, the key doesn&rsquo;t seem to repeat (at least for the first 235 values), so it&rsquo;s probably made from a RNG.</p><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/reverse/viking-crypt>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-trojan-tools/><span class=button__icon>←</span>
+<span class=button__text>Writeup Cyber Threat Force : Trojan tools</span></a></span>
+<span class="button next"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-unefficient-encryption/><span class=button__text>Writeup Cyber Threat Force : (Un)Efficient encryption</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script>
+<script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
