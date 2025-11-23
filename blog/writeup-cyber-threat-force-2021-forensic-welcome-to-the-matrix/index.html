@@ -6,22 +6,21 @@ You can view the sources on github or read other writeups."><meta property="og:u
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we were given a pcapng file. The flag is meant to be <code>CYBERTF{c2 framework used in leet speak}</code>. Running strings on the capture, we see:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ strings c2.pcapng
-</span></span><span style=display:flex><span>...
-</span></span><span style=display:flex><span>3d77
-</span></span><span style=display:flex><span>7o0~
-</span></span><span style=display:flex><span>b|<span style=color:#f92672>}</span>p
-</span></span><span style=display:flex><span>l69s
-</span></span><span style=display:flex><span>Covenant0
-</span></span><span style=display:flex><span>210520070857Z
-</span></span><span style=display:flex><span>310519070857Z0
-</span></span><span style=display:flex><span>Covenant0
-</span></span><span style=display:flex><span>~vVz<span style=color:#e6db74>&#34;/
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>loq5
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>...
-</span></span></span></code></pre></div><p><a href=https://github.com/cobbr/Covenant>Covenant</a> is a well known C2 framework. The flag is <code>CYBERTF{C0V3N4NT}</code>.</p><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/forensic/welcome-to-the-matrix>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-verify-this/><span class=button__icon>←</span>
+#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we were given a pcapng file. The flag is meant to be <code>CYBERTF{c2 framework used in leet speak}</code>. Running strings on the capture, we see:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ strings c2.pcapng
+...
+3d77
+7o0~
+b|<span style=color:#f92672>}</span>p
+l69s
+Covenant0
+210520070857Z
+310519070857Z0
+Covenant0
+~vVz<span style=color:#e6db74>&#34;/
+</span><span style=color:#e6db74>loq5
+</span><span style=color:#e6db74>...
+</span></code></pre></div><p><a href=https://github.com/cobbr/Covenant>Covenant</a> is a well known C2 framework. The flag is <code>CYBERTF{C0V3N4NT}</code>.</p><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/forensic/welcome-to-the-matrix>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-verify-this/><span class=button__icon>←</span>
 <span class=button__text>Writeup Cyber Threat Force : Verify this</span></a></span>
 <span class="button next"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-flag-checker/><span class=button__text>Writeup Cyber Threat Force : Flag checker</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script>
-<script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2025 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>

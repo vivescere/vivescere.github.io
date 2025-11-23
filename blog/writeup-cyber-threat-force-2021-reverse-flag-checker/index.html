@@ -6,440 +6,439 @@ There are a lot of functions defined, and looking at the exports we see that qui
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/reverse/>reverse</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we were given a <code>program</code> executable.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./program
-</span></span><span style=display:flex><span>./program FLAG
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>$ ./program MYFLAG
-</span></span><span style=display:flex><span>failed
-</span></span></code></pre></div><p>Seems like it valides the flag that is passed as an argument. Let&rsquo;s open the binary in Ghidra.</p><p>There are a lot of functions defined, and looking at the exports we see that quite a lot of them start with <code>caml_</code>. I didn&rsquo;t know you could compile OCaml to C, that&rsquo;s pretty neat.</p><p>We can pinpoint the function that checks the flag by searching for strings. After looking for the event&rsquo;s flag format, <code>CYBERTF{...}</code>, we find a fake flag: <code>CYBERTF{Not-S0Easy-Fake-Flag}</code>. One function references it:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>undefined8 <span style=color:#a6e22e>camlReverse__entry</span>(<span style=color:#66d9ef>void</span>) {
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>long</span> lVar1;
-</span></span><span style=display:flex><span>  byte bVar2;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>long</span> lVar3;
-</span></span><span style=display:flex><span>  
-</span></span><span style=display:flex><span>  camlReverse <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>PTR_caml_curry2_00160098;
-</span></span><span style=display:flex><span>  DAT_00160150 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>PTR_caml_curry2_001600b8;
-</span></span><span style=display:flex><span>  DAT_00160158 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>PTR_caml_curry2_001600d8;
-</span></span><span style=display:flex><span>  DAT_00160160 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>PTR_camlReverse__char2int_207_001600f8;
-</span></span><span style=display:flex><span>  DAT_00160168 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>PTR_camlReverse__string2char_211_00160110;
-</span></span><span style=display:flex><span>  DAT_00160170 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>PTR_caml_curry2_00160128;
-</span></span><span style=display:flex><span>  DAT_00160178 <span style=color:#f92672>=</span> camlReverse__1;
-</span></span><span style=display:flex><span>  DAT_00160180 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>camlReverse__9;
-</span></span><span style=display:flex><span>  DAT_00160188 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>camlReverse__19;
-</span></span><span style=display:flex><span>  DAT_00160190 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>camlReverse__82;
-</span></span><span style=display:flex><span>  lVar3 <span style=color:#f92672>=</span> caml_c_call(<span style=color:#ae81ff>1</span>);
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> ((<span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>) <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>9</span> <span style=color:#f92672>|</span> <span style=color:#ae81ff>1</span>) <span style=color:#f92672>==</span> <span style=color:#ae81ff>5</span>) {
-</span></span><span style=display:flex><span>    lVar3 <span style=color:#f92672>=</span> caml_c_call(<span style=color:#ae81ff>1</span>);
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#ae81ff>0x7ff</span> <span style=color:#f92672>&lt;</span> <span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>)) {
-</span></span><span style=display:flex><span>      camlReverse__string2char_211();
-</span></span><span style=display:flex><span>      camlReverse__char2int_207();
-</span></span><span style=display:flex><span>      lVar3 <span style=color:#f92672>=</span> camlReverse__firstCheck_268();
-</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> (lVar3 <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span>) {
-</span></span><span style=display:flex><span>        camlStdlib__print_endline_361();
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>      }
-</span></span><span style=display:flex><span>      lVar3 <span style=color:#f92672>=</span> caml_c_call(<span style=color:#ae81ff>1</span>);
-</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> (<span style=color:#ae81ff>0x7ff</span> <span style=color:#f92672>&lt;</span> <span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>)) {
-</span></span><span style=display:flex><span>        lVar1 <span style=color:#f92672>=</span> (<span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(<span style=color:#f92672>*</span>(<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>) <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>) <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>10</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>8</span> <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>        bVar2 <span style=color:#f92672>=</span> <span style=color:#f92672>*</span>(byte <span style=color:#f92672>*</span>)(<span style=color:#f92672>*</span>(<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>) <span style=color:#f92672>+</span> lVar1);
-</span></span><span style=display:flex><span>        lVar3 <span style=color:#f92672>=</span> caml_c_call(<span style=color:#ae81ff>1</span>);
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (<span style=color:#ae81ff>0x7ff</span> <span style=color:#f92672>&lt;</span> <span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>)) {
-</span></span><span style=display:flex><span>          camlStdlib__bytes__sub_115((lVar1 <span style=color:#f92672>-</span> (ulong)bVar2) <span style=color:#f92672>*</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>0x13</span>);
-</span></span><span style=display:flex><span>          camlStdlib__print_endline_361();
-</span></span><span style=display:flex><span>          camlReverse__string2char_211();
-</span></span><span style=display:flex><span>          camlReverse__char2int_207();
-</span></span><span style=display:flex><span>          camlReverse__xor_103();
-</span></span><span style=display:flex><span>          lVar3 <span style=color:#f92672>=</span> camlReverse__listequal_92();
-</span></span><span style=display:flex><span>          <span style=color:#66d9ef>if</span> (lVar3 <span style=color:#f92672>!=</span> <span style=color:#ae81ff>1</span>) {
-</span></span><span style=display:flex><span>            camlStdlib__print_endline_361();
-</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>          }
-</span></span><span style=display:flex><span>          camlStdlib__print_endline_361();
-</span></span><span style=display:flex><span>          camlStdlib__exit_459();
-</span></span><span style=display:flex><span>          <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>        }
-</span></span><span style=display:flex><span>      }
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>else</span> {
-</span></span><span style=display:flex><span>                    <span style=color:#75715e>/* no args: print(sys.argv[0] + &#34; FLAG&#34;) */</span>
-</span></span><span style=display:flex><span>    lVar3 <span style=color:#f92672>=</span> caml_c_call(<span style=color:#ae81ff>1</span>);
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#ae81ff>0x3ff</span> <span style=color:#f92672>&lt;</span> <span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>)) {
-</span></span><span style=display:flex><span>      camlStdlib__<span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>5</span>e_136();
-</span></span><span style=display:flex><span>      camlStdlib__print_endline_361();
-</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>                    <span style=color:#75715e>/* WARNING: Subroutine does not return */</span>
-</span></span><span style=display:flex><span>  caml_ml_array_bound_error();
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>We can understand the general flow from the functions names alone. First:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// Convert the passed flag from a string to (probably custom using structs) char array.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>camlReverse__string2char_211();
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Map each char to its int value.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>camlReverse__char2int_207();
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Execute some kind of check on these integer values.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>lVar3 <span style=color:#f92672>=</span> camlReverse__firstCheck_268();
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Exit here after printing an error message if the check failed.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>if</span> (lVar3 <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span>) {
-</span></span><span style=display:flex><span>	camlStdlib__print_endline_361();
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>And then:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// Subtract a value from some variable, probably shifting an array (the flag?).
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>camlStdlib__bytes__sub_115((lVar1 <span style=color:#f92672>-</span> (ulong)bVar2) <span style=color:#f92672>*</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>0x13</span>);
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Print something.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>camlStdlib__print_endline_361();
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Convert the flag to a char array.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>camlReverse__string2char_211();
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Once again, map each char to its int value.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>camlReverse__char2int_207();
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// XOR the flag.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>camlReverse__xor_103();
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Compare it to some known value.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>lVar3 <span style=color:#f92672>=</span> camlReverse__listequal_92();
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Exit here after printing an error message if the check failed.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>if</span> (lVar3 <span style=color:#f92672>!=</span> <span style=color:#ae81ff>1</span>) {
-</span></span><span style=display:flex><span>	camlStdlib__print_endline_361();
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// And finally, print a message if we got the right flag.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>camlStdlib__print_endline_361();
-</span></span><span style=display:flex><span>camlStdlib__exit_459();
-</span></span></code></pre></div><p>Once again, let&rsquo;s take the easy route. We&rsquo;ll extract the flag using GDB, by looking at the check functions.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>...
-</span></span><span style=display:flex><span>gef➤  disassemble camlReverse__firstCheck_268 
-</span></span><span style=display:flex><span>Dump of assembler code <span style=color:#66d9ef>for</span> <span style=color:#66d9ef>function</span> camlReverse__firstCheck_268:
-</span></span><span style=display:flex><span>   0x0000555555574100 &lt;+0&gt;:     sub    rsp,0x18
-</span></span><span style=display:flex><span>   0x0000555555574104 &lt;+4&gt;:     cmp    rax,0x1
-</span></span><span style=display:flex><span>   0x0000555555574108 &lt;+8&gt;:     je     0x555555574154 &lt;camlReverse__firstCheck_268+84&gt;
-</span></span><span style=display:flex><span>   0x000055555557410a &lt;+10&gt;:    cmp    rbx,0x1
-</span></span><span style=display:flex><span>   0x000055555557410e &lt;+14&gt;:    je     0x555555574148 &lt;camlReverse__firstCheck_268+72&gt;
-</span></span><span style=display:flex><span>   0x0000555555574110 &lt;+16&gt;:    mov    QWORD PTR <span style=color:#f92672>[</span>rsp<span style=color:#f92672>]</span>,rbx
-</span></span><span style=display:flex><span>   0x0000555555574114 &lt;+20&gt;:    mov    QWORD PTR <span style=color:#f92672>[</span>rsp+0x8<span style=color:#f92672>]</span>,rax
-</span></span><span style=display:flex><span>   0x0000555555574119 &lt;+25&gt;:    mov    rsi,QWORD PTR <span style=color:#f92672>[</span>rbx<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x000055555557411c &lt;+28&gt;:    mov    rdi,QWORD PTR <span style=color:#f92672>[</span>rax<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x000055555557411f &lt;+31&gt;:    lea    rax,<span style=color:#f92672>[</span>rip+0x11a2a<span style=color:#f92672>]</span>        <span style=color:#75715e># 0x555555585b50 &lt;caml_equal&gt;</span>
-</span></span><span style=display:flex><span>   0x0000555555574126 &lt;+38&gt;:    call   0x55555559b81c &lt;caml_c_call&gt;
-</span></span><span style=display:flex><span>   0x000055555557412b &lt;+43&gt;:    mov    r15,QWORD PTR <span style=color:#f92672>[</span>r14<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x000055555557412e &lt;+46&gt;:    cmp    rax,0x1
-</span></span><span style=display:flex><span>   0x0000555555574132 &lt;+50&gt;:    je     0x555555574164 &lt;camlReverse__firstCheck_268+100&gt;
-</span></span><span style=display:flex><span>   0x0000555555574134 &lt;+52&gt;:    mov    rax,QWORD PTR <span style=color:#f92672>[</span>rsp<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x0000555555574138 &lt;+56&gt;:    mov    rbx,QWORD PTR <span style=color:#f92672>[</span>rax+0x8<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x000055555557413c &lt;+60&gt;:    mov    rax,QWORD PTR <span style=color:#f92672>[</span>rsp+0x8<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x0000555555574141 &lt;+65&gt;:    mov    rax,QWORD PTR <span style=color:#f92672>[</span>rax+0x8<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x0000555555574145 &lt;+69&gt;:    jmp    0x555555574104 &lt;camlReverse__firstCheck_268+4&gt;
-</span></span><span style=display:flex><span>   0x0000555555574147 &lt;+71&gt;:    nop
-</span></span><span style=display:flex><span>   0x0000555555574148 &lt;+72&gt;:    mov    eax,0x3
-</span></span><span style=display:flex><span>   0x000055555557414d &lt;+77&gt;:    add    rsp,0x18
-</span></span><span style=display:flex><span>   0x0000555555574151 &lt;+81&gt;:    ret    
-</span></span><span style=display:flex><span>   0x0000555555574152 &lt;+82&gt;:    xchg   ax,ax
-</span></span><span style=display:flex><span>   0x0000555555574154 &lt;+84&gt;:    cmp    rbx,0x1
-</span></span><span style=display:flex><span>   0x0000555555574158 &lt;+88&gt;:    je     0x555555574164 &lt;camlReverse__firstCheck_268+100&gt;
-</span></span><span style=display:flex><span>   0x000055555557415a &lt;+90&gt;:    mov    eax,0x1
-</span></span><span style=display:flex><span>   0x000055555557415f &lt;+95&gt;:    add    rsp,0x18
-</span></span><span style=display:flex><span>   0x0000555555574163 &lt;+99&gt;:    ret    
-</span></span><span style=display:flex><span>   0x0000555555574164 &lt;+100&gt;:   mov    eax,0x1
-</span></span><span style=display:flex><span>   0x0000555555574169 &lt;+105&gt;:   add    rsp,0x18
-</span></span><span style=display:flex><span>   0x000055555557416d &lt;+109&gt;:   ret    
-</span></span><span style=display:flex><span>End of assembler dump.
-</span></span></code></pre></div><p>The function looks like a simple character check in a loop. Let&rsquo;s confirm this by looking at the parameters passed to <code>caml_c_call</code> (used to call <code>caml_equal</code>).</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>gef➤  b *0x0000555555574126
-</span></span><span style=display:flex><span>Breakpoint <span style=color:#ae81ff>1</span> at 0x555555574126
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>gef➤  r ABCDEFG
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>gef➤  p $rdi
-</span></span><span style=display:flex><span>$1 <span style=color:#f92672>=</span> 0x83
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>gef➤  p $rsi
-</span></span><span style=display:flex><span>$2 <span style=color:#f92672>=</span> 0x87
-</span></span></code></pre></div><p>The values don&rsquo;t match. Let&rsquo;s run it again with the known flag format:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>gef➤  r CYBERTF
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>gef➤  p $rdi
-</span></span><span style=display:flex><span>$1 <span style=color:#f92672>=</span> 0x87
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>gef➤  p $rsi
-</span></span><span style=display:flex><span>$2 <span style=color:#f92672>=</span> 0x87
-</span></span></code></pre></div><p>The values match. Hitting <code>continue</code> brings us to the next comparison. Let&rsquo;s script this out:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> string
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>alphabet <span style=color:#f92672>=</span> (
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;_&#39;</span> <span style=color:#f92672>+</span>
-</span></span><span style=display:flex><span>    string<span style=color:#f92672>.</span>ascii_lowercase <span style=color:#f92672>+</span>
-</span></span><span style=display:flex><span>    string<span style=color:#f92672>.</span>ascii_uppercase <span style=color:#f92672>+</span>
-</span></span><span style=display:flex><span>    string<span style=color:#f92672>.</span>digits <span style=color:#f92672>+</span>
-</span></span><span style=display:flex><span>    string<span style=color:#f92672>.</span>punctuation
-</span></span><span style=display:flex><span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>found <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;</span>
-</span></span><span style=display:flex><span>running <span style=color:#f92672>=</span> <span style=color:#66d9ef>True</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>while</span> running:
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> char <span style=color:#f92672>in</span> alphabet:
-</span></span><span style=display:flex><span>        <span style=color:#75715e># To avoid substitution errors, skip &#39;.</span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> char <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;&#39;&#34;</span>:
-</span></span><span style=display:flex><span>            <span style=color:#66d9ef>continue</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        print(found <span style=color:#f92672>+</span> char)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        <span style=color:#75715e># Run the program.</span>
-</span></span><span style=display:flex><span>        gdb<span style=color:#f92672>.</span>execute(<span style=color:#e6db74>&#34;r &#39;&#34;</span> <span style=color:#f92672>+</span> found <span style=color:#f92672>+</span> char <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;&#39;&#34;</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        <span style=color:#75715e># Skip over the first N chars we already found.</span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> len(found):
-</span></span><span style=display:flex><span>            gdb<span style=color:#f92672>.</span>execute(<span style=color:#e6db74>&#39;continue &#39;</span> <span style=color:#f92672>+</span> str(len(found)))
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        <span style=color:#75715e># Get the values of the registers.</span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>try</span>:
-</span></span><span style=display:flex><span>            rdi <span style=color:#f92672>=</span> int(gdb<span style=color:#f92672>.</span>parse_and_eval(<span style=color:#e6db74>&#34;$rdi&#34;</span>))
-</span></span><span style=display:flex><span>            rsi <span style=color:#f92672>=</span> int(gdb<span style=color:#f92672>.</span>parse_and_eval(<span style=color:#e6db74>&#34;$rsi&#34;</span>))
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>except</span>:
-</span></span><span style=display:flex><span>            running <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
-</span></span><span style=display:flex><span>            <span style=color:#66d9ef>break</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> rdi <span style=color:#f92672>==</span> rsi:
-</span></span><span style=display:flex><span>            found <span style=color:#f92672>+=</span> char
-</span></span><span style=display:flex><span>            <span style=color:#66d9ef>break</span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>:
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>break</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>print(<span style=color:#e6db74>&#39;=&gt;&#39;</span>, found)
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>gef➤  source extract_start.py
-</span></span><span style=display:flex><span>...
-</span></span><span style=display:flex><span><span style=color:#f92672>[</span>Inferior <span style=color:#ae81ff>1</span> <span style=color:#f92672>(</span>process 1287983<span style=color:#f92672>)</span> exited normally<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>=</span>&gt; CYBERTF<span style=color:#f92672>{</span>Go
-</span></span></code></pre></div><p>After a few seconds, we get the start of the flag: <code>CYBERTF{Go</code>. Now let&rsquo;s look at the other function. We&rsquo;ll assume it checks the remaining part of the flag.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>gef➤  disassemble camlReverse__listequal_92 
-</span></span><span style=display:flex><span>Dump of assembler code <span style=color:#66d9ef>for</span> <span style=color:#66d9ef>function</span> camlReverse__listequal_92:
-</span></span><span style=display:flex><span>   0x0000555555573e20 &lt;+0&gt;:     sub    rsp,0x18
-</span></span><span style=display:flex><span>   0x0000555555573e24 &lt;+4&gt;:     cmp    rax,0x1
-</span></span><span style=display:flex><span>   0x0000555555573e28 &lt;+8&gt;:     je     0x555555573e74 &lt;camlReverse__listequal_92+84&gt;
-</span></span><span style=display:flex><span>   0x0000555555573e2a &lt;+10&gt;:    cmp    rbx,0x1
-</span></span><span style=display:flex><span>   0x0000555555573e2e &lt;+14&gt;:    je     0x555555573e84 &lt;camlReverse__listequal_92+100&gt;
-</span></span><span style=display:flex><span>   0x0000555555573e30 &lt;+16&gt;:    mov    QWORD PTR <span style=color:#f92672>[</span>rsp<span style=color:#f92672>]</span>,rbx
-</span></span><span style=display:flex><span>   0x0000555555573e34 &lt;+20&gt;:    mov    QWORD PTR <span style=color:#f92672>[</span>rsp+0x8<span style=color:#f92672>]</span>,rax
-</span></span><span style=display:flex><span>   0x0000555555573e39 &lt;+25&gt;:    mov    rsi,QWORD PTR <span style=color:#f92672>[</span>rbx<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x0000555555573e3c &lt;+28&gt;:    mov    rdi,QWORD PTR <span style=color:#f92672>[</span>rax<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x0000555555573e3f &lt;+31&gt;:    lea    rax,<span style=color:#f92672>[</span>rip+0x11d0a<span style=color:#f92672>]</span>        <span style=color:#75715e># 0x555555585b50 &lt;caml_equal&gt;</span>
-</span></span><span style=display:flex><span>   0x0000555555573e46 &lt;+38&gt;:    call   0x55555559b81c &lt;caml_c_call&gt;
-</span></span><span style=display:flex><span>   0x0000555555573e4b &lt;+43&gt;:    mov    r15,QWORD PTR <span style=color:#f92672>[</span>r14<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x0000555555573e4e &lt;+46&gt;:    cmp    rax,0x1
-</span></span><span style=display:flex><span>   0x0000555555573e52 &lt;+50&gt;:    je     0x555555573e68 &lt;camlReverse__listequal_92+72&gt;
-</span></span><span style=display:flex><span>   0x0000555555573e54 &lt;+52&gt;:    mov    rax,QWORD PTR <span style=color:#f92672>[</span>rsp<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x0000555555573e58 &lt;+56&gt;:    mov    rbx,QWORD PTR <span style=color:#f92672>[</span>rax+0x8<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x0000555555573e5c &lt;+60&gt;:    mov    rax,QWORD PTR <span style=color:#f92672>[</span>rsp+0x8<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x0000555555573e61 &lt;+65&gt;:    mov    rax,QWORD PTR <span style=color:#f92672>[</span>rax+0x8<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span>   0x0000555555573e65 &lt;+69&gt;:    jmp    0x555555573e24 &lt;camlReverse__listequal_92+4&gt;
-</span></span><span style=display:flex><span>   0x0000555555573e67 &lt;+71&gt;:    nop
-</span></span><span style=display:flex><span>   0x0000555555573e68 &lt;+72&gt;:    mov    eax,0x1
-</span></span><span style=display:flex><span>   0x0000555555573e6d &lt;+77&gt;:    add    rsp,0x18
-</span></span><span style=display:flex><span>   0x0000555555573e71 &lt;+81&gt;:    ret    
-</span></span><span style=display:flex><span>   0x0000555555573e72 &lt;+82&gt;:    xchg   ax,ax
-</span></span><span style=display:flex><span>   0x0000555555573e74 &lt;+84&gt;:    cmp    rbx,0x1
-</span></span><span style=display:flex><span>   0x0000555555573e78 &lt;+88&gt;:    jne    0x555555573e84 &lt;camlReverse__listequal_92+100&gt;
-</span></span><span style=display:flex><span>   0x0000555555573e7a &lt;+90&gt;:    mov    eax,0x3
-</span></span><span style=display:flex><span>   0x0000555555573e7f &lt;+95&gt;:    add    rsp,0x18
-</span></span><span style=display:flex><span>   0x0000555555573e83 &lt;+99&gt;:    ret    
-</span></span><span style=display:flex><span>   0x0000555555573e84 &lt;+100&gt;:   mov    eax,0x1
-</span></span><span style=display:flex><span>   0x0000555555573e89 &lt;+105&gt;:   add    rsp,0x18
-</span></span><span style=display:flex><span>   0x0000555555573e8d &lt;+109&gt;:   ret    
-</span></span><span style=display:flex><span>End of assembler dump.
-</span></span></code></pre></div><p>We have the same pattern here, let&rsquo;s just quickly adapt the script.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> string
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>alphabet <span style=color:#f92672>=</span> (
-</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;_&#39;</span> <span style=color:#f92672>+</span>
-</span></span><span style=display:flex><span>    string<span style=color:#f92672>.</span>ascii_lowercase <span style=color:#f92672>+</span>
-</span></span><span style=display:flex><span>    string<span style=color:#f92672>.</span>ascii_uppercase <span style=color:#f92672>+</span>
-</span></span><span style=display:flex><span>    string<span style=color:#f92672>.</span>digits <span style=color:#f92672>+</span>
-</span></span><span style=display:flex><span>    string<span style=color:#f92672>.</span>punctuation
-</span></span><span style=display:flex><span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>found <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;CYBERTF{Go&#39;</span>
-</span></span><span style=display:flex><span>start_len <span style=color:#f92672>=</span> len(found)
-</span></span><span style=display:flex><span>running <span style=color:#f92672>=</span> <span style=color:#66d9ef>True</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>while</span> running:
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> char <span style=color:#f92672>in</span> alphabet:
-</span></span><span style=display:flex><span>        <span style=color:#75715e># To avoid substitution errors, skip &#39;.</span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> char <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;&#39;&#34;</span>:
-</span></span><span style=display:flex><span>            <span style=color:#66d9ef>continue</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        print(found <span style=color:#f92672>+</span> char)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        <span style=color:#75715e># Run the program.</span>
-</span></span><span style=display:flex><span>        gdb<span style=color:#f92672>.</span>execute(<span style=color:#e6db74>&#34;r &#39;&#34;</span> <span style=color:#f92672>+</span> found <span style=color:#f92672>+</span> char <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;&#39;&#34;</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        <span style=color:#75715e># Skip over the first N chars we already found.</span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> len(found) <span style=color:#f92672>-</span> start_len <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>:
-</span></span><span style=display:flex><span>            gdb<span style=color:#f92672>.</span>execute(<span style=color:#e6db74>&#39;continue &#39;</span> <span style=color:#f92672>+</span> str(len(found) <span style=color:#f92672>-</span> start_len))
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        <span style=color:#75715e># Get the values of the registers.</span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>try</span>:
-</span></span><span style=display:flex><span>            rdi <span style=color:#f92672>=</span> int(gdb<span style=color:#f92672>.</span>parse_and_eval(<span style=color:#e6db74>&#34;$rdi&#34;</span>))
-</span></span><span style=display:flex><span>            rsi <span style=color:#f92672>=</span> int(gdb<span style=color:#f92672>.</span>parse_and_eval(<span style=color:#e6db74>&#34;$rsi&#34;</span>))
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>except</span>:
-</span></span><span style=display:flex><span>            running <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
-</span></span><span style=display:flex><span>            <span style=color:#66d9ef>break</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> rdi <span style=color:#f92672>==</span> rsi:
-</span></span><span style=display:flex><span>            found <span style=color:#f92672>+=</span> char
-</span></span><span style=display:flex><span>            <span style=color:#66d9ef>break</span>
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>:
-</span></span><span style=display:flex><span>        <span style=color:#66d9ef>break</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>print(<span style=color:#e6db74>&#39;=&gt;&#39;</span>, found)
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>gef➤  <span style=color:#75715e># Remove the previous breakpoint first.</span>
-</span></span><span style=display:flex><span>gef➤  del <span style=color:#ae81ff>1</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>gef➤  d *0x0000555555573e46
-</span></span><span style=display:flex><span>Breakpoint <span style=color:#ae81ff>2</span> at 0x555555573e46
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>gef➤  source extract_end.py
-</span></span><span style=display:flex><span>...
-</span></span><span style=display:flex><span><span style=color:#f92672>[</span>Inferior <span style=color:#ae81ff>1</span> <span style=color:#f92672>(</span>process 1294818<span style=color:#f92672>)</span> exited normally<span style=color:#f92672>]</span>
-</span></span><span style=display:flex><span><span style=color:#f92672>=</span>&gt; CYBERTF<span style=color:#f92672>{</span>Golang_is_D3@d_1n_CTF_1795b4a89708371d16982195642638cd7783998188<span style=color:#f92672>}</span>
-</span></span></code></pre></div><p>Here is the flag: <code>CYBERTF{Golang_is_D3@d_1n_CTF_1795b4a89708371d16982195642638cd7783998188}</code>.</p><p>It took around 4 minutes for it to finish.</p><h2 id=additional-notes>Additional notes<a href=#additional-notes class=hanchor arialabel=Anchor>&#8983;</a></h2><p>I&rsquo;ve been wanting to learn about Ghidra&rsquo;s python API for a while now, so I decided after writing the post above to take a deeper look at how things are implemented, and to write a script that&rsquo;ll extract the flag.</p><p>Let&rsquo;s first check out <code>camlReverse__string2char_211</code>, by breaking right before it is called.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ gdb ./program
-</span></span><span style=display:flex><span>gef➤  <span style=color:#75715e># Break right before camlReverse__string2char_211 is called.</span>
-</span></span><span style=display:flex><span>gef➤  b *0x0000555555574278
-</span></span><span style=display:flex><span>gef➤  r ABCDEFG
-</span></span><span style=display:flex><span>gef➤  <span style=color:#75715e># The argument is loaded into rax, printing it reveals our flag (ABCDEFG).</span>
-</span></span><span style=display:flex><span>gef➤  x/2x $rax
-</span></span><span style=display:flex><span>0x7ffff7c7ffa8: 0x44434241      0x00474645
-</span></span><span style=display:flex><span>gef➤  <span style=color:#75715e># Now let&#39;s run the function.</span>
-</span></span><span style=display:flex><span>gef➤  stepi
-</span></span><span style=display:flex><span>gef➤  next
-</span></span><span style=display:flex><span>gef➤  next
-</span></span><span style=display:flex><span>gef➤  <span style=color:#75715e># When we&#39;re back into main, we see that the structure changed quite a bit.</span>
-</span></span><span style=display:flex><span>gef➤  x/2x $rax
-</span></span><span style=display:flex><span>0x7ffff7c7fd30: 0x00000083      0x00000000
-</span></span></code></pre></div><p>Looking at the function in Ghidra, it seems recursive:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>camlReverse__string2char_211</span>(<span style=color:#66d9ef>void</span>) {
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>long</span> in_RAX;
-</span></span><span style=display:flex><span>  
-</span></span><span style=display:flex><span>  camlReverse__string2char_tmp_214
-</span></span><span style=display:flex><span>            (<span style=color:#ae81ff>1</span>,<span style=color:#f92672>*</span>(undefined <span style=color:#f92672>*</span>)(in_RAX <span style=color:#f92672>+</span> (<span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(in_RAX <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>) <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>10</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>8</span> <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>));
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span>;
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>camlReverse__string2char_tmp_214</span>(<span style=color:#66d9ef>long</span> param_1) {
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>long</span> lVar1;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>long</span> in_RAX;
-</span></span><span style=display:flex><span>  undefined8 uVar2;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>long</span> unaff_RBX;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>long</span> unaff_R14;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>long</span> unaff_R15;
-</span></span><span style=display:flex><span>  
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (param_1 <span style=color:#f92672>==</span> unaff_RBX) {
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> (<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)<span style=color:#ae81ff>0x1</span>;
-</span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>  uVar2 <span style=color:#f92672>=</span> camlReverse__string2char_tmp_214(param_1 <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>);
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (unaff_R15 <span style=color:#f92672>-</span> <span style=color:#ae81ff>0x18U</span> <span style=color:#f92672>&lt;</span> <span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(unaff_R14 <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>)) {
-</span></span><span style=display:flex><span>    uVar2 <span style=color:#f92672>=</span> caml_call_gc();
-</span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>  <span style=color:#f92672>*</span>(undefined8 <span style=color:#f92672>*</span>)(unaff_R15 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>0x18</span>) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0x800</span>;
-</span></span><span style=display:flex><span>  lVar1 <span style=color:#f92672>=</span> (<span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(in_RAX <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>) <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>10</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>8</span> <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> ((ulong)(param_1 <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>) <span style=color:#f92672>&lt;</span> lVar1 <span style=color:#f92672>-</span> (ulong)<span style=color:#f92672>*</span>(byte <span style=color:#f92672>*</span>)(in_RAX <span style=color:#f92672>+</span> lVar1)) {
-</span></span><span style=display:flex><span>    <span style=color:#f92672>*</span>(<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)(unaff_R15 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>0x10</span>) <span style=color:#f92672>=</span> (ulong)<span style=color:#f92672>*</span>(byte <span style=color:#f92672>*</span>)(in_RAX <span style=color:#f92672>+</span> (param_1 <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>)) <span style=color:#f92672>*</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
-</span></span><span style=display:flex><span>    <span style=color:#f92672>*</span>(undefined8 <span style=color:#f92672>*</span>)(unaff_R15 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>) <span style=color:#f92672>=</span> uVar2;
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> (<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)(unaff_R15 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>0x10</span>);
-</span></span><span style=display:flex><span>  }
-</span></span><span style=display:flex><span>                    <span style=color:#75715e>/* WARNING: Subroutine does not return */</span>
-</span></span><span style=display:flex><span>  caml_ml_array_bound_error();
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>The most interesting part is the <code>* 2 + 1</code> operation. Our <code>0x83</code> value really is <code>0x41 * 2 + 1</code>. If we show a bit more of the memory, we can find the other chars:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>gef➤  x/64x $rax
-</span></span><span style=display:flex><span>0x7ffff7c7fd30: 0x00000083      0x00000000      0xf7c7fd48      0x00007fff
-</span></span><span style=display:flex><span>0x7ffff7c7fd40: 0x00000800      0x00000000      0x00000085      0x00000000
-</span></span><span style=display:flex><span>0x7ffff7c7fd50: 0xf7c7fd60      0x00007fff      0x00000800      0x00000000
-</span></span><span style=display:flex><span>0x7ffff7c7fd60: 0x00000087      0x00000000      0xf7c7fd78      0x00007fff
-</span></span><span style=display:flex><span>0x7ffff7c7fd70: 0x00000800      0x00000000      0x00000089      0x00000000
-</span></span><span style=display:flex><span>0x7ffff7c7fd80: 0xf7c7fd90      0x00007fff      0x00000800      0x00000000
-</span></span><span style=display:flex><span>0x7ffff7c7fd90: 0x0000008b      0x00000000      0xf7c7fda8      0x00007fff
-</span></span><span style=display:flex><span>0x7ffff7c7fda0: 0x00000800      0x00000000      0x0000008d      0x00000000
-</span></span><span style=display:flex><span>0x7ffff7c7fdb0: 0xf7c7fdc0      0x00007fff      0x00000800      0x00000000
-</span></span><span style=display:flex><span>0x7ffff7c7fdc0: 0x0000008f      0x00000000      0x00000001      0x00000000
-</span></span><span style=display:flex><span>0x7ffff7c7fdd0: 0x000004fc      0x00000000      0x00000000      0x07000000
-</span></span><span style=display:flex><span>0x7ffff7c7fde0: 0x00000400      0x00000000      0x555b8960      0x00005555
-</span></span><span style=display:flex><span>0x7ffff7c7fdf0: 0x000008f8      0x00000000      0x555b8b60      0x00005555
-</span></span><span style=display:flex><span>0x7ffff7c7fe00: 0x00000003      0x00000000      0x00000400      0x00000000
-</span></span><span style=display:flex><span>0x7ffff7c7fe10: 0x00000001      0x00000000      0x00000c00      0x00000000
-</span></span><span style=display:flex><span>0x7ffff7c7fe20: 0xf7c7fe40      0x00007fff      0x00000081      0x00000000
-</span></span></code></pre></div><p>We have <code>0x83, 0x85, 0x87, ...</code>. This maps to our input, meaning we can get the start of the flag by decoding these values.</p><p>Also, we notice that each value has a pointer to the next one, meaning this is a linked list. We can build a first script to decode the start of the flag:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> struct
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>getUBytes</span>(address, length):
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> bytearray([b <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xff</span> <span style=color:#66d9ef>for</span> b <span style=color:#f92672>in</span> getBytes(address, length)])
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>u32</span>(raw_bytes):
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> struct<span style=color:#f92672>.</span>unpack(<span style=color:#e6db74>&#39;&lt;L&#39;</span>, raw_bytes)[<span style=color:#ae81ff>0</span>]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>read_caml_array</span>(pointer, data_len):
-</span></span><span style=display:flex><span>  array <span style=color:#f92672>=</span> []
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>try</span>:
-</span></span><span style=display:flex><span>      array<span style=color:#f92672>.</span>append(getUBytes(toAddr(pointer), data_len))
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>except</span>:
-</span></span><span style=display:flex><span>      <span style=color:#66d9ef>break</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    pointer <span style=color:#f92672>=</span> u32(getBytes(toAddr(pointer <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>), <span style=color:#ae81ff>4</span>))
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> array
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># The address refers to the argument passed to camlReverse__firstCheck_268.</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># For each value, map the bytes to an int, divide by two, and cast to char.</span>
-</span></span><span style=display:flex><span>flag_start <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;&#39;</span><span style=color:#f92672>.</span>join(chr(u32(b) <span style=color:#f92672>//</span> <span style=color:#ae81ff>2</span>) <span style=color:#66d9ef>for</span> b <span style=color:#f92672>in</span> read_caml_array(<span style=color:#ae81ff>0x00160898</span>, <span style=color:#ae81ff>4</span>))
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>print(flag_start)
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>extractCaml<span style=color:#f92672>.</span>py<span style=color:#f92672>&gt;</span> Running<span style=color:#f92672>...</span>
-</span></span><span style=display:flex><span>CYBERTF{Go
-</span></span><span style=display:flex><span>extractCaml<span style=color:#f92672>.</span>py<span style=color:#f92672>&gt;</span> Finished<span style=color:#960050;background-color:#1e0010>!</span>
-</span></span></code></pre></div><p>When reversing the <code>* 2 + 1</code> operation, all we really have to do is <code>// 2</code> (because it is an integer division).</p><p>We can now finish the job by extracting the XOR key & data, which are stored using the same array format:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> struct
-</span></span><span style=display:flex><span><span style=color:#f92672>import</span> itertools
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>getUBytes</span>(address, length):
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> bytearray([b <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xff</span> <span style=color:#66d9ef>for</span> b <span style=color:#f92672>in</span> getBytes(address, length)])
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>u32</span>(raw_bytes):
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> struct<span style=color:#f92672>.</span>unpack(<span style=color:#e6db74>&#39;&lt;L&#39;</span>, raw_bytes)[<span style=color:#ae81ff>0</span>]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>read_caml_array</span>(pointer, data_len):
-</span></span><span style=display:flex><span>  array <span style=color:#f92672>=</span> []
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>try</span>:
-</span></span><span style=display:flex><span>      array<span style=color:#f92672>.</span>append(getUBytes(toAddr(pointer), data_len))
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>except</span>:
-</span></span><span style=display:flex><span>      <span style=color:#66d9ef>break</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>    pointer <span style=color:#f92672>=</span> u32(getBytes(toAddr(pointer <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>), <span style=color:#ae81ff>4</span>))
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> array
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># The address refers to the argument passed to camlReverse__firstCheck_268.</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># For each value, map the bytes to an int, divide by two, and cast to char.</span>
-</span></span><span style=display:flex><span>flag_start <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;&#39;</span><span style=color:#f92672>.</span>join(chr(u32(b) <span style=color:#f92672>//</span> <span style=color:#ae81ff>2</span>) <span style=color:#66d9ef>for</span> b <span style=color:#f92672>in</span> read_caml_array(<span style=color:#ae81ff>0x00160898</span>, <span style=color:#ae81ff>4</span>))
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># The address refers to the argument passed to camlReverse__xor_103.</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># For each value, map the bytes to an int.</span>
-</span></span><span style=display:flex><span>xor_key <span style=color:#f92672>=</span> [u32(x) <span style=color:#66d9ef>for</span> x <span style=color:#f92672>in</span> read_caml_array(<span style=color:#ae81ff>0x001601b0</span>, <span style=color:#ae81ff>4</span>)]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># The address refers to the argument passed to camlReverse__listequal_92.</span>
-</span></span><span style=display:flex><span><span style=color:#75715e># For each value, map the bytes to an int.</span>
-</span></span><span style=display:flex><span>xor_data <span style=color:#f92672>=</span> [u32(x) <span style=color:#66d9ef>for</span> x <span style=color:#f92672>in</span> read_caml_array(<span style=color:#ae81ff>0x00160208</span>, <span style=color:#ae81ff>4</span>)]
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Xor the key with the data, and divide each value by two before converting it to a char.</span>
-</span></span><span style=display:flex><span>flag_end <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;</span><span style=color:#f92672>.</span>join(chr((a <span style=color:#f92672>^</span> b) <span style=color:#f92672>//</span> <span style=color:#ae81ff>2</span>) <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(itertools<span style=color:#f92672>.</span>cycle(xor_key), xor_data))
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>print(flag_start <span style=color:#f92672>+</span> flag_end)
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>extractCaml<span style=color:#f92672>.</span>py<span style=color:#f92672>&gt;</span> Running<span style=color:#f92672>...</span>
-</span></span><span style=display:flex><span>CYBERTF{Golang_is_D3<span style=color:#a6e22e>@d_1n_CTF_1795b4a89708371d16982195642638cd7783998188</span>}
-</span></span><span style=display:flex><span>extractCaml<span style=color:#f92672>.</span>py<span style=color:#f92672>&gt;</span> Finished<span style=color:#960050;background-color:#1e0010>!</span>
-</span></span></code></pre></div><p>I have to say, the API doesn&rsquo;t seem too intuitive, but at least it is powerful.</p><h2 id=more>More<a href=#more class=hanchor arialabel=Anchor>&#8983;</a></h2><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/reverse/flag-checker>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/><span class=button__icon>←</span>
+#<a href=https://nicolasb.fr/tags/reverse/>reverse</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we were given a <code>program</code> executable.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ ./program
+./program FLAG
+
+$ ./program MYFLAG
+failed
+</code></pre></div><p>Seems like it valides the flag that is passed as an argument. Let&rsquo;s open the binary in Ghidra.</p><p>There are a lot of functions defined, and looking at the exports we see that quite a lot of them start with <code>caml_</code>. I didn&rsquo;t know you could compile OCaml to C, that&rsquo;s pretty neat.</p><p>We can pinpoint the function that checks the flag by searching for strings. After looking for the event&rsquo;s flag format, <code>CYBERTF{...}</code>, we find a fake flag: <code>CYBERTF{Not-S0Easy-Fake-Flag}</code>. One function references it:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>undefined8 <span style=color:#a6e22e>camlReverse__entry</span>(<span style=color:#66d9ef>void</span>) {
+  <span style=color:#66d9ef>long</span> lVar1;
+  byte bVar2;
+  <span style=color:#66d9ef>long</span> lVar3;
+  
+  camlReverse <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>PTR_caml_curry2_00160098;
+  DAT_00160150 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>PTR_caml_curry2_001600b8;
+  DAT_00160158 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>PTR_caml_curry2_001600d8;
+  DAT_00160160 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>PTR_camlReverse__char2int_207_001600f8;
+  DAT_00160168 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>PTR_camlReverse__string2char_211_00160110;
+  DAT_00160170 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>PTR_caml_curry2_00160128;
+  DAT_00160178 <span style=color:#f92672>=</span> camlReverse__1;
+  DAT_00160180 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>camlReverse__9;
+  DAT_00160188 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>camlReverse__19;
+  DAT_00160190 <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>camlReverse__82;
+  lVar3 <span style=color:#f92672>=</span> caml_c_call(<span style=color:#ae81ff>1</span>);
+  <span style=color:#66d9ef>if</span> ((<span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>) <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>9</span> <span style=color:#f92672>|</span> <span style=color:#ae81ff>1</span>) <span style=color:#f92672>==</span> <span style=color:#ae81ff>5</span>) {
+    lVar3 <span style=color:#f92672>=</span> caml_c_call(<span style=color:#ae81ff>1</span>);
+    <span style=color:#66d9ef>if</span> (<span style=color:#ae81ff>0x7ff</span> <span style=color:#f92672>&lt;</span> <span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>)) {
+      camlReverse__string2char_211();
+      camlReverse__char2int_207();
+      lVar3 <span style=color:#f92672>=</span> camlReverse__firstCheck_268();
+      <span style=color:#66d9ef>if</span> (lVar3 <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span>) {
+        camlStdlib__print_endline_361();
+        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
+      }
+      lVar3 <span style=color:#f92672>=</span> caml_c_call(<span style=color:#ae81ff>1</span>);
+      <span style=color:#66d9ef>if</span> (<span style=color:#ae81ff>0x7ff</span> <span style=color:#f92672>&lt;</span> <span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>)) {
+        lVar1 <span style=color:#f92672>=</span> (<span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(<span style=color:#f92672>*</span>(<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>) <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>) <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>10</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>8</span> <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+        bVar2 <span style=color:#f92672>=</span> <span style=color:#f92672>*</span>(byte <span style=color:#f92672>*</span>)(<span style=color:#f92672>*</span>(<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>) <span style=color:#f92672>+</span> lVar1);
+        lVar3 <span style=color:#f92672>=</span> caml_c_call(<span style=color:#ae81ff>1</span>);
+        <span style=color:#66d9ef>if</span> (<span style=color:#ae81ff>0x7ff</span> <span style=color:#f92672>&lt;</span> <span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>)) {
+          camlStdlib__bytes__sub_115((lVar1 <span style=color:#f92672>-</span> (ulong)bVar2) <span style=color:#f92672>*</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>0x13</span>);
+          camlStdlib__print_endline_361();
+          camlReverse__string2char_211();
+          camlReverse__char2int_207();
+          camlReverse__xor_103();
+          lVar3 <span style=color:#f92672>=</span> camlReverse__listequal_92();
+          <span style=color:#66d9ef>if</span> (lVar3 <span style=color:#f92672>!=</span> <span style=color:#ae81ff>1</span>) {
+            camlStdlib__print_endline_361();
+            <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
+          }
+          camlStdlib__print_endline_361();
+          camlStdlib__exit_459();
+          <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
+        }
+      }
+    }
+  }
+  <span style=color:#66d9ef>else</span> {
+                    <span style=color:#75715e>/* no args: print(sys.argv[0] + &#34; FLAG&#34;) */</span>
+    lVar3 <span style=color:#f92672>=</span> caml_c_call(<span style=color:#ae81ff>1</span>);
+    <span style=color:#66d9ef>if</span> (<span style=color:#ae81ff>0x3ff</span> <span style=color:#f92672>&lt;</span> <span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(lVar3 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>)) {
+      camlStdlib__<span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>5</span>e_136();
+      camlStdlib__print_endline_361();
+      <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
+    }
+  }
+                    <span style=color:#75715e>/* WARNING: Subroutine does not return */</span>
+  caml_ml_array_bound_error();
+}
+</code></pre></div><p>We can understand the general flow from the functions names alone. First:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>// Convert the passed flag from a string to (probably custom using structs) char array.
+</span><span style=color:#75715e></span>camlReverse__string2char_211();
+
+<span style=color:#75715e>// Map each char to its int value.
+</span><span style=color:#75715e></span>camlReverse__char2int_207();
+
+<span style=color:#75715e>// Execute some kind of check on these integer values.
+</span><span style=color:#75715e></span>lVar3 <span style=color:#f92672>=</span> camlReverse__firstCheck_268();
+
+<span style=color:#75715e>// Exit here after printing an error message if the check failed.
+</span><span style=color:#75715e></span><span style=color:#66d9ef>if</span> (lVar3 <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span>) {
+	camlStdlib__print_endline_361();
+	<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
+}
+</code></pre></div><p>And then:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>// Subtract a value from some variable, probably shifting an array (the flag?).
+</span><span style=color:#75715e></span>camlStdlib__bytes__sub_115((lVar1 <span style=color:#f92672>-</span> (ulong)bVar2) <span style=color:#f92672>*</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>0x13</span>);
+
+<span style=color:#75715e>// Print something.
+</span><span style=color:#75715e></span>camlStdlib__print_endline_361();
+
+<span style=color:#75715e>// Convert the flag to a char array.
+</span><span style=color:#75715e></span>camlReverse__string2char_211();
+
+<span style=color:#75715e>// Once again, map each char to its int value.
+</span><span style=color:#75715e></span>camlReverse__char2int_207();
+
+<span style=color:#75715e>// XOR the flag.
+</span><span style=color:#75715e></span>camlReverse__xor_103();
+
+<span style=color:#75715e>// Compare it to some known value.
+</span><span style=color:#75715e></span>lVar3 <span style=color:#f92672>=</span> camlReverse__listequal_92();
+
+<span style=color:#75715e>// Exit here after printing an error message if the check failed.
+</span><span style=color:#75715e></span><span style=color:#66d9ef>if</span> (lVar3 <span style=color:#f92672>!=</span> <span style=color:#ae81ff>1</span>) {
+	camlStdlib__print_endline_361();
+	<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
+}
+
+<span style=color:#75715e>// And finally, print a message if we got the right flag.
+</span><span style=color:#75715e></span>camlStdlib__print_endline_361();
+camlStdlib__exit_459();
+</code></pre></div><p>Once again, let&rsquo;s take the easy route. We&rsquo;ll extract the flag using GDB, by looking at the check functions.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>...
+gef➤  disassemble camlReverse__firstCheck_268 
+Dump of assembler code <span style=color:#66d9ef>for</span> <span style=color:#66d9ef>function</span> camlReverse__firstCheck_268:
+   0x0000555555574100 &lt;+0&gt;:     sub    rsp,0x18
+   0x0000555555574104 &lt;+4&gt;:     cmp    rax,0x1
+   0x0000555555574108 &lt;+8&gt;:     je     0x555555574154 &lt;camlReverse__firstCheck_268+84&gt;
+   0x000055555557410a &lt;+10&gt;:    cmp    rbx,0x1
+   0x000055555557410e &lt;+14&gt;:    je     0x555555574148 &lt;camlReverse__firstCheck_268+72&gt;
+   0x0000555555574110 &lt;+16&gt;:    mov    QWORD PTR <span style=color:#f92672>[</span>rsp<span style=color:#f92672>]</span>,rbx
+   0x0000555555574114 &lt;+20&gt;:    mov    QWORD PTR <span style=color:#f92672>[</span>rsp+0x8<span style=color:#f92672>]</span>,rax
+   0x0000555555574119 &lt;+25&gt;:    mov    rsi,QWORD PTR <span style=color:#f92672>[</span>rbx<span style=color:#f92672>]</span>
+   0x000055555557411c &lt;+28&gt;:    mov    rdi,QWORD PTR <span style=color:#f92672>[</span>rax<span style=color:#f92672>]</span>
+   0x000055555557411f &lt;+31&gt;:    lea    rax,<span style=color:#f92672>[</span>rip+0x11a2a<span style=color:#f92672>]</span>        <span style=color:#75715e># 0x555555585b50 &lt;caml_equal&gt;</span>
+   0x0000555555574126 &lt;+38&gt;:    call   0x55555559b81c &lt;caml_c_call&gt;
+   0x000055555557412b &lt;+43&gt;:    mov    r15,QWORD PTR <span style=color:#f92672>[</span>r14<span style=color:#f92672>]</span>
+   0x000055555557412e &lt;+46&gt;:    cmp    rax,0x1
+   0x0000555555574132 &lt;+50&gt;:    je     0x555555574164 &lt;camlReverse__firstCheck_268+100&gt;
+   0x0000555555574134 &lt;+52&gt;:    mov    rax,QWORD PTR <span style=color:#f92672>[</span>rsp<span style=color:#f92672>]</span>
+   0x0000555555574138 &lt;+56&gt;:    mov    rbx,QWORD PTR <span style=color:#f92672>[</span>rax+0x8<span style=color:#f92672>]</span>
+   0x000055555557413c &lt;+60&gt;:    mov    rax,QWORD PTR <span style=color:#f92672>[</span>rsp+0x8<span style=color:#f92672>]</span>
+   0x0000555555574141 &lt;+65&gt;:    mov    rax,QWORD PTR <span style=color:#f92672>[</span>rax+0x8<span style=color:#f92672>]</span>
+   0x0000555555574145 &lt;+69&gt;:    jmp    0x555555574104 &lt;camlReverse__firstCheck_268+4&gt;
+   0x0000555555574147 &lt;+71&gt;:    nop
+   0x0000555555574148 &lt;+72&gt;:    mov    eax,0x3
+   0x000055555557414d &lt;+77&gt;:    add    rsp,0x18
+   0x0000555555574151 &lt;+81&gt;:    ret    
+   0x0000555555574152 &lt;+82&gt;:    xchg   ax,ax
+   0x0000555555574154 &lt;+84&gt;:    cmp    rbx,0x1
+   0x0000555555574158 &lt;+88&gt;:    je     0x555555574164 &lt;camlReverse__firstCheck_268+100&gt;
+   0x000055555557415a &lt;+90&gt;:    mov    eax,0x1
+   0x000055555557415f &lt;+95&gt;:    add    rsp,0x18
+   0x0000555555574163 &lt;+99&gt;:    ret    
+   0x0000555555574164 &lt;+100&gt;:   mov    eax,0x1
+   0x0000555555574169 &lt;+105&gt;:   add    rsp,0x18
+   0x000055555557416d &lt;+109&gt;:   ret    
+End of assembler dump.
+</code></pre></div><p>The function looks like a simple character check in a loop. Let&rsquo;s confirm this by looking at the parameters passed to <code>caml_c_call</code> (used to call <code>caml_equal</code>).</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>gef➤  b *0x0000555555574126
+Breakpoint <span style=color:#ae81ff>1</span> at 0x555555574126
+
+gef➤  r ABCDEFG
+
+gef➤  p $rdi
+$1 <span style=color:#f92672>=</span> 0x83
+
+gef➤  p $rsi
+$2 <span style=color:#f92672>=</span> 0x87
+</code></pre></div><p>The values don&rsquo;t match. Let&rsquo;s run it again with the known flag format:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>gef➤  r CYBERTF
+
+gef➤  p $rdi
+$1 <span style=color:#f92672>=</span> 0x87
+
+gef➤  p $rsi
+$2 <span style=color:#f92672>=</span> 0x87
+</code></pre></div><p>The values match. Hitting <code>continue</code> brings us to the next comparison. Let&rsquo;s script this out:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> string
+
+alphabet <span style=color:#f92672>=</span> (
+    <span style=color:#e6db74>&#39;_&#39;</span> <span style=color:#f92672>+</span>
+    string<span style=color:#f92672>.</span>ascii_lowercase <span style=color:#f92672>+</span>
+    string<span style=color:#f92672>.</span>ascii_uppercase <span style=color:#f92672>+</span>
+    string<span style=color:#f92672>.</span>digits <span style=color:#f92672>+</span>
+    string<span style=color:#f92672>.</span>punctuation
+)
+
+found <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;</span>
+running <span style=color:#f92672>=</span> True
+
+<span style=color:#66d9ef>while</span> running:
+    <span style=color:#66d9ef>for</span> char <span style=color:#f92672>in</span> alphabet:
+        <span style=color:#75715e># To avoid substitution errors, skip &#39;.</span>
+        <span style=color:#66d9ef>if</span> char <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;&#39;&#34;</span>:
+            <span style=color:#66d9ef>continue</span>
+
+        <span style=color:#66d9ef>print</span>(found <span style=color:#f92672>+</span> char)
+
+        <span style=color:#75715e># Run the program.</span>
+        gdb<span style=color:#f92672>.</span>execute(<span style=color:#e6db74>&#34;r &#39;&#34;</span> <span style=color:#f92672>+</span> found <span style=color:#f92672>+</span> char <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;&#39;&#34;</span>)
+
+        <span style=color:#75715e># Skip over the first N chars we already found.</span>
+        <span style=color:#66d9ef>if</span> len(found):
+            gdb<span style=color:#f92672>.</span>execute(<span style=color:#e6db74>&#39;continue &#39;</span> <span style=color:#f92672>+</span> str(len(found)))
+
+        <span style=color:#75715e># Get the values of the registers.</span>
+        <span style=color:#66d9ef>try</span>:
+            rdi <span style=color:#f92672>=</span> int(gdb<span style=color:#f92672>.</span>parse_and_eval(<span style=color:#e6db74>&#34;$rdi&#34;</span>))
+            rsi <span style=color:#f92672>=</span> int(gdb<span style=color:#f92672>.</span>parse_and_eval(<span style=color:#e6db74>&#34;$rsi&#34;</span>))
+        <span style=color:#66d9ef>except</span>:
+            running <span style=color:#f92672>=</span> False
+            <span style=color:#66d9ef>break</span>
+
+        <span style=color:#66d9ef>if</span> rdi <span style=color:#f92672>==</span> rsi:
+            found <span style=color:#f92672>+=</span> char
+            <span style=color:#66d9ef>break</span>
+    <span style=color:#66d9ef>else</span>:
+        <span style=color:#66d9ef>break</span>
+
+<span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&#39;=&gt;&#39;</span>, found)
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>gef➤  source extract_start.py
+...
+<span style=color:#f92672>[</span>Inferior <span style=color:#ae81ff>1</span> <span style=color:#f92672>(</span>process 1287983<span style=color:#f92672>)</span> exited normally<span style=color:#f92672>]</span>
+<span style=color:#f92672>=</span>&gt; CYBERTF<span style=color:#f92672>{</span>Go
+</code></pre></div><p>After a few seconds, we get the start of the flag: <code>CYBERTF{Go</code>. Now let&rsquo;s look at the other function. We&rsquo;ll assume it checks the remaining part of the flag.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>gef➤  disassemble camlReverse__listequal_92 
+Dump of assembler code <span style=color:#66d9ef>for</span> <span style=color:#66d9ef>function</span> camlReverse__listequal_92:
+   0x0000555555573e20 &lt;+0&gt;:     sub    rsp,0x18
+   0x0000555555573e24 &lt;+4&gt;:     cmp    rax,0x1
+   0x0000555555573e28 &lt;+8&gt;:     je     0x555555573e74 &lt;camlReverse__listequal_92+84&gt;
+   0x0000555555573e2a &lt;+10&gt;:    cmp    rbx,0x1
+   0x0000555555573e2e &lt;+14&gt;:    je     0x555555573e84 &lt;camlReverse__listequal_92+100&gt;
+   0x0000555555573e30 &lt;+16&gt;:    mov    QWORD PTR <span style=color:#f92672>[</span>rsp<span style=color:#f92672>]</span>,rbx
+   0x0000555555573e34 &lt;+20&gt;:    mov    QWORD PTR <span style=color:#f92672>[</span>rsp+0x8<span style=color:#f92672>]</span>,rax
+   0x0000555555573e39 &lt;+25&gt;:    mov    rsi,QWORD PTR <span style=color:#f92672>[</span>rbx<span style=color:#f92672>]</span>
+   0x0000555555573e3c &lt;+28&gt;:    mov    rdi,QWORD PTR <span style=color:#f92672>[</span>rax<span style=color:#f92672>]</span>
+   0x0000555555573e3f &lt;+31&gt;:    lea    rax,<span style=color:#f92672>[</span>rip+0x11d0a<span style=color:#f92672>]</span>        <span style=color:#75715e># 0x555555585b50 &lt;caml_equal&gt;</span>
+   0x0000555555573e46 &lt;+38&gt;:    call   0x55555559b81c &lt;caml_c_call&gt;
+   0x0000555555573e4b &lt;+43&gt;:    mov    r15,QWORD PTR <span style=color:#f92672>[</span>r14<span style=color:#f92672>]</span>
+   0x0000555555573e4e &lt;+46&gt;:    cmp    rax,0x1
+   0x0000555555573e52 &lt;+50&gt;:    je     0x555555573e68 &lt;camlReverse__listequal_92+72&gt;
+   0x0000555555573e54 &lt;+52&gt;:    mov    rax,QWORD PTR <span style=color:#f92672>[</span>rsp<span style=color:#f92672>]</span>
+   0x0000555555573e58 &lt;+56&gt;:    mov    rbx,QWORD PTR <span style=color:#f92672>[</span>rax+0x8<span style=color:#f92672>]</span>
+   0x0000555555573e5c &lt;+60&gt;:    mov    rax,QWORD PTR <span style=color:#f92672>[</span>rsp+0x8<span style=color:#f92672>]</span>
+   0x0000555555573e61 &lt;+65&gt;:    mov    rax,QWORD PTR <span style=color:#f92672>[</span>rax+0x8<span style=color:#f92672>]</span>
+   0x0000555555573e65 &lt;+69&gt;:    jmp    0x555555573e24 &lt;camlReverse__listequal_92+4&gt;
+   0x0000555555573e67 &lt;+71&gt;:    nop
+   0x0000555555573e68 &lt;+72&gt;:    mov    eax,0x1
+   0x0000555555573e6d &lt;+77&gt;:    add    rsp,0x18
+   0x0000555555573e71 &lt;+81&gt;:    ret    
+   0x0000555555573e72 &lt;+82&gt;:    xchg   ax,ax
+   0x0000555555573e74 &lt;+84&gt;:    cmp    rbx,0x1
+   0x0000555555573e78 &lt;+88&gt;:    jne    0x555555573e84 &lt;camlReverse__listequal_92+100&gt;
+   0x0000555555573e7a &lt;+90&gt;:    mov    eax,0x3
+   0x0000555555573e7f &lt;+95&gt;:    add    rsp,0x18
+   0x0000555555573e83 &lt;+99&gt;:    ret    
+   0x0000555555573e84 &lt;+100&gt;:   mov    eax,0x1
+   0x0000555555573e89 &lt;+105&gt;:   add    rsp,0x18
+   0x0000555555573e8d &lt;+109&gt;:   ret    
+End of assembler dump.
+</code></pre></div><p>We have the same pattern here, let&rsquo;s just quickly adapt the script.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> string
+
+alphabet <span style=color:#f92672>=</span> (
+    <span style=color:#e6db74>&#39;_&#39;</span> <span style=color:#f92672>+</span>
+    string<span style=color:#f92672>.</span>ascii_lowercase <span style=color:#f92672>+</span>
+    string<span style=color:#f92672>.</span>ascii_uppercase <span style=color:#f92672>+</span>
+    string<span style=color:#f92672>.</span>digits <span style=color:#f92672>+</span>
+    string<span style=color:#f92672>.</span>punctuation
+)
+
+found <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;CYBERTF{Go&#39;</span>
+start_len <span style=color:#f92672>=</span> len(found)
+running <span style=color:#f92672>=</span> True
+
+<span style=color:#66d9ef>while</span> running:
+    <span style=color:#66d9ef>for</span> char <span style=color:#f92672>in</span> alphabet:
+        <span style=color:#75715e># To avoid substitution errors, skip &#39;.</span>
+        <span style=color:#66d9ef>if</span> char <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;&#39;&#34;</span>:
+            <span style=color:#66d9ef>continue</span>
+
+        <span style=color:#66d9ef>print</span>(found <span style=color:#f92672>+</span> char)
+
+        <span style=color:#75715e># Run the program.</span>
+        gdb<span style=color:#f92672>.</span>execute(<span style=color:#e6db74>&#34;r &#39;&#34;</span> <span style=color:#f92672>+</span> found <span style=color:#f92672>+</span> char <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;&#39;&#34;</span>)
+
+        <span style=color:#75715e># Skip over the first N chars we already found.</span>
+        <span style=color:#66d9ef>if</span> len(found) <span style=color:#f92672>-</span> start_len <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>:
+            gdb<span style=color:#f92672>.</span>execute(<span style=color:#e6db74>&#39;continue &#39;</span> <span style=color:#f92672>+</span> str(len(found) <span style=color:#f92672>-</span> start_len))
+
+        <span style=color:#75715e># Get the values of the registers.</span>
+        <span style=color:#66d9ef>try</span>:
+            rdi <span style=color:#f92672>=</span> int(gdb<span style=color:#f92672>.</span>parse_and_eval(<span style=color:#e6db74>&#34;$rdi&#34;</span>))
+            rsi <span style=color:#f92672>=</span> int(gdb<span style=color:#f92672>.</span>parse_and_eval(<span style=color:#e6db74>&#34;$rsi&#34;</span>))
+        <span style=color:#66d9ef>except</span>:
+            running <span style=color:#f92672>=</span> False
+            <span style=color:#66d9ef>break</span>
+
+        <span style=color:#66d9ef>if</span> rdi <span style=color:#f92672>==</span> rsi:
+            found <span style=color:#f92672>+=</span> char
+            <span style=color:#66d9ef>break</span>
+    <span style=color:#66d9ef>else</span>:
+        <span style=color:#66d9ef>break</span>
+
+<span style=color:#66d9ef>print</span>(<span style=color:#e6db74>&#39;=&gt;&#39;</span>, found)
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>gef➤  <span style=color:#75715e># Remove the previous breakpoint first.</span>
+gef➤  del <span style=color:#ae81ff>1</span>
+
+gef➤  d *0x0000555555573e46
+Breakpoint <span style=color:#ae81ff>2</span> at 0x555555573e46
+
+gef➤  source extract_end.py
+...
+<span style=color:#f92672>[</span>Inferior <span style=color:#ae81ff>1</span> <span style=color:#f92672>(</span>process 1294818<span style=color:#f92672>)</span> exited normally<span style=color:#f92672>]</span>
+<span style=color:#f92672>=</span>&gt; CYBERTF<span style=color:#f92672>{</span>Golang_is_D3@d_1n_CTF_1795b4a89708371d16982195642638cd7783998188<span style=color:#f92672>}</span>
+</code></pre></div><p>Here is the flag: <code>CYBERTF{Golang_is_D3@d_1n_CTF_1795b4a89708371d16982195642638cd7783998188}</code>.</p><p>It took around 4 minutes for it to finish.</p><h2 id=additional-notes>Additional notes<a href=#additional-notes class=hanchor arialabel=Anchor>&#8983;</a></h2><p>I&rsquo;ve been wanting to learn about Ghidra&rsquo;s python API for a while now, so I decided after writing the post above to take a deeper look at how things are implemented, and to write a script that&rsquo;ll extract the flag.</p><p>Let&rsquo;s first check out <code>camlReverse__string2char_211</code>, by breaking right before it is called.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ gdb ./program
+gef➤  <span style=color:#75715e># Break right before camlReverse__string2char_211 is called.</span>
+gef➤  b *0x0000555555574278
+gef➤  r ABCDEFG
+gef➤  <span style=color:#75715e># The argument is loaded into rax, printing it reveals our flag (ABCDEFG).</span>
+gef➤  x/2x $rax
+0x7ffff7c7ffa8: 0x44434241      0x00474645
+gef➤  <span style=color:#75715e># Now let&#39;s run the function.</span>
+gef➤  stepi
+gef➤  next
+gef➤  next
+gef➤  <span style=color:#75715e># When we&#39;re back into main, we see that the structure changed quite a bit.</span>
+gef➤  x/2x $rax
+0x7ffff7c7fd30: 0x00000083      0x00000000
+</code></pre></div><p>Looking at the function in Ghidra, it seems recursive:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>camlReverse__string2char_211</span>(<span style=color:#66d9ef>void</span>) {
+  <span style=color:#66d9ef>long</span> in_RAX;
+  
+  camlReverse__string2char_tmp_214
+            (<span style=color:#ae81ff>1</span>,<span style=color:#f92672>*</span>(undefined <span style=color:#f92672>*</span>)(in_RAX <span style=color:#f92672>+</span> (<span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(in_RAX <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>) <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>10</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>8</span> <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>));
+  <span style=color:#66d9ef>return</span>;
+}
+
+
+<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>camlReverse__string2char_tmp_214</span>(<span style=color:#66d9ef>long</span> param_1) {
+  <span style=color:#66d9ef>long</span> lVar1;
+  <span style=color:#66d9ef>long</span> in_RAX;
+  undefined8 uVar2;
+  <span style=color:#66d9ef>long</span> unaff_RBX;
+  <span style=color:#66d9ef>long</span> unaff_R14;
+  <span style=color:#66d9ef>long</span> unaff_R15;
+  
+  <span style=color:#66d9ef>if</span> (param_1 <span style=color:#f92672>==</span> unaff_RBX) {
+    <span style=color:#66d9ef>return</span> (<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)<span style=color:#ae81ff>0x1</span>;
+  }
+  uVar2 <span style=color:#f92672>=</span> camlReverse__string2char_tmp_214(param_1 <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>);
+  <span style=color:#66d9ef>if</span> (unaff_R15 <span style=color:#f92672>-</span> <span style=color:#ae81ff>0x18U</span> <span style=color:#f92672>&lt;</span> <span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(unaff_R14 <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>)) {
+    uVar2 <span style=color:#f92672>=</span> caml_call_gc();
+  }
+  <span style=color:#f92672>*</span>(undefined8 <span style=color:#f92672>*</span>)(unaff_R15 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>0x18</span>) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0x800</span>;
+  lVar1 <span style=color:#f92672>=</span> (<span style=color:#f92672>*</span>(ulong <span style=color:#f92672>*</span>)(in_RAX <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>) <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>10</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>8</span> <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+  <span style=color:#66d9ef>if</span> ((ulong)(param_1 <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>) <span style=color:#f92672>&lt;</span> lVar1 <span style=color:#f92672>-</span> (ulong)<span style=color:#f92672>*</span>(byte <span style=color:#f92672>*</span>)(in_RAX <span style=color:#f92672>+</span> lVar1)) {
+    <span style=color:#f92672>*</span>(<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)(unaff_R15 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>0x10</span>) <span style=color:#f92672>=</span> (ulong)<span style=color:#f92672>*</span>(byte <span style=color:#f92672>*</span>)(in_RAX <span style=color:#f92672>+</span> (param_1 <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>)) <span style=color:#f92672>*</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
+    <span style=color:#f92672>*</span>(undefined8 <span style=color:#f92672>*</span>)(unaff_R15 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>8</span>) <span style=color:#f92672>=</span> uVar2;
+    <span style=color:#66d9ef>return</span> (<span style=color:#66d9ef>long</span> <span style=color:#f92672>*</span>)(unaff_R15 <span style=color:#f92672>+</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>0x10</span>);
+  }
+                    <span style=color:#75715e>/* WARNING: Subroutine does not return */</span>
+  caml_ml_array_bound_error();
+}
+</code></pre></div><p>The most interesting part is the <code>* 2 + 1</code> operation. Our <code>0x83</code> value really is <code>0x41 * 2 + 1</code>. If we show a bit more of the memory, we can find the other chars:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>gef➤  x/64x $rax
+0x7ffff7c7fd30: 0x00000083      0x00000000      0xf7c7fd48      0x00007fff
+0x7ffff7c7fd40: 0x00000800      0x00000000      0x00000085      0x00000000
+0x7ffff7c7fd50: 0xf7c7fd60      0x00007fff      0x00000800      0x00000000
+0x7ffff7c7fd60: 0x00000087      0x00000000      0xf7c7fd78      0x00007fff
+0x7ffff7c7fd70: 0x00000800      0x00000000      0x00000089      0x00000000
+0x7ffff7c7fd80: 0xf7c7fd90      0x00007fff      0x00000800      0x00000000
+0x7ffff7c7fd90: 0x0000008b      0x00000000      0xf7c7fda8      0x00007fff
+0x7ffff7c7fda0: 0x00000800      0x00000000      0x0000008d      0x00000000
+0x7ffff7c7fdb0: 0xf7c7fdc0      0x00007fff      0x00000800      0x00000000
+0x7ffff7c7fdc0: 0x0000008f      0x00000000      0x00000001      0x00000000
+0x7ffff7c7fdd0: 0x000004fc      0x00000000      0x00000000      0x07000000
+0x7ffff7c7fde0: 0x00000400      0x00000000      0x555b8960      0x00005555
+0x7ffff7c7fdf0: 0x000008f8      0x00000000      0x555b8b60      0x00005555
+0x7ffff7c7fe00: 0x00000003      0x00000000      0x00000400      0x00000000
+0x7ffff7c7fe10: 0x00000001      0x00000000      0x00000c00      0x00000000
+0x7ffff7c7fe20: 0xf7c7fe40      0x00007fff      0x00000081      0x00000000
+</code></pre></div><p>We have <code>0x83, 0x85, 0x87, ...</code>. This maps to our input, meaning we can get the start of the flag by decoding these values.</p><p>Also, we notice that each value has a pointer to the next one, meaning this is a linked list. We can build a first script to decode the start of the flag:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> struct
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>getUBytes</span>(address, length):
+  <span style=color:#66d9ef>return</span> bytearray([b <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xff</span> <span style=color:#66d9ef>for</span> b <span style=color:#f92672>in</span> getBytes(address, length)])
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>u32</span>(raw_bytes):
+  <span style=color:#66d9ef>return</span> struct<span style=color:#f92672>.</span>unpack(<span style=color:#e6db74>&#39;&lt;L&#39;</span>, raw_bytes)[<span style=color:#ae81ff>0</span>]
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>read_caml_array</span>(pointer, data_len):
+  array <span style=color:#f92672>=</span> []
+
+  <span style=color:#66d9ef>while</span> True:
+    <span style=color:#66d9ef>try</span>:
+      array<span style=color:#f92672>.</span>append(getUBytes(toAddr(pointer), data_len))
+    <span style=color:#66d9ef>except</span>:
+      <span style=color:#66d9ef>break</span>
+
+    pointer <span style=color:#f92672>=</span> u32(getBytes(toAddr(pointer <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>), <span style=color:#ae81ff>4</span>))
+
+  <span style=color:#66d9ef>return</span> array
+
+<span style=color:#75715e># The address refers to the argument passed to camlReverse__firstCheck_268.</span>
+<span style=color:#75715e># For each value, map the bytes to an int, divide by two, and cast to char.</span>
+flag_start <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;&#39;</span><span style=color:#f92672>.</span>join(chr(u32(b) <span style=color:#f92672>//</span> <span style=color:#ae81ff>2</span>) <span style=color:#66d9ef>for</span> b <span style=color:#f92672>in</span> read_caml_array(<span style=color:#ae81ff>0x00160898</span>, <span style=color:#ae81ff>4</span>))
+
+<span style=color:#66d9ef>print</span>(flag_start)
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>extractCaml<span style=color:#f92672>.</span>py<span style=color:#f92672>&gt;</span> Running<span style=color:#f92672>...</span>
+CYBERTF{Go
+extractCaml<span style=color:#f92672>.</span>py<span style=color:#f92672>&gt;</span> Finished<span style=color:#960050;background-color:#1e0010>!</span>
+</code></pre></div><p>When reversing the <code>* 2 + 1</code> operation, all we really have to do is <code>// 2</code> (because it is an integer division).</p><p>We can now finish the job by extracting the XOR key & data, which are stored using the same array format:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> struct
+<span style=color:#f92672>import</span> itertools
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>getUBytes</span>(address, length):
+  <span style=color:#66d9ef>return</span> bytearray([b <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xff</span> <span style=color:#66d9ef>for</span> b <span style=color:#f92672>in</span> getBytes(address, length)])
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>u32</span>(raw_bytes):
+  <span style=color:#66d9ef>return</span> struct<span style=color:#f92672>.</span>unpack(<span style=color:#e6db74>&#39;&lt;L&#39;</span>, raw_bytes)[<span style=color:#ae81ff>0</span>]
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>read_caml_array</span>(pointer, data_len):
+  array <span style=color:#f92672>=</span> []
+
+  <span style=color:#66d9ef>while</span> True:
+    <span style=color:#66d9ef>try</span>:
+      array<span style=color:#f92672>.</span>append(getUBytes(toAddr(pointer), data_len))
+    <span style=color:#66d9ef>except</span>:
+      <span style=color:#66d9ef>break</span>
+
+    pointer <span style=color:#f92672>=</span> u32(getBytes(toAddr(pointer <span style=color:#f92672>+</span> <span style=color:#ae81ff>8</span>), <span style=color:#ae81ff>4</span>))
+
+  <span style=color:#66d9ef>return</span> array
+
+<span style=color:#75715e># The address refers to the argument passed to camlReverse__firstCheck_268.</span>
+<span style=color:#75715e># For each value, map the bytes to an int, divide by two, and cast to char.</span>
+flag_start <span style=color:#f92672>=</span> <span style=color:#e6db74>b</span><span style=color:#e6db74>&#39;&#39;</span><span style=color:#f92672>.</span>join(chr(u32(b) <span style=color:#f92672>//</span> <span style=color:#ae81ff>2</span>) <span style=color:#66d9ef>for</span> b <span style=color:#f92672>in</span> read_caml_array(<span style=color:#ae81ff>0x00160898</span>, <span style=color:#ae81ff>4</span>))
+
+<span style=color:#75715e># The address refers to the argument passed to camlReverse__xor_103.</span>
+<span style=color:#75715e># For each value, map the bytes to an int.</span>
+xor_key <span style=color:#f92672>=</span> [u32(x) <span style=color:#66d9ef>for</span> x <span style=color:#f92672>in</span> read_caml_array(<span style=color:#ae81ff>0x001601b0</span>, <span style=color:#ae81ff>4</span>)]
+
+<span style=color:#75715e># The address refers to the argument passed to camlReverse__listequal_92.</span>
+<span style=color:#75715e># For each value, map the bytes to an int.</span>
+xor_data <span style=color:#f92672>=</span> [u32(x) <span style=color:#66d9ef>for</span> x <span style=color:#f92672>in</span> read_caml_array(<span style=color:#ae81ff>0x00160208</span>, <span style=color:#ae81ff>4</span>)]
+
+<span style=color:#75715e># Xor the key with the data, and divide each value by two before converting it to a char.</span>
+flag_end <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;&#39;</span><span style=color:#f92672>.</span>join(chr((a <span style=color:#f92672>^</span> b) <span style=color:#f92672>//</span> <span style=color:#ae81ff>2</span>) <span style=color:#66d9ef>for</span> a, b <span style=color:#f92672>in</span> zip(itertools<span style=color:#f92672>.</span>cycle(xor_key), xor_data))
+
+<span style=color:#66d9ef>print</span>(flag_start <span style=color:#f92672>+</span> flag_end)
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>extractCaml<span style=color:#f92672>.</span>py<span style=color:#f92672>&gt;</span> Running<span style=color:#f92672>...</span>
+CYBERTF{Golang_is_D3<span style=color:#a6e22e>@d_1n_CTF_1795b4a89708371d16982195642638cd7783998188</span>}
+extractCaml<span style=color:#f92672>.</span>py<span style=color:#f92672>&gt;</span> Finished<span style=color:#960050;background-color:#1e0010>!</span>
+</code></pre></div><p>I have to say, the API doesn&rsquo;t seem too intuitive, but at least it is powerful.</p><h2 id=more>More<a href=#more class=hanchor arialabel=Anchor>&#8983;</a></h2><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/reverse/flag-checker>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-welcome-to-the-matrix/><span class=button__icon>←</span>
 <span class=button__text>Writeup Cyber Threat Force : Welcome to the matrix</span></a></span>
 <span class="button next"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-reverse-take-your-time/><span class=button__text>Writeup Cyber Threat Force : Take your time</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script>
-<script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2025 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>

